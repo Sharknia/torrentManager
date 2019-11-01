@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>FuryChick.IPTIME.ORG</title>
+
+    <!--제이쿼리-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous">
+    </script>
+    
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+<body>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <!-- 헤더 끝 -->
+
+    <script>
+        var _filetender = function _filetender(url){
+            alert("외부파일이므로 원본페이지 접속 필수");
+        }
+
+        var file_download = function file_download(url, filename){
+            url = "https://torrentwal.com/" + url;
+            url = url.replace("≀", "&wr_");
+
+            //torrent 파일인 경우에만 watch 폴더에 넣어준다. 
+            var downDir = $('#downloadDir').val();
+            if(filename.indexOf(".torrent") > 0){
+                filename += ".torrent";
+                downDir = $('#watchDir').val();
+            }
+
+            var cmd = "wget -O \"" + downDir +  filename + "\" \"" + url+"\"";
+            //ajax로 보내야 함
+            $.ajax({
+                type:'POST',
+                url:'/main/control',
+                data:{
+                    "select" : 'sh',
+                    "cmd" : cmd
+                },
+                success:function(result){
+                    if($.trim(result.result) == "true"){
+                        alert("해당 파일이 서버에 업로드 되었습니다!");
+                    }
+                    else{
+                        alert(result.data);
+                    }
+                }
+            });
+        }
+
+    </script>
+    <!-- CONTENTS -->
+    <input type="hidden" id="watchDir" value="<%=data.watchDir%>">
+    <input type="hidden" id="downloadDir" value="<%=data.downloadDir%>">
+    <div class="container">
+        <div class="col-lg-12" id="contents">
+            <!-- 파일테이블 -->
+            <div class="list-group">
+                <li class="list-group-item" style="background-color: #e7e7e7;">
+                    <strong>파일리스트</strong>
+                </li>
+                <%for (var i = 1 ; i < data.tableSize ; i++ ){%>
+                    <a href="<%=data.filetable[i]%>" class="list-group-item">
+                        <i class="far fa-save"></i>&nbsp;<%=data.filename[i]%>
+                    </a>
+                <% }%>
+                </div>
+            <!-- 파일테이블 끝-->
+
+            <!-- 필드셋 -->
+            <ul class="list-group">
+                <li class="list-group-item" style="background-color: #e7e7e7;">
+                    <strong>토렌트정보</strong>
+                </li>
+                <li class="list-group-item">
+                    <%for (var i = 0 ; i < data.setSize ; i++ ){%>
+                        <%if (data.fieldset[i].indexOf("토렌트명") > -1 && i > 0 ){%>
+                            </li>
+                            <li class="list-group-item">
+                        <%}%>
+                        <span><%=data.fieldset[i]%></span><br>
+                    <%}%>
+                </li>
+            </ul>
+            <!-- 필드셋 끝-->
+            <!-- 원본페이지 링크 -->
+            <div class="list-group">
+                <a class="list-group-item" href='<%=data.url.replace(/,/gi, "/")%>' target="_blink">
+                    <i class="fas fa-external-link-alt"></i>&nbsp;원본페이지
+                </a>
+            </div>
+        </div>
+    </div>

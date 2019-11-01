@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>FuryChick.IPTIME.ORG</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="/views/css/sticky-footer-navbar.css" rel="stylesheet"> -->
+
+    <!--제이쿼리-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type='text/css'>
+        html {
+        position: relative;
+        min-height: 100%;
+        }
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+        
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+        
+        body > .container {
+            padding: 60px 15px 0;
+        }
+        .container .text-muted {
+            margin: 20px 0;
+        }
+        
+        .footer > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
+        code {
+            font-size: 80%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand">FuryChicK</a>
+            </div>
+        </div>
+    </nav>  
+    <!-- Begin page content -->
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="col-lg-3" style="float:left"></div>
+                <div class="col-lg-6" style="padding:10%">
+                    <form class="col-lg-12" id="loginInfo" method="post" >
+                        <h2>로그인해 주세요</h2>
+                        <div class="col-lg-12 text-center">
+                            <input type="text" id="id" name="id" class="form-control" placeholder="아이디를 입력해주세요" required autofocus>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요" required>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <button type="button" class="btn btn-primary" onclick="loginConfirm();">로그인</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //엔터키 치면 로그인 버튼을 누른것과 같은 효과가 나게 하는 함수
+        $("#id").keyup(function(e){
+            if(e.keyCode == 13) loginConfirm();
+        });
+        $("#password").keyup(function(e){
+            if(e.keyCode == 13) loginConfirm();
+        });
+
+        var loginConfirm = function loginConfirm(){
+            if($("#id").val() == ''){
+                alert("아이디를 입력해주세요.");
+                $('#id').focus();
+            }
+            else if($('#password').val() == ''){
+                alert("비밀번호를 입력해주세요.");
+                $('#password').focus();
+            }
+            else{
+                $.ajax({
+                    type:"POST",
+                    url:"/login/login",
+                    data:{
+                        "id":$('#id').val(),
+                        "password":$('#password').val()                    
+                    },
+                    success:function(data){
+                        if($.trim(data) == "id"){
+                            alert("잘못된 아이디입니다.");
+                            $('#id').val('');
+                            $('#id').focus();
+                        }
+                        else if($.trim(data) == "password"){
+                            alert("잘못된 비밀번호입니다.");
+                            $('#password').val('');
+                            $('#password').focus();
+                        }
+                        else{
+                            location.href="/main/";
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted" style="float:left">furychick@nate.com</p>
+        </div>
+    </footer>
+</body>
+</html>

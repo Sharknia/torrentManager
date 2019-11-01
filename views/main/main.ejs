@@ -1,0 +1,776 @@
+<% include ../share/header.ejs %>
+
+<style type="text/css">
+    .btn-xs{
+        margin:1px;
+    }
+</style>
+<!-- CONTENTS -->
+<div class="container">
+    <div class="page-header">
+        <h1>트랜스미션 관리<br><small>토렌트 추가, 트랜스미션 관리, 미니 탐색기</small></h1>
+    </div>
+    <!-- 네비게이션 메뉴 -->
+    <nav class="col-lg-12">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item text-center active">
+                <a class="nav-link" data-toggle="tab" href="#torrent">Torrent</a>
+            </li>
+            <li class="nav-item text-center">
+                <a class="nav-link" data-toggle="tab" onclick="transmission();" href="#transmission">Transmission</a>
+            </li>
+            <li class="nav-item text-center">
+                <a class="nav-link" data-toggle="tab" onclick="explorer();" href="#Explorer">Explorer</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- 네비게이션 메뉴 끝 -->
+    <div class="col-lg-12 tab-content">
+        <!-- 토렌트 파트 -->
+        <div class="tab-pane active" id="torrent" role="tabpanel">
+            <!-- 토렌트 검색 -->
+            <div id="form1" class="col-lg-12" style="margin: 1%">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="torrentTitle" placeholder="프로그램 제목을 입력하세요" required>
+                </div>
+                <div class="text-right">
+                    <a type="button" onclick="torrentSearch();" class="btn btn-sm btn-default">검색</a>
+                </div>
+            </div>
+            <!-- 토렌트 검색 끝 -->
+            <!-- 토렌트 검색 결과 -->
+            <div class="col-lg-12" id="torrentList" style="margin: 1%">
+            
+            </div>
+            <!-- 토렌트 검색 결과 끝-->
+        </div>
+        <!-- 토렌트 파트 끝 -->
+
+        <!-- transmission 파트 -->
+        <div class="tab-pane" id="transmission" role="tabpanel">
+            <!-- //위쪽 상태바 재개, 정지, 삭제, 로컬에서 함께 삭제, || 전체 재개, 전체 정지 || 파일이동-->
+            <div class="col-lg-12 text-center" style="padding:1%">
+                <a type="button" onclick="control('1');" class="btn btn-default btn-xs"><i class="fas fa-play"></i>시작</a>
+                <a type="button" onclick="control('2');" class="btn btn-default btn-xs"><i class="fas fa-stop"></i>정지</a>
+                <a type="button" onclick="isOk('3');" class="btn btn-default btn-xs"><i class="fas fa-ban"></i>삭제</a>
+                <a type="button" onclick="isOk('4');" class="btn btn-default btn-xs"><i class="far fa-trash-alt"></i>데이터도 삭제</a>
+                <span class="button-split"> | </span>
+                <a type="button" onclick="control('5');" class="btn btn-default btn-xs">전체 시작</a>
+                <a type="button" onclick="control('6');" class="btn btn-default btn-xs">전체 정지</a>
+                <span class="button-split"> | </span>
+                <a type="button" onclick="control('7');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a>
+                <a type="button" onclick="control('8');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>TV 폴더로</a>
+                <a type="button" onclick="control('9');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a>
+                <span class="button-split"> | </span>
+                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA 새로고침</a>
+            </div>
+            <div class="col-lg-12" id="transmission_contents">
+
+            </div>
+        </div>
+        <!-- transmission 파트 끝 -->
+
+        <!-- Explorer 파트-->
+        <div class="tab-pane" id="Explorer" role="tabpanel">
+            <div class="col-lg-12 text-center" style="padding:1%">
+                <div class="dropdown btn-group" role="group">
+                    <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="fastMoveBtn" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-fighter-jet"></i>빠른이동<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('17');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a></li>
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('18');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>TV 폴더로</a></li>
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('19');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown btn-group" role="group">
+                    <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="fastMoveBtn" data-toggle="dropdown" aria-expanded="false">
+                            <i class="far fa-star"></i>즐겨찾기<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/torrent/download/');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>다운로드</a></li>
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/Shared/');" class="btn btn-default btn-xs"><i class="fas fa-share-alt"></i></i>공유폴더</a></li>
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/Personal/');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인폴더</a></li>
+                    </ul>
+                </div>
+                <span class="button-split"> | </span>
+                <a type="button" onclick="control('11');" class="btn btn-default btn-xs"><i class="fas fa-cut"></i>잘라내기</a>
+                <a type="button" onclick="control('12');" class="btn btn-default btn-xs"><i class="fas fa-paste"></i>붙여넣기</a>
+                <a type="button" onclick="isOk('14');" class="btn btn-default btn-xs"><i class="far fa-trash-alt"></i>파일삭제</a>
+                <div class="dropdown btn-group" role="group">
+                    <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="fastMoveBtn" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cogs"></i>파일관리<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li role="presentation"><a type="button" onclick="rename(1)"; class="btn btn-default btn-xs"><i class="fas fa-equals"></i>이름통일</a></li>
+                        <li role="presentation"><a type="button" class="btn btn-default btn-xs"><i class="fas fa-plus"></i>새폴더</a></li>
+                        <li role="presentation"><a type="button" class="btn btn-default btn-xs"><i class="far fa-file-archive"></i>압축풀기</a></li>
+                    </ul>
+                </div>
+                <span class="button-split"> | </span>
+                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA</a>
+            </div>
+            <div class="col-lg-12" id="explorerContents">
+
+            </div>
+        </div>
+        <!-- Explorer 파트 끝-->
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#torrentTitle").focus();
+        //페이지가 처음 로딩될 때만 서버에서 기본 세팅값을 로딩한다.
+        $.ajax({
+            type:"POST",
+            url:"/main/getDefaultSetting",
+            success:function(result){
+                if($.trim(result.result) == "true"){
+                    dir.pwd(result.dirSetting.torrentDownloadDir);
+                    dir.download(result.dirSetting.torrentDownloadDir);
+                    dir.tv(result.dirSetting.tvProgramDir);
+                    dir.movie(result.dirSetting.movieDir);
+                    dir.personal(result.dirSetting.personalDir);
+                    dir.watch(result.dirSetting.torrentWatchDir);
+                }
+                else{
+                    alert(result.data);
+                }
+            }
+        });
+    });
+
+    //file 이름 앞 뒤에 "를 붙여 리눅스가 하나의 이름으로 인식하게 하는 파일명을 만들어주는 함수
+    var fullname = function fullname(name){
+        return '\"' + name +'\"'
+    }
+
+    //마그넷 주소 리스트
+    function MagnetList() { // var mglist;
+        var magnetList;
+
+        this.val = function(val) {
+            if(val != null) magnetList = val;
+            return magnetList;
+        }
+    }
+    const magnetList = new MagnetList();
+
+    //검색한 파일 명
+    function TorrentTitle() { // var mglist;
+        var torrentTitle = '';
+
+        this.val = function(val) {
+            if(val != null) torrentTitle = val;
+            return torrentTitle;
+        }
+    }
+    const torrentTitle = new TorrentTitle();
+
+    //검색결과의 총 페이지수
+    function TotalPage(){   // var totalpage;
+        var totalPage = 0;
+        
+        this.val = function(val){
+            if(val != null) totalPage = val;
+            return totalPage;
+        }
+    }
+    const totalPage = new TotalPage();
+
+    //출력할 페이지 넘버
+    function Page(){    // var page = 1;
+        var page = 1;
+
+        this.increase = function(){
+            return ++page;
+        }
+        this.decrease = function(){
+            return --page;
+        }
+        this.nextPage = function(){
+            page += 5;
+            if(page > totalPage.val()) page = totalPage.val();
+            return page;
+        }
+        this.prevPage = function(){
+            page -= 5;
+            if(page < 1) page = 1;
+            return page;
+        }
+        this.val = function(val){
+            if(val != null) page = val;
+            return page;
+        }
+    }
+    const page = new Page();
+
+    //잘라낼 파일 리스트
+    function CutFile(){
+        var cutFile;
+
+        this.val = function(val){
+            if(val != null) cutFile = val;
+            return cutFile;
+        }
+    }
+    const cutFile = new CutFile();
+
+    //Dir 세팅 저장, pwd에 대해 pop, push 가능
+    function DIR(){
+        var pwd;        //현재폴더
+        var watch;      //토렌트 파일 업로드 폴더
+        var tv;         //티비 프로그램 폴더
+        var movie;      //영화 폴더 
+        var personal;   //개인용 폴더
+        var download;   //토렌트 다운로드 폴더
+
+        this.pwd = function(val){
+            if(val != null) pwd = val;
+            return pwd;
+        }
+        this.tv = function(val){
+            if(val != null) tv = val;
+            return tv;
+        }
+        this.movie = function(val){
+            if(val != null) movie = val;
+            return movie;
+        }
+        this.personal = function(val){
+            if(val != null) personal = val;
+            return personal;
+        }
+        this.watch = function(val){
+            if(val != null) watch = val;
+            return watch;
+        }
+        this.download = function(val){
+            if(val != null) download = val;
+            return download;
+        }
+        this.pwdPop = function(){
+            var temp = pwd.split('/');
+            temp.pop();
+            pwd = '';
+            if(temp.length < 2){
+                pwd = '/';
+            }
+            else{
+                for (var i=0 ; i<temp.length-1 ; i++){
+                    pwd += temp[i] +"/";
+                }
+            }
+            return pwd;
+        }
+        this.pwdPush = function(pushDir){
+            pwd = pwd + fullname(pushDir);
+            return pwd;
+        }
+    }
+    const dir = new DIR();
+
+    /* Torrent Tab */
+    //title에서 엔터키 치면 검색 실행
+    $("#torrentTitle").keyup(function(e){
+        if(e.keyCode == 13) torrentSearch();
+    });
+
+    //Torrent 검색
+    var torrentSearch = function torrentSearch(trListPaging){
+        if($("#torrentTitle").val() == '' && torrentTitle.val() == ''){
+            alert("검색어 입력은 필수입니다.");
+            $("#torrentTitle").focus();
+            return;
+            ////테스트용 코드 입력 없을 경우 스파이더맨
+            // torrentTitle.val("스파이더맨")
+        }
+        //검색중이 아니면 새로운 검색값 입력
+        if(torrentTitle.val() == '' && $("#torrentTitle").val() != ''){
+            torrentTitle.val($("#torrentTitle").val());
+        }
+        //페이징이 아니고 검색중인 값과 새로운 검색값이 다르다면 새로운 검색
+        else if(torrentTitle.val() != $("#torrentTitle").val() && trListPaging == null){
+            torrentTitle.val($("#torrentTitle").val());
+        }
+
+        //페이징
+        if(trListPaging == null) page.val(1);
+        else if (trListPaging == "Pre") page.prevPage();
+        else if (trListPaging == "Next") page.nextPage();
+        else page.val(trListPaging);
+        
+        $.ajax({
+            type:"POST",
+            url:"/main/torrentSearch",
+            data:{
+                "torrentTitle":torrentTitle.val(), 
+                "page":page.val()
+            },
+            success:function(result){
+                if($.trim(result) == "false"){
+                    alert("알 수 없는 오류입니다. 관리자에게 문의해주세요!");
+                }
+                else{
+                    //데이터 수신
+                    magnetList.val(result.mglist);
+                    totalPage.val(parseInt(result.count / 20 + 1));
+
+                    $('#torrentList').html("");
+                    $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.");
+
+                    //검색결과 출력 파트
+                    var list ='';
+                    list += '<div class="col-lg-12" style="padding:0"><ul class="list-group">';
+                    for(var i = 0 ; i < result.num ; i++){
+                        list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;cursor:pointer">' + result.subject[i] + "</a>";
+                        list += '<a onclick="addMagnet('+ i +');" style="float:right;cursor:pointer;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
+                        list += '<span style="float:right">' + result.datelist[i] + ' / ' + result.volumelist[i] + '&nbsp&nbsp&nbsp;</span>';
+                        list += '</li>'
+                    }
+                    list += '</ul></div>';
+                    //검색결과 출력 파트 끝
+                    
+                    //페이징 파트
+                    list+='<nav class="text-center"><ul class="pagination"><li>';
+                    list+='<a style="cursor:pointer" onclick="torrentSearch(\'Pre\')" aria-label="Previous">';
+                    list+='<span aria-hidden="true">&laquo;</span></a></li>';
+                    var temp;
+                    if(page.val()>2){
+                        temp = page.val() - 2;
+                        list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    }
+                    if(page.val()>1){
+                        temp = page.val() - 1;
+                        list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    }
+                    list+='<li class="active"><a>'+page.val()+'</a></li>';
+                    if(page.val()<totalPage.val()){
+                        temp = page.val() + 1;
+                        list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    }
+                    if(page.val()<totalPage.val()-1){
+                        temp = page.val() + 2;
+                        list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    }
+                    list+='<li>';
+                    list+='<a style="cursor:pointer" onclick="torrentSearch(\'Next\')" aria-label="Next">';
+                    list+='<span aria-hidden="true">&raquo;</span>';
+                    list+='</a></li></ul></nav>';
+                    //페이징 파트 끝
+                    $('#torrentList').append(list);
+                }
+            }
+        });
+    }
+
+    //토렌트 상세 정보 페이지를 모달로 띄우는 함수
+    var torrentView = function torrentView(url, torrentTitle){
+        url=url.split("/");
+        var detail_html = "<iframe src=\"/main/torrentView/" + url + "\" id=\"hide_frame\" frameborder=0 style=\"width:100%;height:600px;\" ></iframe>";
+
+        $("#modal-body").html(detail_html);
+        $("#modal-title").html(torrentTitle);
+        $("#myModal").modal("show");
+    }
+    
+    //토렌트 목록에서 자석 아이콘을 누르면 마그넷 주소를 transmission에 추가
+    var addMagnet = function addMagnet(i){
+        $.ajax({
+           type:"POST",
+           url:"/main/control",
+           data:{
+               "select" : 'tr',
+               "cmd" : '-a ' + magnetList.val()[i]
+           },
+           success:function(result){
+               if($.trim(result.result) == "true"){
+                   alert("Transmission에 마그넷 주소가 추가되었습니다.");
+               }
+               else{
+                   alert(result.data);
+               }
+           }
+        });
+    }
+
+    /* Transmission Tab */
+    var transmission = function transmission(){
+        var torrentList = {};
+        var subjectList = {};
+        var stateList = {};
+        var percentList = {};
+        var volumeList = {};
+        var idxList = {};
+        var remaintimeList = {};
+        var downspeedList = {};
+        $('#transmission_contents').html("");
+        $.ajax({
+            type:"POST",
+            url:"/main/control",
+            data:{
+                "select" : 'tr',
+                "cmd" : "-l |  sed -e '1d;$d;s/^ *//'"
+            },
+            success:function(result){
+                if($.trim(result.result) == "stderr" || $.trim(result.result) == "err"){
+                    alert(result.data);
+                }
+                else if($.trim(result.result) == 'none'){
+                    var list = '<h3 class="text-center">현재 작업중인 토렌트가 없습니다.</h3>';
+                    $('#transmission_contents').append(list)
+                }
+                else if($.trim(result.result) == 'true'){
+                    var list = '';
+                    var torrentList = $.trim(result.data).split("\n");
+                    var j = 0;
+                    for (var a in torrentList){
+                        var temp = torrentList[a].split(" ");
+                        //visit 기준
+                        var visit = -1;
+                        var volnum = 2;
+                        var remaintimenum = 4;
+                        var downspeednum = 6;
+                        var statenum = 8;
+                        var subnum = 9;
+                        for (var i in temp){       
+                            if(temp[i] != '') {
+                                visit++;
+                                //뭐가 몇번인지 알아보는 코드
+                                // list += "[(v)"+visit+"]" + "[(i)"+i+"]" + temp[i] + "<br>"; 
+                                // console.log("visit : " + visit + " // value: " + temp[i]);
+                                if(visit==0) idxList[j] = temp[i];
+                                else if(visit==1) percentList[j] = temp[i];
+                                else if(visit==volnum){
+                                    volumeList[j] = temp[i];
+                                    if(temp[i] == "None"){
+                                        statenum = statenum - 1;
+                                        subnum = subnum - 1;
+                                        remaintimenum = remaintimenum - 1;
+                                        downspeednum -= 1;
+                                    }
+                                    else volumeList[j] += temp[i*1 + 1];
+                                }
+                                else if(visit == remaintimenum){
+                                    if(!isNaN(temp[i]*1)){
+                                        statenum = statenum + 1;
+                                        subnum = subnum + 1;
+                                        downspeednum += 1;
+                                        remaintimeList[j] = temp[i] + temp[i*1 + 1];
+                                    }
+                                    else remaintimeList[j] = temp[i];
+                                }
+                                else if(visit==downspeednum){
+                                    if(temp[i] == '0.0'){
+                                        downspeedList[j] = '-';
+                                    }
+                                    else if(temp[i]*1 > 1000){
+                                        downspeedList[j] = (temp[i]*1 / 1024).toFixed(2) + "Mb/s";
+                                    }
+                                    else downspeedList[j] = temp[i].toFixed(2) + "Kb/s";
+                                }
+                                else if(visit==statenum) {
+                                    if(temp[i] == 'Up'){
+                                        stateList[j] = "다운로드중";
+                                        subnum += 2;
+                                    }
+                                    else if(temp[i] == "Idle") stateList[j] = "다운로드중";
+                                    else if(temp[i] == "Stopped") stateList[j] = "정지";
+                                    else stateList[j] = temp[i];
+                                }
+                                else if(visit==subnum) subjectList[j] = temp[i];
+                                else if(visit>subnum){
+                                    subjectList[j] += temp[i];
+                                }
+                            }
+                        }
+                        j++; //j가 넘어온 행의 개수가 된다. 
+                    }
+
+                    //토렌트 리스트 테이블
+                    list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
+                    list += '<th class="text-center"><input type="checkbox" onclick="check(1);" name="checkBoxId" id="checkBoxId"></th><th>제목</th><th>용량</th><th>진행상황</th><th>남은시간</th><th>속도</th><th>상태</th></tr>'
+                    for (var i = 0 ; i<j; i++)
+                    {
+                        list += '<tr><td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="torrentListCheck" value="' + idxList[i] + '"></td>'
+                        list += '<td>'+subjectList[i].substr(0, 50)+'</td>'
+                        list += '<td>'+volumeList[i]+'</td>'
+                        list += '<td><div class="progress"><div class="progress-bar" aria-valuenow="'+percentList[i]+'" aria-valuemin="0" aria-valuemax="100" style="width:'+percentList[i]+'">'+percentList[i]+'</div></div></td>'
+                        list += '<td>'+remaintimeList[i]+'</td>'
+                        list += '<td>'+downspeedList[i]+'</td>'
+                        list += '<td>'+stateList[i]+'</td>'
+                        list += '</tr>'
+                    }
+                    list += '</table>';
+                    //토렌트 리스트 테이블 끝
+                    
+                    $('#transmission_contents').append(list)
+                }
+            }
+        });
+    }
+
+    //명령 내리기 전 한 번 확인용 함수
+    var isOk = function isOk(cmd){
+        if(confirm("정말로 실행합니까?")){
+            control(cmd);
+        };
+    }
+
+    //컨트롤바의 명령 서버에 전달
+    var control = function control(cmd){
+        var select = '';
+        var sendCmd = '';
+        var targetList = '';
+        //1 : 시작 2 : 정지 3: 삭제 4: 로컬에서도 삭제 5 : 전체 시작 6 : 전체 정지 
+        //7: 영화폴더로 8: TV폴더로 9:개인폴더로 10: minidlna 새로고침
+        //11 : 잘라내기, 12 : 붙여넣기 14 파일삭제 17 18 19 파일이동
+
+        //10 미만 : 트랜스미션 명령어
+        if(cmd < 10){
+            select = 'tr';
+            sendCmd = ' --torrent '
+            if(cmd == 5 || cmd == 6){   //전체 제어(전체정지, 전체삭제)
+                $("input:checkbox[name=torrentListCheck]").each(function(){
+                    targetList += $(this).val() + ' ';
+                });
+            }
+            else { //체크된 것만 제어
+                $("input:checkbox[name=torrentListCheck]:checked").each(function(){
+                    targetList += $(this).val() + ' ';
+                });
+            }
+            sendCmd += targetList;
+            if(cmd == 1 || cmd == 5) sendCmd += ' --start';
+            else if(cmd == 2 || cmd == 6) sendCmd += ' --stop';
+            else if(cmd == 3) sendCmd += ' --remove';
+            else if(cmd == 4) sendCmd += ' --remove-and-delete';
+            else if(cmd == 7) sendCmd += ' --move ' + dir.movie();
+            else if(cmd == 8) sendCmd += ' --move ' + dir.tv();
+            else if(cmd == 9) sendCmd += ' --move ' + dir.personal();
+        }
+        //10이상 : 쉘 명령어, Explorer 탭
+        else{
+            select = 'sh';
+            if(cmd == 10){
+                sendCmd = "sudo service minidlna force-reload";
+            }
+            else{   
+                $("input:checkbox[name=expListCheck]:checked").each(function(){
+                    targetList += dir.pwd() + fullname($(this).val()) + ' ';
+                });
+                if(cmd == 11) {
+                    cutFile.val(targetList);
+                    alert(cutFile.val());
+                    return;
+                }
+                else if(cmd == 12) {
+                    targetList = cutFile.val();
+                    sendCmd = "sudo mv " + targetList + ' ' + dir.pwd();
+                }
+                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList;
+                else if(cmd == 17) sendCmd = "sudo mv " + targetList + ' ' + dir.movie();
+                else if(cmd == 18) sendCmd = "sudo mv " + targetList + ' ' + dir.tv();
+                else if(cmd == 19) sendCmd = "sudo mv " + targetList + ' ' + dir.personal();
+            }
+        }
+
+        if(cmd != 10 && targetList == ''){
+            alert("선택된 항목이 없습니다.")
+            return;
+        }
+
+        $.ajax({
+            type:"POST",
+            url:"/main/control",
+            data:{
+                select : select,
+                cmd : sendCmd
+            },
+            success:function(result){
+                if($.trim(result.result) == 'err' || $.trim(result.result) == 'stderr'){
+                    alert(result.data);
+                }
+                else{
+                    if(cmd < 10) transmission();
+                    else if(cmd == 10) alert("DLNA 새로고침 완료!");
+                    else explorer();
+                }
+            }
+        });
+    }
+
+    /* Explorer Tab */
+    //pwd의 내용으로 새로고침한다.
+    var explorer = function explorer(openDir){
+        //....이 입력으로 들어온 경우는 상위 폴더로 이동한다. 
+        if(openDir == '....'){
+            dir.pwdPop();
+        }
+        //폴더 이동이 있다 --> 입력이 있다 --> 해당 디렉토리의 이름을 pwd에 푸쉬해서 pwd를 최신화한다.
+        else if(openDir != null){
+            //풀 경로(ex: /HDD/torrent/download 를 변수로 집어넣으면 그 폴더로 이동한다.)
+            if(openDir.split('/').length > 2){
+                dir.pwd(openDir);
+            }
+            else{
+                dir.pwdPush(openDir);
+            }
+        }
+        var list = '';  //html에 들어갈 String
+        //다운로드 폴더 내 파일 목록
+        $('#explorerContents').html('');
+        list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
+        list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="check(2);" name="dlCheckBox" id="dlCheckBox"></th><th>'+dir.pwd().replace(/"/gi,'')+'</th></tr>'
+        //루트 폴더인 경우 상위폴더로 이동 표시 안함
+        if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
+
+        $.ajax({
+            type:'POST',
+            url:"/main/control",
+            data:{
+                "select":"sh",
+                "cmd":'ls -F ' + dir.pwd()
+            },
+            success:function(result){
+                if($.trim(result.result) == "true"){
+                    var dirList = [];
+                    var fileList = [];
+                    //받아온 파일 목록을 \n으로 구분해서 리스트화 한다. 
+                    var tempList = result.data.split('\n');
+                    //해당 파일 명에 /가 포함되어 있다면 디렉토리, 없다면 파일이다.  
+                    for (var i = 0 ; i<tempList.length -1 ; i++){   
+                        if(tempList[i].indexOf('/') > -1){
+                            dirList.push(tempList[i]);
+                        }
+                        else{
+                            fileList.push(tempList[i]);
+                        }
+                    }
+                    //디렉토리 목록, 파일 목록을 만든다.
+                    for (var i in dirList)
+                    {
+                        list += '<tr>';
+                        list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + dirList[i] + '"></td>'
+                        list += '<td><a onclick="explorer(\''+dirList[i].replace(/'/gi,'\\\'')+'\')"><i class="far fa-folder"></i>&nbsp;'+dirList[i].substr(0, 100).replace('/','')+'</a><a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(\''+dirList[i]+'\')"><i class="far fa-edit"></i></a></td>'
+                        list += '</td></tr>'
+                    }
+                    for (var i in fileList)
+                    {
+                        list += '<tr>';
+                        list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + fileList[i] + '"></td>'
+                        list += '<td><i class="far fa-file"></i>&nbsp;'+fileList[i].substr(0, 100)+'<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+fileList[i]+'\')"><i class="far fa-edit"></i></a></td>'
+                        list += '</td></tr>'
+                    }
+                    list += '</table>';
+                }
+                else if($.trim(result.result) != "none"){
+                    alert(result.data);
+                }
+                $('#explorerContents').append(list)
+            }
+        });
+    }
+
+    //이름 변경 함수
+    var rename = function rename(select, oldFileName){
+        var names = [];
+        //select가 1이라면 이름 통일, 1이 아니라면 단순 이름 변경
+        var isUnity = (select == 1) ? true : false;
+        var newFileName = '';
+        
+        if(isUnity){
+            // 파일 이름 통일이라면 체크된 이름이 두개인지 확인한다. 
+            // 두개라면 각각의 확장자를 뗀 나머지값을 구한다. 
+            // 확장자가 smi가 아닌 것의 이름으로 통일한다..!
+            oldFileName = dir.pwd();
+            newFileName = dir.pwd();
+            $("input:checkbox[name=expListCheck]:checked").each(function(){
+                names.push($(this).val());
+            });
+            if(names.length != 2){
+                alert("파일을 두 개 골라주세요");
+                return;
+            }
+
+            if(names[0].split('.')[names[0].split('.').length-1] == 'smi'){
+                //첫번째 이름names[0]이 자막이라면
+                oldFileName += names[0];
+                for (var i = 0 ; i < names[1].split('.').length - 1 ; i++){
+                    newFileName += names[1].split('.')[i];
+                }
+                newFileName += '.smi';
+            }
+            else if(names[1].split('.')[names[1].split('.').length-1] == 'smi'){
+                //두번째 이름names[1]이 자막이라면
+                oldFileName += names[1];
+                for (var i = 0 ; i < names[0].split('.').length - 1 ; i++){
+                    newFileName += names[0].split('.')[i];
+                }
+                newFileName += '.smi';
+            }
+            else{
+                alert("자막 파일이 없습니다!");
+                return;
+            }
+            oldFileName = fullname(oldFileName);
+            newFileName = fullname(newFileName);
+        }
+        else{
+            //파일 이름 변경인 경우, 파일 이름이 있다면 파일 이름 변경 메뉴 띄우기
+            if(oldFileName != null){
+                var bodyHtml = '';
+                //모달 타이틀
+                $("#modal-title").html("파일 이름 변경");
+                
+                //모달 바디
+                bodyHtml += '<div class="input-group">';
+                bodyHtml += '<input type="hidden" id="oldFileName" value="'+oldFileName+'">';
+                bodyHtml += '<input type="text" class="form-control" value="'+oldFileName+'" placeholder="'+oldFileName+'" name="newFileName" id="newFileName">';
+                bodyHtml += '<span class="input-group-btn">';
+                bodyHtml += '<button class="btn btn-warning" onclick="rename(2);" type="button" data-dismiss="modal">수정</button>';
+                bodyHtml += '</span></div>'
+
+                $("#modal-body").html(bodyHtml);
+                $("#myModal").modal("show");
+                return;
+            }
+            //파일 이름이 없다면 파일 이름 변경
+            else{
+                // filename이 널인 경우 : 파일 이름 변경
+                if($("#newFileName").val() == ''){
+                    alert("파일명을 써야지!");
+                }
+                else if($("#oldFileName").val() == $("#newFileName").val()){
+                    alert("파일명을 바꿔야지!");
+                }
+                else{
+                    oldFileName = dir.pwd()+fullname($("#oldFileName").val());
+                    newFileName = dir.pwd()+fullname($("#newFileName").val());
+                }
+            }
+        }
+
+        $.ajax({
+            type:"POST",
+            url:"/main/control",
+            data:{
+                select : "sh",
+                cmd : "sudo mv " + oldFileName + ' ' + newFileName
+            },
+            success:function(result){
+                if($.trim(result.result) == "true" || $.trim(result.result) == "none"){
+                    alert("이름이 변경되었습니다. ");
+                    explorer();
+                }
+                else{
+                    alert(result.data);
+                }
+            }
+        });
+    }
+</script>
+
+<% include ../share/footer.ejs %>
