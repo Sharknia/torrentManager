@@ -534,12 +534,12 @@
             sendCmd = ' --torrent '
             if(cmd == 5 || cmd == 6){   //전체 제어(전체정지, 전체삭제)
                 $("input:checkbox[name=torrentListCheck]").each(function(){
-                    targetList += $(this).val() + ' ';
+                    targetList += $(this).val() + ',';
                 });
             }
             else { //체크된 것만 제어
                 $("input:checkbox[name=torrentListCheck]:checked").each(function(){
-                    targetList += $(this).val() + ' ';
+                    targetList += $(this).val() + ',';
                 });
             }
             sendCmd += targetList;
