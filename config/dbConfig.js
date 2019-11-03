@@ -1,4 +1,3 @@
-//주석처리 후 user, password 부분에 자신의 정보 입력
 var personalData = require('./personalData');
 
 module.exports = (function () {

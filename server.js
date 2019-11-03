@@ -34,7 +34,7 @@ app.get('/', function(req, res){
     res.redirect('/main');
 });
 
-//메인화면
+//메인화면 - 토렌트 검색, 트랜스미션 제어, 간이 탐색기
 var main = require('./routes/main');
 app.use('/main', main);
 
