@@ -2,6 +2,7 @@
 
 # no .a files
 /config/personalData.js
+config/personalData.js
 
 ##참고 문법들
 # but do track lib.a, even though you're ignoring .a files above
