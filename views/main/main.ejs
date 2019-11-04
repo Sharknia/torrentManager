@@ -276,7 +276,7 @@
             return pwd;
         }
         this.pwdPush = function(pushDir){
-            pwd = pwd + fullname(pushDir);
+            pwd = pwd + pushDir;
             return pwd;
         }
     }
@@ -626,7 +626,7 @@
                 dir.pwd(openDir);
             }
             else{
-                dir.pwdPush(openDir);
+                dir.pwdPush(fullname(openDir));
             }
         }
         var list = '';  //html에 들어갈 String
