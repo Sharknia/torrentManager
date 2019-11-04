@@ -251,6 +251,7 @@
                     targetList.push(dir.pwd() + fullname($(this).val()));
                 });
             }
+            alert(targetList);
             return returnTargetList.val(tab);
         }
         //탭에 따라서 전체 목록 타겟 리스트에 저장
@@ -281,6 +282,7 @@
             for (var i in targetList){
                 returnData += targetList[i]; + separator;
             }
+            alert(returnData);
             return returnData;
         }
     }
