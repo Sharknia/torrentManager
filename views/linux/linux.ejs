@@ -118,7 +118,7 @@
                     var result = result.data.split("\n");
                 }
                 catch(e){
-                    var result = result.data.toString();
+                    var result = result.data.error.toString();
                 }
                 for (var i in result){
                     list += "<div class=\"panel-body\" style=\"padding:1px;padding-bottom:5px;padding-top:5px;padding-left:20px\">";
