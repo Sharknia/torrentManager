@@ -149,11 +149,9 @@
 
     var checkboxAllCheck = function checkboxAllCheck(select){
         if(select == '1'){
-            alert(111111);
             ($("#torrentListCheckbox").is(":checked") == true) ? $("input[name=torrentListCheck]").prop("checked", true) : $("input[name=torrentListCheck]").prop("checked", false);
         }
         else if(select == '2'){
-            alert(222222);
             ($("#expCheckbox").is(":checked") == true) ? $("input[name=expListCheck]").prop("checked", true) : $("input[name=expListCheck]").prop("checked", false);
         }
     }
