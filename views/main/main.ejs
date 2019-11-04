@@ -297,6 +297,7 @@
         var movie;      //영화 폴더 
         var personal;   //개인용 폴더
         var download;   //토렌트 다운로드 폴더
+
         this.pwd = function(val){
             if(val != null) pwd = val;
             return pwd;
@@ -371,7 +372,7 @@
         else if (trListPaging == "Pre") page.prevPage();
         else if (trListPaging == "Next") page.nextPage();
         else page.val(trListPaging);
-        
+
         $.ajax({
             type:"POST",
             url:"/main/torrentSearch",
