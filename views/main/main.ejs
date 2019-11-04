@@ -630,17 +630,17 @@
             else{
                 //잘라내기
                 if(cmd == 11) {
-                    cutFile.val(targetList.val(sel));
+                    cutFile.val(targetList.val(select));
                     alert(cutFile.val());
                     return;
                 }
                 else if(cmd == 12) {
                     sendCmd = "sudo mv " + cutFile.val(); + ' ' + dir.pwd();
                 }
-                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.val();
-                else if(cmd == 17) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.movie();
-                else if(cmd == 18) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.tv();
-                else if(cmd == 19) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.personal();
+                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.val(select);
+                else if(cmd == 17) sendCmd = "sudo mv " + targetList.val(select) + ' ' + dir.movie();
+                else if(cmd == 18) sendCmd = "sudo mv " + targetList.val(select) + ' ' + dir.tv();
+                else if(cmd == 19) sendCmd = "sudo mv " + targetList.val(select) + ' ' + dir.personal();
             }
         }
 
