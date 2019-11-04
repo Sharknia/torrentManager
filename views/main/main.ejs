@@ -626,7 +626,7 @@
                 dir.pwd(openDir);
             }
             else{
-                dir.pwdPush(fullname(openDir.slice(0, -1)));
+                dir.pwdPush(fullname(openDir.slice(0, -1))+'/');
             }
         }
         var list = '';  //html에 들어갈 String
