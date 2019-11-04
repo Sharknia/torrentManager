@@ -1,20 +1,8 @@
 var express = require("express");
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
+// var MySQLStore = require('express-mysql-session')(session);
 var app = express();
-
-//MySQL 연결
-var mysqlDB = require('./config/dbConnect')();
-var conn = mysqlDB.init();
-mysqlDB.test_open(conn);
-
-//"Error: Connection lost: The server closed the connection." node 죽는 것 해결
-conn.on('error', function(err) {
-   console.log(err.code)
-});
-//시간이 지나면  code: 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR', fatal: false 에러와 함께 뻗는 것 임시변통
-setInterval(function () { conn.query('SELECT 1'); }, 5000);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -22,12 +10,12 @@ app.set('views', './views');
 //미들웨어
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
-app.use(session({
-    secret : "1234567890!@#$%^&*()",
-    store : new MySQLStore(require('./config/dbConfig')),
-    resave : false,
-    saveUninitialized : false
-}));
+// app.use(session({
+//     secret : "1234567890!@#$%^&*()",
+//     store : new MySQLStore(require('./config/dbConfig')),
+//     resave : false,
+//     saveUninitialized : false
+// }));
 
 // /로 접속할 경우 바로 main으로 연결
 app.get('/', function(req, res){

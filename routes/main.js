@@ -7,7 +7,6 @@ var exec =require('child_process').exec;
 var client = require('cheerio-httpcli');
 var qs = require('querystring'); //url encoding
 
-
 /*************  GET  *************/
 // main 페이지 접속
 router.get('/', function(req, res){	
