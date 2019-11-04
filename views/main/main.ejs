@@ -380,7 +380,7 @@
     var addMagnet = function addMagnet(i){
         $.ajax({
            type:"POST",
-           url:"/main/control",
+           url:"/control",
            data:{
                "select" : 'tr',
                "cmd" : '-a ' + magnetList.val()[i]
@@ -409,7 +409,7 @@
         $('#transmission_contents').html("");
         $.ajax({
             type:"POST",
-            url:"/main/control",
+            url:"/control",
             data:{
                 "select" : 'tr',
                 "cmd" : "-l |  sed -e '1d;$d;s/^ *//'"
@@ -584,7 +584,7 @@
 
         $.ajax({
             type:"POST",
-            url:"/main/control",
+            url:"/control",
             data:{
                 select : select,
                 cmd : sendCmd
@@ -629,7 +629,7 @@
 
         $.ajax({
             type:'POST',
-            url:"/main/control",
+            url:"/control",
             data:{
                 "select":"sh",
                 "cmd":'ls -F ' + dir.pwd()
@@ -755,7 +755,7 @@
 
         $.ajax({
             type:"POST",
-            url:"/main/control",
+            url:"/control",
             data:{
                 select : "sh",
                 cmd : "sudo mv " + oldFileName + ' ' + newFileName
