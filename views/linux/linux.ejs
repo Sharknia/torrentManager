@@ -106,12 +106,15 @@
                     list += "<div class=\"panel-heading\">SUCCESS</div>";
                 }
                 else if($.trim(result.result)=="stderr"){
+                    alert("stderr");
                     list += "<div class=\"panel-heading\">STDERR</div>";
                 }
                 else if($.trim(result.result)=="err"){
+                    alert("err");
                     list += "<div class=\"panel-heading\">ERROR</div>";
                 }
                 else if($.trim(result.result)=='none'){
+                    alert("none");
                     list += "<div class=\"panel-heading\">EMPTY</div>";
                 }
 
