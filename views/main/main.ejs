@@ -144,7 +144,7 @@
 
     //file 이름 앞 뒤에 "를 붙여 리눅스가 하나의 이름으로 인식하게 하는 파일명을 만들어주는 함수
     var fullname = function fullname(name){
-        if (name.charAt(name.length-1) == '/') return '\"' + name.slice(0, -1) +'/\"'
+        if (name.charAt(name.length-1) == '/') return '\"' + name.slice(0, -1) +'\"/'
         else return '\"' + name +'\"'
     }
 
