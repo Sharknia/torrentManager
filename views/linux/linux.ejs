@@ -27,17 +27,6 @@
                 </ul>
             </div>
             <div class="dropdown btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" type="button" id="fileManager" data-toggle="dropdown" aria-expanded="false">
-                    Personal Manage
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" onclick="goCmd('2-1');">Check</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" onclick="isOk('2-2');">Update</a></li>
-                </ul>
-            </div>
-            <div class="dropdown btn-group" role="group">
                 <button class="btn btn-default dropdown-toggle" type="button" id="logManager" data-toggle="dropdown" aria-expanded="false">
                     Log Manage
                     <span class="caret"></span>
@@ -66,7 +55,79 @@
 
 <script>
     $(document).ready(function () {
+        $("#cmd").focus();
     });
+
+    //명령어창에서 엔터 치면 goCmd 실행
+    $("#cmd").keyup(function(e){
+        if(e.keyCode == 13) goCmd();
+    });
+
+    //다시쓰기 버튼
+    var reset = function reset(){
+        $("#cmd").val('');
+    }
+
+    //실행확인 버튼
+    var isOk = function isOk(cmd){
+        if(confirm("정말로 실행합니까?")){
+            goCmd(cmd);
+        };
+    }
+
+    var goCmd = function goCmd(select){
+        var cmd = '';
+        //Showdown Manage
+        if(select == '1-1') cmd = 'cat /HDD/Showdown_1.56/ShowDown.log | grep Transmission | grep -v "match"';
+        else if (select == '1-2') cmd ='tail -n 15 /HDD/Showdown_1.56/ShowDown.log';
+        else if (select == '1-3') cmd ='cat /HDD/Showdown_1.56/ShowDown.log';
+        else if (select == '1-4') cmd ='/Scripts/restart_showdown.sh';
+        //Personal Manage
+        else if (select == '2-1') cmd ='ls /HDD/torrent/download/.mine';
+        else if (select == '2-2') cmd ='mv /HDD/torrent/download/.mine\/\* /Personal/AV &';
+        //Log Manage
+        else if (select == '3-1') cmd ='sudo tac /var/log/vsftpd.log';
+        else if (select == '3-2') cmd ='sudo tac /HDD/log/HompageConnection.log';
+        else if (select == '3-3') cmd ='last';
+       
+        else if(!select) var cmd = $("#cmd").val();
+
+        $.ajax({
+            type:"POST",
+            url:"/control",
+            data:{
+                "select":"sh",
+                "cmd":cmd
+            },
+            success:function(result){
+                $("#contents").html('');
+                var list = '<div class="panel panel-default">';
+                if($.trim(result.result)=="true"){
+                    list += "<div class=\"panel-heading\">SUCCESS</div>";
+                }
+                else if($.trim(result.result)=="stderr"){
+                    list += "<div class=\"panel-heading\">STDERR</div>";
+                }
+                else if($.trim(result.result)=="err"){
+                    list += "<div class=\"panel-heading\">ERROR</div>";
+                }
+                else if($.trim(result.result)=='none'){
+                    list += "<div class=\"panel-heading\">EMPTY</div>";
+                }
+
+                var result = result.data.split("\n");
+                for (var i in result){
+                    list += "<div class=\"panel-body\" style=\"padding:1px;padding-bottom:5px;padding-top:5px;padding-left:20px\">";
+                    list += result[i];  
+                    list += "</div>"
+                }
+                list += "</div>"
+                $("#contents").append(list)
+                // $("#cmd").val("");
+            }
+        });
+    }
+
 
 </script>
 
