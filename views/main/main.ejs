@@ -250,7 +250,7 @@
         }
         //현재 체크된 목록으로 탭에 따라서 타겟 리스트 최신화
         this.refresh = function(tab){
-            targetList = [];
+            targetList.empty();
             if(tab == 'tr'){
                 $("input:checkbox[name=torrentListCheck]:checked").each(function(){
                     targetList.push($(this).val());
@@ -265,7 +265,7 @@
         }
         //탭에 따라서 전체 목록 타겟 리스트에 저장
         this.full = function(tab){
-            targetList = [];
+            targetList.empty();
             if(tab == 'tr'){
                 $("input:checkbox[name=torrentListCheck]").each(function(){
                     targetList.push($(this).val());
@@ -281,6 +281,59 @@
     }
     const targetList = new TargetList();
 
+    //Dir 세팅 저장, pwd에 대해 pop, push 가능
+    function DIR(){
+        var pwd;        //현재폴더
+        var watch;      //토렌트 파일 업로드 폴더
+        var tv;         //티비 프로그램 폴더
+        var movie;      //영화 폴더 
+        var personal;   //개인용 폴더
+        var download;   //토렌트 다운로드 폴더
+        this.pwd = function(val){
+            if(val != null) pwd = val;
+            return pwd;
+        }
+        this.tv = function(val){
+            if(val != null) tv = val;
+            return tv;
+        }
+        this.movie = function(val){
+            if(val != null) movie = val;
+            return movie;
+        }
+        this.personal = function(val){
+            if(val != null) personal = val;
+            return personal;
+        }
+        this.watch = function(val){
+            if(val != null) watch = val;
+            return watch;
+        }
+        this.download = function(val){
+            if(val != null) download = val;
+            return download;
+        }
+        this.pwdPop = function(){
+            var temp = pwd.split('/');
+            temp.pop();
+            pwd = '';
+            if(temp.length < 2){
+                pwd = '/';
+            }
+            else{
+                for (var i=0 ; i<temp.length-1 ; i++){
+                    pwd += temp[i] +"/";
+                }
+            }
+            return pwd;
+        }
+        this.pwdPush = function(pushDir){
+            pwd = pwd + pushDir;
+            return pwd;
+        }
+    }
+    const dir = new DIR();
+    
     /* Torrent Tab */
     //title에서 엔터키 치면 검색 실행
     $("#torrentTitle").keyup(function(e){
