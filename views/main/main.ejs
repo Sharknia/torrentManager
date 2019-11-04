@@ -233,16 +233,6 @@
     function TargetList(){
         var targetList = [];
 
-        //타겟 리스트를 스트링으로 만들어 리턴한다.
-        this.val = function(tab){
-            var returnData = '';
-            var separator = '';
-            (tab == 'tr') ? separator = ' ' : separator = ',';
-            for (var i in targetList){
-                returnData += targetList[i]; + separator;
-            }
-            return returnData;
-        }
         //타겟 리스트를 비운다. 
         this.empty = function(tab){
             targetList = [];
@@ -261,7 +251,7 @@
                     targetList.push(dir.pwd() + fullname($(this).val()));
                 });
             }
-            return targetList.val(tab);
+            return returnTargetList.val(tab);
         }
         //탭에 따라서 전체 목록 타겟 리스트에 저장
         this.full = function(tab){
@@ -276,10 +266,25 @@
                     targetList.push(dir.pwd() + fullname($(this).val()));
                 });
             }
-            return targetList.val(tab);
+            return returnTargetList.val(tab);
         }
     }
     const targetList = new TargetList();
+
+    //타겟 리스트를 string으로 만들어서 리턴
+    function ReturnTargetList(){
+        //타겟 리스트를 스트링으로 만들어 리턴한다.
+        this.val = function(tab){
+            var returnData = '';
+            var separator = '';
+            (tab == 'tr') ? separator = ' ' : separator = ',';
+            for (var i in targetList){
+                returnData += targetList[i]; + separator;
+            }
+            return returnData;
+        }
+    }
+    const returnTargetList = new ReturnTargetList();
 
     //Dir 세팅 저장, pwd에 대해 pop, push 가능
     function DIR(){
