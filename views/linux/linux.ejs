@@ -119,8 +119,9 @@
                 }catch(e){
                     var result = typeof(result.data);
                     for (var key in result){
-                        list += "Attr : " , key , ", value : " , result[key] , " | ";
+                        console.log(key, result[key]);
                     }
+                    
                 }
                 for (var i in result){
                     list += "<div class=\"panel-body\" style=\"padding:1px;padding-bottom:5px;padding-top:5px;padding-left:20px\">";
