@@ -102,30 +102,19 @@
             success:function(result){
                 $("#contents").html('');
                 var list = '<div class="panel panel-default">';
-                var result = '';
                 if($.trim(result.result)=="true"){
                     list += "<div class=\"panel-heading\">SUCCESS</div>";
-                    result = result.data.split("\n");
-                alert(result);
                 }
                 else if($.trim(result.result)=="stderr"){
-                    alert("stderr");
                     list += "<div class=\"panel-heading\">STDERR</div>";
-                    result = result.data.error.split("\n");
-                alert(result);
                 }
                 else if($.trim(result.result)=="err"){
-                    alert("err");
                     list += "<div class=\"panel-heading\">ERROR</div>";
-                    result = result.data.error.split("\n");
-                alert(result);
                 }
                 else if($.trim(result.result)=='none'){
-                    alert("none");
                     list += "<div class=\"panel-heading\">EMPTY</div>";
-                    result = '';
-                alert(result);
                 }
+                var result = result.data.split("\n");
                 for (var i in result){
                     list += "<div class=\"panel-body\" style=\"padding:1px;padding-bottom:5px;padding-top:5px;padding-left:20px\">";
                     list += result[i];  
