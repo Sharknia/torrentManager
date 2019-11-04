@@ -42,9 +42,9 @@ app.use('/main', main);
 var login = require('./routes/login');
 app.use('/login', login);
 
-// //쇼다운 관리, 로그 등 리눅스 관련 기능
-// var linux = require('./routes/linux');
-// app.use('/linux', linux);
+//쇼다운 관리, 로그 등 리눅스 관련 기능
+var linux = require('./routes/linux');
+app.use('/linux', linux);
 
 app.listen(80, function(){
     console.log("80번 포트 서버 오픈")
