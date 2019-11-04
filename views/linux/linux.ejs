@@ -118,7 +118,9 @@
                     var result = result.data.split("\n");
                 }catch(e){
                     var result = typeof(result.data);
-                    list+=result;
+                    for (var key in result){
+                        list += "Attr : " + key + ", value : " + result[key];
+                    }
                 }
                 for (var i in result){
                     list += "<div class=\"panel-body\" style=\"padding:1px;padding-bottom:5px;padding-top:5px;padding-left:20px\">";
