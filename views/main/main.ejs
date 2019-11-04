@@ -630,7 +630,8 @@
                 //잘라내기
                 if(cmd == 11) {
                     cutFile.val(targetList.refresh(select));
-                    alert(cutFile.val());
+                    if(cutFile.val() == '') alert("선택된 항목이 없습니다.");
+                    else alert(cutFile.val());
                     return;
                 }
                 else if(cmd == 12) {
