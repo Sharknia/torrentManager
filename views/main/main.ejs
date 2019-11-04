@@ -233,9 +233,6 @@
     function TargetList(){
         var targetList = [];
 
-        this.val() = function(){
-            return targetList;
-        }
         //타겟 리스트를 비운다. 
         this.empty = function(tab){
             targetList = [];
@@ -282,8 +279,8 @@
             var returnData = '';
             var separator = '';
             (tab == 'tr') ? separator = ' ' : separator = ',';
-            for (var i in targetList.val()){
-                returnData += targetList.val()[i]; + separator;
+            for (var i in targetList){
+                returnData += targetList[i]; + separator;
             }
             alert(returnData);
             return returnData;
