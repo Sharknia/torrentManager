@@ -229,59 +229,57 @@
     }
     const cutFile = new CutFile();
 
-    //Dir 세팅 저장, pwd에 대해 pop, push 가능
-    function DIR(){
-        var pwd;        //현재폴더
-        var watch;      //토렌트 파일 업로드 폴더
-        var tv;         //티비 프로그램 폴더
-        var movie;      //영화 폴더 
-        var personal;   //개인용 폴더
-        var download;   //토렌트 다운로드 폴더
+    //체크된 목록 저장
+    function TargetList(){
+        var targetList = [];
 
-        this.pwd = function(val){
-            if(val != null) pwd = val;
-            return pwd;
-        }
-        this.tv = function(val){
-            if(val != null) tv = val;
-            return tv;
-        }
-        this.movie = function(val){
-            if(val != null) movie = val;
-            return movie;
-        }
-        this.personal = function(val){
-            if(val != null) personal = val;
-            return personal;
-        }
-        this.watch = function(val){
-            if(val != null) watch = val;
-            return watch;
-        }
-        this.download = function(val){
-            if(val != null) download = val;
-            return download;
-        }
-        this.pwdPop = function(){
-            var temp = pwd.split('/');
-            temp.pop();
-            pwd = '';
-            if(temp.length < 2){
-                pwd = '/';
+        //타겟 리스트를 스트링으로 만들어 리턴한다.
+        this.val = function(tab){
+            var returnData = '';
+            var separator = '';
+            (tab == 'tr') ? separator = ' ' : separator = ',';
+            for (var i in targetList){
+                returnData += targetList[i]; + separator;
             }
-            else{
-                for (var i=0 ; i<temp.length-1 ; i++){
-                    pwd += temp[i] +"/";
-                }
-            }
-            return pwd;
+            return returnData;
         }
-        this.pwdPush = function(pushDir){
-            pwd = pwd + pushDir;
-            return pwd;
+        //타겟 리스트를 비운다. 
+        this.empty = function(tab){
+            targetList = [];
+            return targetList;
+        }
+        //현재 체크된 목록으로 탭에 따라서 타겟 리스트 최신화
+        this.refresh = function(tab){
+            targetList.empty();
+            if(tab == 'tr'){
+                $("input:checkbox[name=torrentListCheck]:checked").each(function(){
+                    targetList.push($(this).val());
+                });
+            }
+            else if(tab == 'exp'){ 
+                $("input:checkbox[name=expListCheck]:checked").each(function(){
+                    targetList.push(dir.pwd() + fullname($(this).val()));
+                });
+            }
+            return targetList.val(tab);
+        }
+        //탭에 따라서 전체 목록 타겟 리스트에 저장
+        this.full = function(tab){
+            targetList.empty();
+            if(tab == 'tr'){
+                $("input:checkbox[name=torrentListCheck]").each(function(){
+                    targetList.push($(this).val());
+                });
+            }
+            else if(tab == 'exp'){ 
+                $("input:checkbox[name=expListCheck]").each(function(){
+                    targetList.push(dir.pwd() + fullname($(this).val()));
+                });
+            }
+            return targetList.val(tab);
         }
     }
-    const dir = new DIR();
+    const targetList = new TargetList();
 
     /* Torrent Tab */
     //title에서 엔터키 치면 검색 실행
@@ -417,6 +415,9 @@
         var idxList = {};
         var remaintimeList = {};
         var downspeedList = {};
+
+        //타겟 리스트 초기화
+        targetList.empty();
         $('#transmission_contents').html("");
         $.ajax({
             type:"POST",
@@ -534,7 +535,6 @@
     var control = function control(cmd){
         var select = '';
         var sendCmd = '';
-        var targetList = '';
         //1 : 시작 2 : 정지 3: 삭제 4: 로컬에서도 삭제 5 : 전체 시작 6 : 전체 정지 
         //7: 영화폴더로 8: TV폴더로 9:개인폴더로 10: minidlna 새로고침
         //11 : 잘라내기, 12 : 붙여넣기 14 파일삭제 17 18 19 파일이동
@@ -544,16 +544,12 @@
             select = 'tr';
             sendCmd = ' --torrent '
             if(cmd == 5 || cmd == 6){   //전체 제어(전체정지, 전체삭제)
-                $("input:checkbox[name=torrentListCheck]").each(function(){
-                    targetList += $(this).val() + ',';
-                });
+                sendCmd += targetList.full(select);
             }
             else { //체크된 것만 제어
-                $("input:checkbox[name=torrentListCheck]:checked").each(function(){
-                    targetList += $(this).val() + ',';
-                });
+                sendCmd += targetList.refresh(select);
             }
-            sendCmd += targetList;
+            // sendCmd += targetList;
             if(cmd == 1 || cmd == 5) sendCmd += ' --start';
             else if(cmd == 2 || cmd == 6) sendCmd += ' --stop';
             else if(cmd == 3) sendCmd += ' --remove';
@@ -568,23 +564,20 @@
             if(cmd == 10){
                 sendCmd = "sudo service minidlna force-reload";
             }
-            else{   
-                $("input:checkbox[name=expListCheck]:checked").each(function(){
-                    targetList += dir.pwd() + fullname($(this).val()) + ' ';
-                });
+            else{
+                //잘라내기
                 if(cmd == 11) {
-                    cutFile.val(targetList);
+                    cutFile.val(targetList.val(sel));
                     alert(cutFile.val());
                     return;
                 }
                 else if(cmd == 12) {
-                    targetList = cutFile.val();
-                    sendCmd = "sudo mv " + targetList + ' ' + dir.pwd();
+                    sendCmd = "sudo mv " + cutFile.val(); + ' ' + dir.pwd();
                 }
-                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList;
-                else if(cmd == 17) sendCmd = "sudo mv " + targetList + ' ' + dir.movie();
-                else if(cmd == 18) sendCmd = "sudo mv " + targetList + ' ' + dir.tv();
-                else if(cmd == 19) sendCmd = "sudo mv " + targetList + ' ' + dir.personal();
+                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.val();
+                else if(cmd == 17) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.movie();
+                else if(cmd == 18) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.tv();
+                else if(cmd == 19) sendCmd = "sudo mv " + targetList.val() + ' ' + dir.personal();
             }
         }
 
@@ -616,6 +609,7 @@
     /* Explorer Tab */
     //pwd의 내용으로 새로고침한다.
     var explorer = function explorer(openDir){
+        targetList.empty();
         //....이 입력으로 들어온 경우는 상위 폴더로 이동한다. 
         if(openDir == '....'){
             dir.pwdPop();
