@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
-// var MySQLStore = require('express-mysql-session')(session);
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -10,12 +10,11 @@ app.set('views', './views');
 //미들웨어
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
-// app.use(session({
-//     secret : "1234567890!@#$%^&*()",
-//     store : new MySQLStore(require('./config/dbConfig')),
-//     resave : false,
-//     saveUninitialized : false
-// }));
+app.use(session({
+    secret : '!@#$%^&*()',          //이 값을 통해 세션 암호화
+    resave : false,                 //세션을 언제나 저장할 지 정하는 값(false 권장)
+    saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
+}));
 
 // /로 접속할 경우 바로 main으로 연결
 app.get('/', function(req, res){
