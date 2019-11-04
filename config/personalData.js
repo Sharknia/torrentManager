@@ -1,4 +1,9 @@
 module.exports = {
+    mysql : {
+        id : '',       //mysql id
+        password : '',  //mysql password    
+        database : ''   //mysql db name
+    },
     dirSetting : {
         torrentDownloadDir : '/',   //토렌트 다운로드 폴더
         torrentWatchDir : '/',         //토렌트 watch 폴더
