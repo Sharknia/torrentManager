@@ -46,6 +46,10 @@ app.use('/login', login);
 var linux = require('./routes/linux');
 app.use('/linux', linux);
 
+//쉘에 명령 내릴 때
+var linux = require('./routes/control');
+app.use('/control', linux);
+
 app.listen(80, function(){
     console.log("80번 포트 서버 오픈")
 });
