@@ -254,7 +254,6 @@
                     targetList.push(dir.pwd() + fullname($(this).val()));
                 });
             }
-            alert(targetList);
             return returnTargetList.val(tab);
         }
         //탭에 따라서 전체 목록 타겟 리스트에 저장
@@ -285,7 +284,6 @@
             for (var i in targetList.val()){
                 returnData += targetList.val()[i]; + separator;
             }
-            alert(returnData);
             return returnData;
         }
     }
@@ -635,7 +633,7 @@
                     return;
                 }
                 else if(cmd == 12) {
-                    sendCmd = "sudo mv " + cutFile.val(); + ' ' + dir.pwd();
+                    sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
                 }
                 else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
                 else if(cmd == 17) sendCmd = "sudo mv " + targetList.refresh(select) + ' ' + dir.movie();
