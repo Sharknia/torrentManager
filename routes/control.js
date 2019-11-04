@@ -37,6 +37,8 @@ router.post('/', function(req, res){
                 "data" : "none"
             }
         }
+        console.log("cmd : " + cmd);
+        console.log(returnData.data);
         res.json(returnData);
     });
 });
