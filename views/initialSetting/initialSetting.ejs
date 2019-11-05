@@ -24,6 +24,7 @@
     crossorigin="anonymous">
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
     <style type='text/css'>
         html {
         position: relative;
@@ -72,23 +73,34 @@
         </div>
     </nav>  
     <!-- Begin page content -->
-    <div class="container">
-        <div class="col-lg-12">
-            <div class="col-lg-3" style="float:left"></div>
-                <div class="col-lg-6" style="padding:10%">
-                    <form class="col-lg-12" id="loginInfo" method="post" >
-                        <h2>로그인해 주세요</h2>
-                        <div class="col-lg-12 text-center">
-                            <input type="text" id="id" name="id" class="form-control" placeholder="아이디를 입력해주세요" required autofocus>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요" required>
-                        </div>
-                        <div class="col-lg-12 text-center">
-                            <button type="button" class="btn btn-primary" onclick="loginConfirm();">로그인</button>
+    <div class="col-lg-12">
+        <div class="col-lg-3" style="float:left"></div>
+        <div class="col-lg-6" style="padding: 10%">
+            <form class="col-lg-12" id="loginInfo" method="post" >
+                <h2>회원가입</h2>
+                <div class="col-lg-12 text-center">
+                    <div class="col-lg-12 text-left"><span><h4>* 아이디</h4></span></div>
+                    <!-- <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요" required autofocus/>
+                    <div class="col-lg-12 text-right"><button type="button" id="check_id" class="btn btn-primary" >중복검사</button></div>  -->
+                    <div class="input-group col-lg-12">
+                        <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
+                        <span class="input-group-btn">
+                            <button type="button" id="check_id"class="btn btn-primary">중복검사</button>
+                        </span>
                     </div>
+                    <div class="col-lg-12 text-left"><span><h4>* 비밀번호</h4></span></div>
+                    <input type="password" id="uPassword" name="uPassword" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
+                    <input type="password" id="uPassword2" name="uPassword2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
+                    <div class="col-lg-12 text-left"><span><h4>* 이름</h4></span></div>
+                    <input type="text" id="uName" name="uName" class="form-control" placeholder="이름을 입력해주세요" required/>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <button type="button" class="btn btn-primary" onclick="goRegister();">회원가입</button>
+                    <button type="button" class="btn btn-warning" onclick="goCancel();">취소</button>
+                </div>
                 </form>
             </div>
         </div>
-    </div>
 
     <script>
         //엔터키 치면 로그인 버튼을 누른것과 같은 효과가 나게 하는 함수
