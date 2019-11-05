@@ -34,7 +34,7 @@ router.post('/settingSave', function(req, res){
             result = 'true';
         }
     });
-    console.log(res);
+    console.log(result);
     res.send(result);
 });
 module.exports = router;
