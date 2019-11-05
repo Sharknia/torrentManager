@@ -11,13 +11,10 @@ let db = new sqlite3.Database('./test.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
       isFirst = true;
+      console.log("DB 만들게!");
     }
-    console.log('DB있네 이미!');
+    else console.log('DB있네 이미!');
   });
-
-if(isFirst){
-    console.log("DB만들게!");
-}
 
 db.serialize(function() {
   db.run("CREATE TABLE lorem (info TEXT)");
