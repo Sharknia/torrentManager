@@ -145,7 +145,7 @@
                         "torrentWatchDir":$('#torrentWatchDir').val()
                     },
                     success:function(result){
-                        if(result == "true"){
+                        if($.trim(result) == "true"){
                             alert("저장완료! 로그인해주세요!");
                             location.href="/";
                         }

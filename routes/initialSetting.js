@@ -23,6 +23,12 @@ router.post('/settingSave', function(req, res){
     var movieDir = req.body.movieDir;
     var homeDir = req.body.homeDir;
     var torrentWatchDir = req.body.torrentWatchDir;
+    
+    if(torrentDownloadDir == '') torrentDownloadDir = '/';
+    if(tvProgramDir == '') tvProgramDir = '/';
+    if(movieDir == '') movieDir = '/';
+    if(homeDir == '') homeDir = '/';
+    if(torrentWatchDir == '') torrentWatchDir = '/';
 
     var db = new sqlite3.Database('./Setting.db');
     //기본 세팅 테이블 생성
@@ -38,22 +44,24 @@ router.post('/settingSave', function(req, res){
     sqlDirPath = "CREATE TABLE IF NOT EXISTS 'dirPathList'(";
     sqlDirPath += "'idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
     sqlDirPath += "'name' TEXT NOT NULL,";
-    sqlDirPath += "'path' TEXT NOT NULL,";
-    sqlDirPath += "'trPw' TEXT NOT NULL,";
-    sqlDirPath += "'trPort' TEXT NOT NULL)";
+    sqlDirPath += "'path' TEXT NOT NULL)";
     //기본 세팅 테이블에 insert
     var sqlInsertDefault = '';
-    sqlInsertDefault += "INSERT INTO defaultSetting(id, password, trId, trPw, trPort) "
-    sqlInsertDefault += "values("+id+","+password+","+trId+","+trPw+",+"+trPort+")"
-    db.serialize(()=>{
-        db.each(sqlDefault);
-        db.each(sqlDirPath);
-        db.each(sqlInsertDefault);
-    });
-    const sql = "SELECT * FROM defaultSetting";
-    db.all(sql, (err, row) => {
-        console.log(row);
-    });
-    res.send("wait");
+    sqlInsertDefault += "INSERT INTO defaultSetting(id, password, trId, trPw, trPort) ";
+    sqlInsertDefault += "VALUES("+id+","+password+","+trId+","+trPw+",+"+trPort+")";
+    //기본 경로 설정 테이블에 insert
+    var sqlInsertPathList = '';
+    sqlInsertPathList += "INSERT INTO dirPathList(name, path) VALUES ";
+    sqlInsertPathList += "(다운로드"+torrentDownloadDir+"),";
+    sqlInsertPathList += "(TV 폴더,"+tvProgramDir+"),";
+    sqlInsertPathList += "(영화 폴더,"+movieDir+"),";
+    sqlInsertPathList += "(홈,"+homeDir+"),";
+    sqlInsertPathList += "(WATCH 폴더,"+torrentWatchDir+")";
+    db.serialize();
+    db.each(sqlDefault);
+    db.each(sqlDirPath);
+    db.each(sqlInsertDefault);
+    db.each(sqlInsertPathList);
+    res.send("true");
 });
 module.exports = router;
