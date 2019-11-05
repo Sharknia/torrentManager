@@ -42,6 +42,9 @@
             height: 60px;
             background-color: #f5f5f5;
         }
+        .input {
+            padding:1px
+        }
         
         /* Custom page CSS
         -------------------------------------------------- */
@@ -83,20 +86,27 @@
                 <div class="col-lg-12 text-center">
                     <div class="col-lg-12 text-left"><span><h4>* 아이디</h4></span></div>
                     <div class="input-group col-lg-12">
-                        <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
+                        <input type="text" id="id" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
                         <span class="input-group-btn">
-                            <button type="button" id="check_id"class="btn btn-primary">중복검사</button>
+                            <button type="button" id="duplicateCheckBtn" class="btn btn-primary">중복검사</button>
                         </span>
                     </div>
                     <div class="col-lg-12 text-left"><span><h4>* 비밀번호</h4></span></div>
-                    <input type="password" id="uPassword" name="uPassword" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
-                    <input type="password" id="uPassword2" name="uPassword2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
-                    <div class="col-lg-12 text-left"><span><h4>* 이름</h4></span></div>
-                    <input type="text" id="uName" name="uName" class="form-control" placeholder="이름을 입력해주세요" required/>
+                    <input type="password" id="password" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
+                    <input type="password" id="password2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
+                    <div class="col-lg-12 text-left"><span><h4>* 트랜스미션 설정</h4></span></div>
+                    <input type="text" id="trId" class="form-control" placeholder="트랜스미션 아이디" required/>
+                    <input type="text" id="trPw" class="form-control" placeholder="트랜스미션 비밀번호" required/>
+                    <input type="text" id="trPort" class="form-control" placeholder="트랜스미션 포트" required/>
+                    <div class="col-lg-12 text-left"><span><h4>* 경로설정</h4></span></div>
+                    <input type="text" id="torrentDownloadDir" class="form-control" placeholder="토렌트 다운로드 폴더" required/>
+                    <input type="text" id="torrentWatchDir" class="form-control" placeholder="토렌트 watch 폴더" required/>
+                    <input type="text" id="tvProgramDir" class="form-control" placeholder="TV 프로그램 폴더" required/>
+                    <input type="text" id="movieDir" class="form-control" placeholder="영화 폴더" required/>
+                    <input type="text" id="personalDir" class="form-control" placeholder="비밀 폴더" required/>
                 </div>
                 <div class="col-lg-12 text-center">
-                    <button type="button" class="btn btn-primary" onclick="goRegister();">회원가입</button>
-                    <button type="button" class="btn btn-warning" onclick="goCancel();">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="goRegister();">확인</button>
                 </div>
                 </form>
             </div>
@@ -106,13 +116,13 @@
         
         $("#uId").keyup(function(){
             //아이디 값이 바뀌었으므로 다시 중복검사 요구
-            $('#check_id').removeAttr('disabled', '');
+            $('#duplicateCheckBtn').removeAttr('disabled', '');
             //색깔 바꾸자
             check_id = 0;
         });
 
         //중복검사 function
-        $('#check_id').click(function(){
+        $('#duplicateCheckBtn').click(function(){
             if($("#uId").val()==''){
                 alert("아이디가 없습니다.");
                 $('#uId').focus();
