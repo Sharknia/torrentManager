@@ -24,16 +24,17 @@ router.post('/settingSave', function(req, res){
     var homeDir = req.body.homeDir;
     var torrentWatchDir = req.body.torrentWatchDir;
 
-    let result = '';
+    const result = '';
     let db = new sqlite3.Database('./Setting.db', (err) => {
         if (err) {
             console.error(err.message);
             result = 'false';
         } else {
             console.log('데이터베이스 생성완료!');
-            result = true;
+            result = 'true';
         }
     });
+    console.log(res);
     res.send(result);
 });
 module.exports = router;
