@@ -26,7 +26,7 @@ router.post('/settingSave', function(req, res){
     var torrentWatchDir = req.body.torrentWatchDir;
 
     var result = '';
-    var db = new sqlite3.Database('../db/Setting.db', sqlite3.OPEN_CREATE, (err) => {
+    var db = new sqlite3.Database('../db/Setting.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
         if (err) {
             result = 'err';
             console.error(err.message);

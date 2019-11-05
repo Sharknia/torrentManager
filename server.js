@@ -13,7 +13,7 @@ let db = new sqlite3.Database('./db/Setting.db', sqlite3.OPEN_READWRITE, (err) =
       isFirst = true;
       console.log('초기 사용자, DB 생성이 필요합니다.');
     }
-    else console.log('Database connected');
+    else console.log('Database 존재');
 });
 db.close();
   
