@@ -33,7 +33,7 @@ router.post('/settingSave', function(req, res){
             res.send('err');
         } else {
             console.log('데이터베이스 생성완료!');
-            result = 'true';
+            res.send('true');
         }
     });
 
