@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var app = express();
+var sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('/test.db', sql3.OPEN_READWRITE, (err) =>{
     if(err){
