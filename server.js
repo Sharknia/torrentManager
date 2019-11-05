@@ -3,11 +3,24 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var app = express();
-var sqlite3 = require('sqlite3');
+var sqlite3 = require('sqlite3').verbose();
 
 var db = new sqlite3.Database('/test.db', sqlite3.OPEN_READWRITE, (err) =>{
     if(err){
-        console.log(err);
+        db.serialize(function() {
+        db.run("CREATE TABLE if not exists lorem (info TEXT)");
+    
+        var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+        for (var i = 0; i < 10; i++) {
+            stmt.run("Ipsum " + i);
+        }
+        stmt.finalize();
+    
+        db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
+            console.log(row.id + ": " + row.info);
+        });
+    });
+        
     }
     else{
         console.log("db success");
