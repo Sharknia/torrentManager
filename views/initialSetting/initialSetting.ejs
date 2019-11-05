@@ -74,14 +74,14 @@
     </nav>  
     <!-- Begin page content -->
     <div class="col-lg-12">
+        <div class="page-header">
+            <h1>초기설정<br><small>아이디, 비밀번호, 기본경로</small></h1>
+        </div>
         <div class="col-lg-3" style="float:left"></div>
         <div class="col-lg-6" style="padding: 10%">
             <form class="col-lg-12" id="loginInfo" method="post" >
-                <h2>회원가입</h2>
                 <div class="col-lg-12 text-center">
                     <div class="col-lg-12 text-left"><span><h4>* 아이디</h4></span></div>
-                    <!-- <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요" required autofocus/>
-                    <div class="col-lg-12 text-right"><button type="button" id="check_id" class="btn btn-primary" >중복검사</button></div>  -->
                     <div class="input-group col-lg-12">
                         <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
                         <span class="input-group-btn">
@@ -103,47 +103,108 @@
         </div>
 
     <script>
-        //엔터키 치면 로그인 버튼을 누른것과 같은 효과가 나게 하는 함수
-        $("#id").keyup(function(e){
-            if(e.keyCode == 13) loginConfirm();
-        });
-        $("#password").keyup(function(e){
-            if(e.keyCode == 13) loginConfirm();
+        var check_id = 0; //중복이라면 1, 중복 아니라면 2, 검사 안했다면 0
+        
+        $("#uId").keyup(function(){
+            //아이디 값이 바뀌었으므로 다시 중복검사 요구
+            $('#check_id').removeAttr('disabled', '');
+            //색깔 바꾸자
+            check_id = 0;
         });
 
-        var loginConfirm = function loginConfirm(){
-            if($("#id").val() == ''){
-                alert("아이디를 입력해주세요.");
-                $('#id').focus();
+        //중복검사 function
+        $('#check_id').click(function(){
+            if($("#uId").val()==''){
+                alert("아이디가 없습니다.");
+                $('#uId').focus();
+                check_id = 0;
             }
-            else if($('#password').val() == ''){
-                alert("비밀번호를 입력해주세요.");
-                $('#password').focus();
+            else if($("#uId").val().length<5 || $("#uId").val().length >10){
+                alert("아이디는 다섯글자에서 열글자 사이여야 합니다.")
+                $('#uId').focus();
+                check_id = 0;
             }
             else{
                 $.ajax({
-                    type:"POST",
-                    url:"/login/login",
-                    data:{
-                        "id":$('#id').val(),
-                        "password":$('#password').val()                    
-                    },
-                    success:function(data){
-                        if($.trim(data) == "id"){
-                            alert("잘못된 아이디입니다.");
-                            $('#id').val('');
-                            $('#id').focus();
-                        }
-                        else if($.trim(data) == "password"){
-                            alert("잘못된 비밀번호입니다.");
-                            $('#password').val('');
-                            $('#password').focus();
-                        }
-                        else{
-                            location.href="/main/";
+                type:"POST",
+                url:"check_id",
+                data:{
+                    "uId":$("#uId").val()
+                },
+                success:function(data){
+                    if($.trim(data) == "true"){
+                        $('#check_id').attr('disabled', '');
+                        check_id = 2;
+                        alert("사용 가능한 아이디입니다!");
+                    }
+                    else{
+                        check_id = 1;
+                        alert("중복된 아이디입니다.");
+                        $('#uId').val('');
+                        $('#uId').focus();
                         }
                     }
                 });
+            }
+        });
+
+        var goRegister = function goRegister() {
+            var uId = $('#uId').val();
+            var uPassword = $('#uPassword').val();
+            var uPassword2 = $('#uPassword2').val();
+            var uName = $('#uName').val();
+
+            if(uId == ''){
+                alert("아이디를 입력해주세요. ");
+                $('#uId').focus();
+            }
+            else if(uId.length <= 4){
+                alert("아이디는 다섯글자 이상이어야 합니다. ");
+                $('#uId').focus();
+            }
+            else if(uId.length >= 10){
+                alert("아이디는 열글자 이하여야 합니다. ");
+                $('#uId').focus();
+            }
+            else if(uPassword == ''){
+                alert("비밀번호를 입력해주세요. ");
+                $('#uPassword').focus();
+            }
+            else if(uPassword2 == ''){
+                alert("비밀번호를 다시 입력해주세요. ");
+                $('#uPassword2').focus();
+            }
+            else if(uPassword.length < 5){
+                alert("비밀번호는 다섯글자 이상이어야 합니다. ")
+                $('#uPassword').focus();
+            }
+            else if(uName == ''){
+                alert("이름을 입력해주세요. ");
+                $('#uName').focus();
+            }
+            else{
+                if(check_id == 0){ //검사를 안했습니다
+                alert("아이디 중복검사를 해주세요!")
+                }
+                else if(check_id == 1){ //아이디가 중복이군요
+                    alert("중복된 아이디입니다")
+                }
+                else{ //중복검사 완료
+                    if(uPassword!==uPassword2){ //비밀번호가 서로 다르다면
+                        alert("비밀번호를 확인해주세요");
+                    }
+                    else{
+                        loginInfo.action = "/register";
+                        alert("회원가입이 완료되었습니다. \n관리자의 승인을 기다려주세요.");
+                        loginInfo.submit();
+                    }
+                }
+            }
+        }
+
+        var goCancel = function goCancel() {
+            if(confirm("정말로 취소하시겠습니까?")){
+                location.href="/";
             }
         }
     </script>
