@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var personalData = require('../config/personalData.js');
-//쉘에 명령어 줄때 필요
-var exec =require('child_process').exec;
+var sqlite3 = require('sqlite3').verbose();
+
 
 /*************  GET  *************/
 // 초기설정 페이지 접속
@@ -12,5 +12,26 @@ router.get('/', function(req, res){
 });
 
 /*************  POST  *************/
+router.post('/settingSave', function(req, res){
+    var id = req.body.id;
+    var password = req.body.password;
+    var password2 = req.body.password2;
+    var trId = req.body.trId;
+    var trPw = req.body.trPw;
+    var trPort = req.body.trPort;
+    var torrentDownloadDir = req.body.torrentDownloadDir;
+    var tvProgramDir = req.body.tvProgramDir;
+    var movieDir = req.body.movieDir;
+    var homeDir = req.body.homeDir;
+    var torrentWatchDir = req.body.torrentWatchDir;
 
+    let db = new sqlite3.Database('../db/Setting.db', sqlite3.OPEN_CREATE, (err) => {
+        if (err) {
+          console.error(err.message);
+          res.send(err);
+        }
+        console.log('Connected to the chinook database.');
+        res.send('Connected to the chinook database.');
+    });
+});
 module.exports = router;
