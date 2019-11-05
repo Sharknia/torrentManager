@@ -26,16 +26,15 @@ router.post('/settingSave', function(req, res){
     var torrentWatchDir = req.body.torrentWatchDir;
 
     var result = '';
-    var db = new sqlite3.Database('../db/Setting.db',  (err) => {
+    let db = new sqlite3.Database('./user1.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
+    , (err) => {
         if (err) {
-            result = 'err';
             console.error(err.message);
-        }
-        else {
-            result = 'true';
+        } else {
             console.log('Connected to the chinook database.');
         }
     });
+    
 
     res.send(result);
 });
