@@ -5,7 +5,7 @@ var session = require('express-session');
 var app = express();
 var sqlite3 = require('sqlite3');
 
-var db = new sqlite3.Database('/test.db', sql3.OPEN_READWRITE, (err) =>{
+var db = new sqlite3.Database('/test.db', sqlite3.OPEN_READWRITE, (err) =>{
     if(err){
         console.log(err);
     }
