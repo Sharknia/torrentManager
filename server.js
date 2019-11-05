@@ -5,12 +5,19 @@ var session = require('express-session');
 var app = express();
 var sqlite3 = require('sqlite3').verbose();
 
+var isFirst = false;
+
 let db = new sqlite3.Database('./test.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
+      isFirst = true;
     }
-    console.log('Connected to the chinook database.');
+    console.log('DB있네 이미!');
   });
+
+if(isFirst){
+    console.log("DB만들게!");
+}
 
 db.serialize(function() {
   db.run("CREATE TABLE lorem (info TEXT)");
