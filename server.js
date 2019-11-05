@@ -7,6 +7,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 var db = new sqlite3.Database('/test.db', sqlite3.OPEN_READWRITE, (err) =>{
     if(err){
+        console.log(err);
         db.serialize(function() {
         db.run("CREATE TABLE if not exists lorem (info TEXT)");
     
