@@ -42,9 +42,6 @@
             height: 60px;
             background-color: #f5f5f5;
         }
-        .input {
-            padding:1px
-        }
         
         /* Custom page CSS
         -------------------------------------------------- */
@@ -84,21 +81,21 @@
         <div class="col-lg-6">
             <form class="col-lg-12" id="loginInfo" method="post" >
                 <div class="col-lg-12 text-center">
-                    <div class="col-lg-12 text-left"><span><h4>* 아이디</h4></span></div>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-address-card"></i> 아이디</h4></span></div>
                     <div class="input-group col-lg-12">
                         <input type="text" id="id" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
                         <span class="input-group-btn">
-                            <button type="button" id="duplicateCheckBtn" class="btn btn-primary">중복검사</button>
+                            <button type="button" id="duplicateCheckBtn" class="btn btn-primary"><i class="fas fa-check-double"></i>중복검사</button>
                         </span>
                     </div>
-                    <div class="col-lg-12 text-left"><span><h4>* 비밀번호</h4></span></div>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-lock"></i> 비밀번호</h4></span></div>
                     <input type="password" id="password" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
                     <input type="password" id="password2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
-                    <div class="col-lg-12 text-left"><span><h4>* 트랜스미션 설정</h4></span></div>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-user-cog"></i> 트랜스미션 설정</h4></span></div>
                     <input type="text" id="trId" class="form-control" placeholder="트랜스미션 아이디" required/>
                     <input type="text" id="trPw" class="form-control" placeholder="트랜스미션 비밀번호" required/>
                     <input type="text" id="trPort" class="form-control" placeholder="트랜스미션 포트" required/>
-                    <div class="col-lg-12 text-left"><span><h4>* 경로설정</h4></span></div>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 경로설정</h4></span></div>
                     <input type="text" id="torrentDownloadDir" class="form-control" placeholder="토렌트 다운로드 폴더" required/>
                     <input type="text" id="torrentWatchDir" class="form-control" placeholder="토렌트 watch 폴더" required/>
                     <input type="text" id="tvProgramDir" class="form-control" placeholder="TV 프로그램 폴더" required/>
