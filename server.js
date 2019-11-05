@@ -4,6 +4,15 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var app = express();
 
+var db = new sqlite3.Database('/test.db', sql3.OPEN_READWRITE, (err) =>{
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log("db success");
+    }
+});
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
