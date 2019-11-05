@@ -3,7 +3,6 @@ var router = express.Router();
 var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
 
-
 /*************  GET  *************/
 // 초기설정 페이지 접속
 router.get('/', function(req, res){	
@@ -26,17 +25,15 @@ router.post('/settingSave', function(req, res){
     var torrentWatchDir = req.body.torrentWatchDir;
 
     
-    var result = '';
     let db = new sqlite3.Database('./Setting.db', (err) => {
         if (err) {
             console.error(err.message);
-            res.send('err');
+            result = 'false';
         } else {
             console.log('데이터베이스 생성완료!');
-            res.send('true');
+            result = true;
         }
     });
-
     res.send(result);
 });
 module.exports = router;
