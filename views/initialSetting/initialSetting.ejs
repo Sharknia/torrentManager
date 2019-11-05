@@ -82,14 +82,14 @@
             <form class="col-lg-12" id="loginInfo" method="post" >
                 <div class="col-lg-12 text-center">
                     <div class="col-lg-12 text-left"><span><h4><i class="fas fa-address-card"></i> 아이디</h4></span></div>
-                    <input type="text" id="id" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus>
+                    <input type="text" id="id" class="form-control" placeholder="필수 : 아이디를 입력해주세요. " required autofocus>
                     <div class="col-lg-12 text-left"><span><h4><i class="fas fa-lock"></i> 비밀번호</h4></span></div>
-                    <input type="password" id="password" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
-                    <input type="password" id="password2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
+                    <input type="password" id="password" class="form-control has-success" placeholder="필수 : 비밀번호를 입력해주세요" required/>
+                    <input type="password" id="password2" class="form-control" placeholder="필수 : 비밀번호를 한번 더 입력해주세요"  required/>
                     <div class="col-lg-12 text-left"><span><h4><i class="fas fa-user-cog"></i> 트랜스미션 설정</h4></span></div>
-                    <input type="text" id="trId" class="form-control" placeholder="트랜스미션 아이디" required/>
-                    <input type="password" id="trPw" class="form-control" placeholder="트랜스미션 비밀번호" required/>
-                    <input type="text" id="trPort" class="form-control" placeholder="트랜스미션 포트" required/>
+                    <input type="text" id="trId" class="form-control" placeholder="필수 : 트랜스미션 아이디" required/>
+                    <input type="password" id="trPw" class="form-control" placeholder="필수 : 트랜스미션 비밀번호" required/>
+                    <input type="text" id="trPort" class="form-control" placeholder="필수 : 트랜스미션 포트" required/>
                     <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 경로설정</h4></span></div>
                     <input type="text" id="torrentDownloadDir" class="form-control" placeholder="토렌트 다운로드 폴더" required/>
                     <input type="text" id="torrentWatchDir" class="form-control" placeholder="토렌트 watch 폴더" required/>
@@ -97,8 +97,8 @@
                     <input type="text" id="movieDir" class="form-control" placeholder="영화 폴더" required/>
                     <input type="text" id="personalDir" class="form-control" placeholder="비밀 폴더" required/>
                 </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-outline-primary btn-block" onclick="goRegister();">설정완료</button>
+                <div class="text-center" style="margin: 5%;">
+                    <button type="button" class="btn btn-primary btn-block" onclick="goRegister();">설정완료</button>
                 </div>
             </form>
         </div>
@@ -107,11 +107,13 @@
             var id = $('#id').val();
             var password = $('#password').val();
             var password2 = $('#password2').val();
+            var trId = $('#trId').val();
+            var trPw = $('#trPw').val();
+            var trPort = $('#trPort').val();
             var isOk = true;
 
-            if(id == ''){
-                alert("아이디를 입력해주세요. ");
-                $('#id').focus();
+            if(id == '' || password == '' || password2 == '' || trId == '' || trPw == '' || trPort == ''){
+                alert("필수사항은 반드시 입력해야 합니다.");
                 isOk = false;
             }
             if(id.length >= 10){
@@ -119,16 +121,15 @@
                 $('#id').focus();
                 isOk = false;
             }
-            else if(password == ''){
-                alert("비밀번호를 입력해주세요. ");
+            if(password != password2){
+                alert("입력된 비밀번호가 일치하지 않습니다. ");
                 $('#password').focus();
-            }
-            else if(password2 == ''){
-                alert("비밀번호를 다시 입력해주세요. ");
-                $('#password2').focus();
+                isOk = false;
             }
 
-
+            if(isOk){
+                alert("pass!");
+            }
         }
     </script>
     <footer class="footer">
