@@ -46,7 +46,8 @@ app.use(session({
 
 // /로 접속할 경우 바로 main으로 연결
 app.get('/', function(req, res){
-    if(isFirst) res.redirect('/HelloWorld');
+    console.log(isFirst);
+    if(isFirst == true) res.redirect('/HelloWorld');
     else res.redirect('/main');
 });
 
