@@ -62,6 +62,12 @@ router.post('/settingSave', function(req, res){
     db.each(sqlDirPath);
     db.each(sqlInsertDefault);
     db.each(sqlInsertPathList);
+    db.all("SELECT * FROM defaultSetting", (err, row) => {
+        console.log(row);
+    });
+    db.all("SELECT * FROM dirPathList", (err, row) => {
+        console.log(row);
+    });
     res.send("true");
 });
 module.exports = router;
