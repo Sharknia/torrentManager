@@ -102,23 +102,6 @@
                 </div>
             </form>
         </div>
-        <div class="col-lg-3" style="float: right;">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <h4 class="list-group-item-heading">아이디</h4>
-                    <p class="list-group-item-text">사이트에 사용할 아이디(최대 10글자)</p>
-                </li>
-            </ul>
-            <span>비밀번호 : 사이트에 사용할 비밀번호</span>
-            <span>트랜스미션 설정</span>
-            <span> - 트랜스미션에서 사용하는 아이디와 비밀번호, 포트 넘버를 입력합니다. </span>
-            <span>경로 설정</span>
-            <span> - 토렌트 다운로드 폴더 : Torrent를 통해 다운로드한 파일이 저장되는 경로</span>
-            <span> - 토렌트 다운로드 폴더 : Torrent를 통해 다운로드한 파일이 저장되는 경로</span>
-            <span> - 토렌트 다운로드 폴더 : Torrent를 통해 다운로드한 파일이 저장되는 경로</span>
-            <span> - 토렌트 다운로드 폴더 : Torrent를 통해 다운로드한 파일이 저장되는 경로</span>
-            <span> - 토렌트 다운로드 폴더 : Torrent를 통해 다운로드한 파일이 저장되는 경로</span>
-        </div>
     <script>        
         var goRegister = function goRegister() {
             var id = $('#id').val();
@@ -145,7 +128,33 @@
             }
 
             if(isOk){
-                alert("pass!");
+                $.ajax({
+                    type:"POST",
+                    url:"/initialSetting/settingSave",
+                    data:{
+                        "id":id,
+                        "password":password,
+                        "password2":password2,
+                        "trId":trId,
+                        "trPw":trPw,
+                        "trPort":trPort,
+                        "torrentDownloadDir":$('#torrentDownloadDir').val(),
+                        "tvProgramDir":$('#tvProgramDir').val(),
+                        "movieDir":$('#movieDir').val(),
+                        "personalDir":$('#personalDir').val(),
+                        "torrentWatchDir":$('#torrentWatchDir').val()
+                    },
+                    success:function(result){
+                        if(result == "true"){
+                            alert("저장완료! 로그인해주세요!");
+                            location.href="/login";
+                        }
+                        else{
+                            alert("오류발생!");
+                            return;
+                        }
+                    }
+                });
             }
         }
     </script>
