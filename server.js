@@ -7,14 +7,15 @@ var sqlite3 = require('sqlite3').verbose();
 
 var isFirst = false;
 
-let db = new sqlite3.Database('./db/DataBase.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./db/Setting.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
       isFirst = true;
       console.log('초기 사용자, DB 생성이 필요합니다.');
     }
     else console.log('Database connected');
-  });
+});
+db.close();
   
 app.set('view engine', 'ejs');
 app.set('views', './views');
