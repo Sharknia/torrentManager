@@ -52,7 +52,8 @@ router.post('/settingSave', function(req, res){
     });
     const sql = "SELECT * FROM defaultSetting";
     db.all(sql, (err, row) => {
-        res.send(row);
-    })
+        console.log(row);
+    });
+    res.send("wait");
 });
 module.exports = router;
