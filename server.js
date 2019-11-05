@@ -5,14 +5,12 @@ var session = require('express-session');
 var app = express();
 var sqlite3 = require('sqlite3').verbose();
 
-var db = new sqlite3.Database('./test.db', sqlite3.OPEN_CREATE, (err) =>{
-    if(err){
-        console.log(err);
+let db = new sqlite3.Database('./db/chinook.db', sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      console.error(err.message);
     }
-    else{
-        console.log("db success");
-    }
-});
+    console.log('Connected to the chinook database.');
+  });
 
 db.serialize(function() {
   db.run("CREATE TABLE lorem (info TEXT)");
