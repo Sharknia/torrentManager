@@ -27,15 +27,15 @@ router.post('/settingSave', function(req, res){
 
     
     var result = '';
-    let db = new sqlite3.Database('./db/Setting.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
-    , (err) => {
+    let db = new sqlite3.Database('./Setting.db', (err) => {
         if (err) {
             console.error(err.message);
+            res.send('err');
         } else {
-            console.log('연결성공!');
+            console.log('데이터베이스 생성완료!');
+            result = 'true';
         }
     });
-    
 
     res.send(result);
 });

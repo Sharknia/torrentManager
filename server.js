@@ -7,7 +7,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 var isFirst = false;
 
-let db = new sqlite3.Database('./db/Setting.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
       isFirst = true;
