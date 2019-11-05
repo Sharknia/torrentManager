@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>FuryChick.IPTIME.ORG</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="/views/css/sticky-footer-navbar.css" rel="stylesheet"> -->
+
+    <!--제이쿼리-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type='text/css'>
+        html {
+        position: relative;
+        min-height: 100%;
+        }
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+        
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+        
+        body > .container {
+            padding: 60px 15px 0;
+        }
+        .container .text-muted {
+            margin: 20px 0;
+        }
+        
+        .footer > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
+        code {
+            font-size: 80%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+            <a class="navbar-brand">FuryChicK</a>
+            </div>
+        </div>
+    </nav>  
+    <div class="col-lg-12">
+        <div class="col-lg-3" style="float:left"></div>
+        <div class="col-lg-6" style="padding: 10%">
+            <form class="col-lg-12" id="loginInfo" method="post" >
+                <h2>회원가입</h2>
+                <div class="col-lg-12 text-center">
+                    <div class="col-lg-12 text-left"><span><h4>* 아이디</h4></span></div>
+                    <!-- <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요" required autofocus/>
+                    <div class="col-lg-12 text-right"><button type="button" id="check_id" class="btn btn-primary" >중복검사</button></div>  -->
+                    <div class="input-group col-lg-12">
+                        <input type="text" id="uId" name="uId" class="form-control" placeholder="아이디를 입력해주세요. " required autofocus aria-describedby="check_id">
+                        <span class="input-group-btn">
+                            <button type="button" id="check_id"class="btn btn-primary">중복검사</button>
+                        </span>
+                    </div>
+                    <div class="col-lg-12 text-left"><span><h4>* 비밀번호</h4></span></div>
+                    <input type="password" id="uPassword" name="uPassword" class="form-control has-success" placeholder="비밀번호를 입력해주세요" required/>
+                    <input type="password" id="uPassword2" name="uPassword2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요"  required/>
+                    <div class="col-lg-12 text-left"><span><h4>* 이름</h4></span></div>
+                    <input type="text" id="uName" name="uName" class="form-control" placeholder="이름을 입력해주세요" required/>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <button type="button" class="btn btn-primary" onclick="goRegister();">회원가입</button>
+                    <button type="button" class="btn btn-warning" onclick="goCancel();">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        var check_id = 0; //중복이라면 1, 중복 아니라면 2, 검사 안했다면 0
+        
+        $("#uId").keyup(function(){
+            //아이디 값이 바뀌었으므로 다시 중복검사 요구
+            $('#check_id').removeAttr('disabled', '');
+            //색깔 바꾸자
+            check_id = 0;
+        });
+
+        //중복검사 function
+        $('#check_id').click(function(){
+            if($("#uId").val()==''){
+                alert("아이디가 없습니다.");
+                $('#uId').focus();
+                check_id = 0;
+            }
+            else if($("#uId").val().length<5 || $("#uId").val().length >10){
+                alert("아이디는 다섯글자에서 열글자 사이여야 합니다.")
+                $('#uId').focus();
+                check_id = 0;
+            }
+            else{
+                $.ajax({
+                type:"POST",
+                url:"check_id",
+                data:{
+                    "uId":$("#uId").val()
+                },
+                success:function(data){
+                    if($.trim(data) == "true"){
+                        $('#check_id').attr('disabled', '');
+                        check_id = 2;
+                        alert("사용 가능한 아이디입니다!");
+                    }
+                    else{
+                        check_id = 1;
+                        alert("중복된 아이디입니다.");
+                        $('#uId').val('');
+                        $('#uId').focus();
+                        }
+                    }
+                });
+            }
+        });
+
+        var goRegister = function goRegister() {
+            var uId = $('#uId').val();
+            var uPassword = $('#uPassword').val();
+            var uPassword2 = $('#uPassword2').val();
+            var uName = $('#uName').val();
+
+            if(uId == ''){
+                alert("아이디를 입력해주세요. ");
+                $('#uId').focus();
+            }
+            else if(uId.length <= 4){
+                alert("아이디는 다섯글자 이상이어야 합니다. ");
+                $('#uId').focus();
+            }
+            else if(uId.length >= 10){
+                alert("아이디는 열글자 이하여야 합니다. ");
+                $('#uId').focus();
+            }
+            else if(uPassword == ''){
+                alert("비밀번호를 입력해주세요. ");
+                $('#uPassword').focus();
+            }
+            else if(uPassword2 == ''){
+                alert("비밀번호를 다시 입력해주세요. ");
+                $('#uPassword2').focus();
+            }
+            else if(uPassword.length < 5){
+                alert("비밀번호는 다섯글자 이상이어야 합니다. ")
+                $('#uPassword').focus();
+            }
+            else if(uName == ''){
+                alert("이름을 입력해주세요. ");
+                $('#uName').focus();
+            }
+            else{
+                if(check_id == 0){ //검사를 안했습니다
+                alert("아이디 중복검사를 해주세요!")
+                }
+                else if(check_id == 1){ //아이디가 중복이군요
+                    alert("중복된 아이디입니다")
+                }
+                else{ //중복검사 완료
+                    if(uPassword!==uPassword2){ //비밀번호가 서로 다르다면
+                        alert("비밀번호를 확인해주세요");
+                    }
+                    else{
+                        loginInfo.action = "/register";
+                        alert("회원가입이 완료되었습니다. \n관리자의 승인을 기다려주세요.");
+                        loginInfo.submit();
+                    }
+                }
+            }
+        }
+
+        var goCancel = function goCancel() {
+            if(confirm("정말로 취소하시겠습니까?")){
+                location.href="/";
+            }
+        }
+    </script>
+    <footer class="footer">
+            <div class="container">
+                <p class="text-muted" style="float:left">furychick@nate.com</p>
+            </div>
+    </footer>
+</body>
+</html>

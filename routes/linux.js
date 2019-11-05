@@ -9,7 +9,7 @@ var qs = require('querystring'); //url encoding
 
 
 /*************  GET  *************/
-// main 페이지 접속
+// 리눅스 페이지 접속
 router.get('/', function(req, res){	
     console.log("app get linux");
     if(!req.session.info){ //세션 정보가 없다면 초기 로그인 화면으로

@@ -7,31 +7,15 @@ var sqlite3 = require('sqlite3').verbose();
 
 var isFirst = false;
 
-let db = new sqlite3.Database('./test.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./db/DataBase.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
       isFirst = true;
       console.log('초기 사용자, DB 생성이 필요합니다.');
     }
-    else console.log('DB있네 이미!');
+    else console.log('Database connected');
   });
-
-db.serialize(function() {
-  db.run("CREATE TABLE lorem (info TEXT)");
-
-  var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-  for (var i = 0; i < 10; i++) {
-      stmt.run("Ipsum " + i);
-  }
-  stmt.finalize();
-
-  db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-      console.log(row.id + ": " + row.info);
-  });
-});
-
-db.close();
-
+  
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
@@ -44,10 +28,9 @@ app.use(session({
     saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
 }));
 
-// /로 접속할 경우 바로 main으로 연결
+// /로 접속할 경우 바로 main으로 연결, 초기 설정이 필요할 경우 초기 설정 페이지로 이동
 app.get('/', function(req, res){
-    console.log(isFirst);
-    if(isFirst == true) res.redirect('/HelloWorld');
+    if(isFirst == true) res.redirect('/initialSetting');
     else res.redirect('/main');
 });
 
@@ -55,7 +38,7 @@ app.get('/', function(req, res){
 var main = require('./routes/main');
 app.use('/main', main);
 
-//회원가입, 로그아웃 등
+//로그인, 로그아웃 등
 var login = require('./routes/login');
 app.use('/login', login);
 
@@ -64,8 +47,12 @@ var linux = require('./routes/linux');
 app.use('/linux', linux);
 
 //쉘에 명령 내릴 때
-var linux = require('./routes/control');
-app.use('/control', linux);
+var control = require('./routes/control');
+app.use('/control', control);
+
+//초기 설정을 위한 페이지
+var initialSetting = require('./routes/initialSetting');
+app.use('/initialSetting', initialSetting);
 
 app.listen(80, function(){
     console.log("80번 포트 서버 오픈")

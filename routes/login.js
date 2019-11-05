@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var personalData = require('../config/personalData');
+var personalData = require('../config/personalData.js');
 
 //로그인 페이지
 router.get('/', function(req, res){
