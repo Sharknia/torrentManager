@@ -31,8 +31,9 @@ app.use(session({
 
 // /로 접속할 경우 바로 main으로 연결, 초기 설정이 필요할 경우 초기 설정 페이지로 이동
 app.get('/', function(req, res){
-    if(isFirst == true) res.redirect('/initialSetting');
-    else res.redirect('/main');
+    // if(isFirst == true) res.redirect('/initialSetting');
+    // else res.redirect('/main');
+    res.redirect('/main');
 });
 
 //메인화면 - 토렌트 검색, 트랜스미션 제어, 간이 탐색기
