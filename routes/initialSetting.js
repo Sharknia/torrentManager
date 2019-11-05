@@ -24,17 +24,35 @@ router.post('/settingSave', function(req, res){
     var homeDir = req.body.homeDir;
     var torrentWatchDir = req.body.torrentWatchDir;
 
-    let result = '';
-    let db = new sqlite3.Database('./Setting.db', (err) => {
-        if (err) {
-            console.error(err.message);
-            result = 'false';
-        } else {
-            console.log('데이터베이스 생성완료!');
-            result = 'true';
-        }
+    var db = new sqlite3.Database('./Setting.db');
+    //기본 세팅 테이블 생성
+    var sqlDefault = '';
+    sqlDefault = "CREATE TABLE 'defaultSetting'(";
+    sqlDefault += "'id' TEXT NOT NULL PRIMARY KEY,";
+    sqlDefault += "'password' TEXT,";
+    sqlDefault += "'trId' TEXT,";
+    sqlDefault += "'trPw' TEXT,";
+    sqlDefault += "'trPort' TEXT)";
+    //즐겨찾기 폴더 경로를 저장할 테이블 생성
+    var sqlDirPath = '';
+    sqlDirPath = "CREATE TABLE IF NOT EXISTS 'dirPathList'(";
+    sqlDirPath += "'idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+    sqlDirPath += "'name' TEXT NOT NULL,";
+    sqlDirPath += "'path' TEXT NOT NULL,";
+    sqlDirPath += "'trPw' TEXT NOT NULL,";
+    sqlDirPath += "'trPort' TEXT NOT NULL)";
+    //기본 세팅 테이블에 insert
+    var sqlInsertDefault = '';
+    sqlInsertDefault += "INSERT INTO defaultSetting(id, password, trId, trPw, trPort) "
+    sqlInsertDefault += "values("+id+","+password+","+trId+","+trPw+",+"+trPort+")"
+    db.serialize(()=>{
+        db.each(sqlDefault);
+        db.each(sqlDirPath);
+        db.each(sqlInsertDefault);
     });
-    console.log(result);
-    res.send(result);
+    const sql = "SELECT * FROM defaultSetting";
+    db.all(sql, (err, row) => {
+        res.send(row);
+    })
 });
 module.exports = router;
