@@ -31,7 +31,7 @@ router.post('/settingSave', function(req, res){
           res.send(err);
         }
         console.log('Connected to the chinook database.');
-        res.send('Connected to the chinook database.');
+        res.send('true');
     });
 });
 module.exports = router;
