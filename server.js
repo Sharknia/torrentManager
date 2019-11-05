@@ -11,7 +11,7 @@ let db = new sqlite3.Database('./test.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
       isFirst = true;
-      console.log("DB 만들게!");
+      console.log('초기 사용자, DB 생성이 필요합니다.');
     }
     else console.log('DB있네 이미!');
   });
@@ -46,7 +46,8 @@ app.use(session({
 
 // /로 접속할 경우 바로 main으로 연결
 app.get('/', function(req, res){
-    res.redirect('/main');
+    if(isFirst) res.redirect('/HelloWorld');
+    else res.redirect('/main');
 });
 
 //메인화면 - 토렌트 검색, 트랜스미션 제어, 간이 탐색기
