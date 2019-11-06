@@ -2,17 +2,19 @@ var express = require('express');
 var router = express.Router();
 var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
-function IsFirst(){
-    var isFirst = false;
-    this.val = function(val){
-        if(val != null) isFirst = val;
-        return isFirst;
-    }
-}
-const isFirst = new IsFirst;
 //로그인 페이지
 router.get('/', function(req, res){
     console.log("app get /login/");
+
+    function IsFirst(){
+        var isFirst = false;
+        this.val = function(val){
+            if(val != null) isFirst = val;
+            return isFirst;
+        }
+    }
+    const isFirst = new IsFirst;
+    
     //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
         if (err) {
@@ -50,32 +52,44 @@ router.post('/login', function(req, res){
     var date = new Date;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize();
+    
+    function SelResult(){
+        var selResult = false;
+        this.val = function(val){
+            if(val != null) selResult = val;
+            return selResult;
+        }
+    }
+    const selResult = new SelResult;
+
     db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
         if(err){
             return console.error(err.message);
         }
         else{
-            console.log(row);
+            selResult.val(row);
         }
     });
 
-    if(id != personalData.site.id){
-        res.send("id");
-    }
-    else if(password != personalData.site.password){
-        res.send("password")
-    }
-    else{
-        var ip = req.connection.remoteAddress;
-        req.session.info = {
-            id : id,
-            lastConnTime : date,
-            ip : ip
+    setTimeout(function(){
+        if(id != selResult.val().id){
+            res.send("id");
         }
-        console.log(req.session.info);
-        req.session.save(function(){});
-        res.send("true");
-    }
+        else if(password != selResult.val().password){
+            res.send("password")
+        }
+        else{
+            var ip = req.connection.remoteAddress;
+            req.session.info = {
+                id : id,
+                lastConnTime : date,
+                ip : ip
+            }
+            console.log(req.session.info);
+            req.session.save(function(){});
+            res.send("true");
+        }
+    }, 2)
 });
 
 module.exports = router;
