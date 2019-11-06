@@ -13,6 +13,7 @@ router.get('/', function(req, res){
         }
         else console.log('Database 존재');
     });
+    console.log(db);
     db.close();
     if(db == null) res.redirect('/initialSetting');
     else res.render('login/login');
