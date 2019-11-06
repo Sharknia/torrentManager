@@ -68,6 +68,7 @@ router.post('/login', function(req, res){
         }
     });
     console.log(idInDb + "/" + pwInDb);
+    console.log(array);
 
     if(id != personalData.site.id){
         res.send("id");
