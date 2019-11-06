@@ -73,6 +73,8 @@ router.post('/login', function(req, res){
 
     setTimeout(function(){
         if(id != selResult.val().id){
+            console.log(id);
+            console.log(selResult.val().id);
             res.send("id");
         }
         else if(password != selResult.val().password){
