@@ -12,7 +12,7 @@ router.get('/', function(req, res){
 
 /*************  POST  *************/
 router.post('/settingSave', function(req, res){
-    console.log(req.body.test.test1);
+    // console.log(req.body.test.test1);
     var id = req.body.id;
     var password = req.body.password;
     var trId = req.body.trId;
