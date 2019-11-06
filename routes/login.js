@@ -68,6 +68,7 @@ router.post('/login', function(req, res){
         else{
             selResult.val(row);
             res.send(row);
+            console.log("변경사항있다고");
         }
     });
 
