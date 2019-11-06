@@ -36,7 +36,7 @@ router.post('/settingSave', function(req, res){
         //기본 세팅 테이블 생성
         db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER)");
         //기본 세팅 테이블에 insert
-        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort) VALUES("+id+","+password+","+trId+","+trPw+",+"+trPort+")");
+        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort) VALUES('"+id+"','"+password+"','"+trId+"','"+trPw+"','"+trPort+"')");
         //경로 설정을 저장할 테이블 생성
         db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
         //경로 설정 테이블에 insert
