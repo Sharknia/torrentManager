@@ -11,7 +11,7 @@ router.get('/', function(req, res){
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
         if (err) {
             console.log('초기 사용자, DB 생성이 필요합니다.');
-            res.render('/initialSetting/initialSetting');
+            res.render('initialSetting/initialSetting');
         }
         else {
             console.log('Database 존재');
