@@ -44,13 +44,13 @@ router.post('/settingSave', function(req, res){
         db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
         //경로 설정 테이블에 insert
         console.log(4);
-        var intoDirPath = db.prepare('INSERT INTO dirPathList(name, path, sortNum) VALUES(?)');
-        intoDirPath.run('홈' , homeDir , 1);
-        intoDirPath.run('다운로드' , torrentDownloadDir , 2);
-        intoDirPath.run('TV 폴더' , tvProgramDir , 3);
-        intoDirPath.run('영화 폴더' , movieDir , 4);
-        intoDirPath.run('WATCH 폴더' , torrentWatchDir , 5);
-        intoDirPath.finalize();
+        // var intoDirPath = db.prepare('INSERT INTO dirPathList(name, path, sortNum) VALUES(?)');
+        // intoDirPath.run('홈' , homeDir , 1);
+        // intoDirPath.run('다운로드' , torrentDownloadDir , 2);
+        // intoDirPath.run('TV 폴더' , tvProgramDir , 3);
+        // intoDirPath.run('영화 폴더' , movieDir , 4);
+        // intoDirPath.run('WATCH 폴더' , torrentWatchDir , 5);
+        // intoDirPath.finalize();
     });
     db.close();
     res.send("true");
