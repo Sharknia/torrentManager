@@ -26,7 +26,15 @@ router.get('/', function(req, res){
     });
     console.log(isFirst.val());
     db.close();
-    res.render('login/login');
+    setTimeout(function(){
+        if(isFirst.val() == true){
+            isFirst.val(false);
+            res.redirect('/initialSetting');
+        }
+        else{
+            res.render('login/login');
+        }
+    }, 0.5)
 });
 
 //로그아웃
