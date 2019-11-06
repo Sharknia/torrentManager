@@ -5,18 +5,18 @@ var session = require('express-session');
 var app = express();
 var sqlite3 = require('sqlite3').verbose();
 
-var isFirst = false;
+// var isFirst = false;
 
 let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
-      console.error(err.message);
-      isFirst = true;
+      // isFirst = true;
       console.log('초기 사용자, DB 생성이 필요합니다.');
+      res.redirect('/initialSetting');
     }
     else console.log('Database 존재');
 });
 db.close();
-  
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
@@ -31,9 +31,9 @@ app.use(session({
 
 // /로 접속할 경우 바로 main으로 연결, 초기 설정이 필요할 경우 초기 설정 페이지로 이동
 app.get('/', function(req, res){
-    if(isFirst == true) res.redirect('/initialSetting');
-    else res.redirect('/main');
-    // res.redirect('/main');
+    // if(isFirst == true) res.redirect('/initialSetting');
+    // else res.redirect('/main');
+    res.redirect('/main');
 });
 
 //메인화면 - 토렌트 검색, 트랜스미션 제어, 간이 탐색기
