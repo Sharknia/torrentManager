@@ -55,7 +55,7 @@ router.post('/login', function(req, res){
             return console.error(err.message);
         }
         else{
-            res.send("또라이야");
+            console.log(row);
         }
     });
 
