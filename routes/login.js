@@ -32,7 +32,6 @@ router.get('/', function(req, res){
         else {
             console.log('Database 존재');
             isFirst.val(false);
-            res.send(row);
         }
     });
     db.close();
@@ -68,6 +67,7 @@ router.post('/login', function(req, res){
         }
         else{
             selResult.val(row);
+            res.send(row);
         }
     });
 
