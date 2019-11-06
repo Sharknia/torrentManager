@@ -5,19 +5,20 @@ var sqlite3 = require('sqlite3').verbose();
 
 //로그인 페이지
 router.get('/', function(req, res){
-    var isFirst = false;
     console.log("app get /login/");
     //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
+        let isFirst = false;
         if (err) {
             console.log('초기 사용자, DB 생성이 필요합니다.');
-            res.render('initialSetting/initialSetting');
-            return true;
+            isFirst = true;
         }
         else {
             console.log('Database 존재');
-            return ;
+            isFirst = false;
         }
+        console.log(isFirst);
+        if(isFirst) res.redirect('/initialSetting');
     });
     db.close();
     res.render('login/login');
