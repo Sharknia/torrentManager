@@ -13,9 +13,11 @@ router.get('/', function(req, res){
         }
         else console.log('Database 존재');
     });
-    var temp = console.log(db).indexOf('open: false');
+    var temp = console.log(db);
+    console.log(temp);
+
     db.close();
-    if(temp > -1) res.redirect('/initialSetting');
+    if(temp.indexOf('open: false') > -1) res.redirect('/initialSetting');
     else res.render('login/login');
 });
 
