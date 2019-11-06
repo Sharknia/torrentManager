@@ -54,6 +54,7 @@ router.post('/login', function(req, res){
     db.serialize();
     db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
         if(err){
+            console.log("어디야 대체?");
             return console.error(err.message);
         }
         else{
