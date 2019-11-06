@@ -17,7 +17,7 @@ router.get('/', function(req, res){
         console.log(message);
         //info가 없는 접속시도가 있을 경우 ip와 함께 메모를 남긴다. 
         exec("echo " + message + " >> /HDD/log/HompageConnection.log", function(err, stdout, stderr){});
-        res.render('login/login');
+        res.redirect('/login');
     }
     else{
         res.render('main/main', {info:req.session.info});
