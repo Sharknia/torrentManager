@@ -15,9 +15,9 @@ router.get('/', function(req, res){
     });
     var temp = console.log(db);
     console.log(temp);
-
+    console.log(typeof(temp));
     db.close();
-    if(temp.indexOf('open: false') > -1) res.redirect('/initialSetting');
+    if(temp) res.redirect('/initialSetting');
     else res.render('login/login');
 });
 
