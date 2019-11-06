@@ -51,6 +51,7 @@ router.post('/login', function(req, res){
     var pwInDb = '';
     var date = new Date;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    var array = [];
     db.serialize();
     db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
         if(err){
@@ -58,6 +59,8 @@ router.post('/login', function(req, res){
         }
         else{
             if(row){
+                array.push(row.id);
+                array.push(row.password);
                 idInDb = row.id;
                 pwInDb = row.password;
             }
