@@ -12,9 +12,9 @@ router.get('/', function(req, res){
 
 /*************  POST  *************/
 router.post('/settingSave', function(req, res){
+    console.log(req.body.test.test1);
     var id = req.body.id;
     var password = req.body.password;
-    var password2 = req.body.password2;
     var trId = req.body.trId;
     var trPw = req.body.trPw;
     var trPort = req.body.trPort;
@@ -31,43 +31,37 @@ router.post('/settingSave', function(req, res){
     if(torrentWatchDir == '') torrentWatchDir = '/';
 
     var db = new sqlite3.Database('./Setting.db');
-    //기본 세팅 테이블 생성
-    var sqlDefault = '';
-    sqlDefault = "CREATE TABLE 'defaultSetting'(";
-    sqlDefault += "'id' TEXT NOT NULL PRIMARY KEY,";
-    sqlDefault += "'password' TEXT,";
-    sqlDefault += "'trId' TEXT,";
-    sqlDefault += "'trPw' TEXT,";
-    sqlDefault += "'trPort' TEXT)";
-    //즐겨찾기 폴더 경로를 저장할 테이블 생성
-    var sqlDirPath = '';
-    sqlDirPath = "CREATE TABLE IF NOT EXISTS 'dirPathList'(";
-    sqlDirPath += "'idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
-    sqlDirPath += "'name' TEXT NOT NULL,";
-    sqlDirPath += "'path' TEXT NOT NULL)";
-    //기본 세팅 테이블에 insert
-    var sqlInsertDefault = '';
-    sqlInsertDefault += "INSERT INTO defaultSetting(id, password, trId, trPw, trPort) ";
-    sqlInsertDefault += "VALUES("+id+","+password+","+trId+","+trPw+",+"+trPort+")";
-    //기본 경로 설정 테이블에 insert
-    var sqlInsertPathList = '';
-    sqlInsertPathList += "INSERT INTO dirPathList(name, path) VALUES ";
-    sqlInsertPathList += "(다운로드"+torrentDownloadDir+"),";
-    sqlInsertPathList += "(TV 폴더,"+tvProgramDir+"),";
-    sqlInsertPathList += "(영화 폴더,"+movieDir+"),";
-    sqlInsertPathList += "(홈,"+homeDir+"),";
-    sqlInsertPathList += "(WATCH 폴더,"+torrentWatchDir+")";
-    db.serialize();
-    db.each(sqlDefault);
-    db.each(sqlDirPath);
-    db.each(sqlInsertDefault);
-    db.each(sqlInsertPathList);
-    db.all("SELECT * FROM defaultSetting", (err, row) => {
-        console.log(row);
+
+    db.serialize(function(){
+        //기본 세팅 테이블 생성
+        db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPort' INTEGER)");
+        //기본 세팅 테이블에 insert
+        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort) VALUES("+id+","+password+","+trId+","+trPw+",+"+trPort+")");
+        //경로 설정을 저장할 테이블 생성
+        db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
+        //경로 설정 테이블에 insert
+        var intoDirPath = db.prepare('INSERT INTO dirPathList(name, path, sortNum) VALUES(?)');
+        intoDirPath.run('홈' + homeDir + 1);
+        intoDirPath.run('다운로드' + torrentDownloadDir + 2);
+        intoDirPath.run('TV 폴더' + tvProgramDir + 3);
+        intoDirPath.run('영화 폴더' + movieDir + 4);
+        intoDirPath.run('WATCH 폴더' + torrentWatchDir + 5);
+        intoDirPath.finalize();
     });
-    db.all("SELECT * FROM dirPathList", (err, row) => {
-        console.log(row);
+    db.close();
+    res.send("true");
+});
+
+router.post('/pathListManager', function(req, res){
+    var name = req.body.name;
+    var path = req.body.path;
+    var sql = '';
+    sql += "INSERT INTO dirPathList(name, path) VALUES ";
+    sql += "("+name+","+path+")";
+    db.serialize(function(){
+        db.run(sql);
     });
+    db.close();
     res.send("true");
 });
 module.exports = router;

@@ -134,7 +134,6 @@
                     data:{
                         "id":id,
                         "password":password,
-                        "password2":password2,
                         "trId":trId,
                         "trPw":trPw,
                         "trPort":trPort,
@@ -142,7 +141,10 @@
                         "tvProgramDir":$('#tvProgramDir').val(),
                         "movieDir":$('#movieDir').val(),
                         "homeDir":$('#homeDir').val(),
-                        "torrentWatchDir":$('#torrentWatchDir').val()
+                        "torrentWatchDir":$('#torrentWatchDir').val(),
+                        "test":{
+                            "test1":test1
+                        }
                     },
                     success:function(result){
                         if($.trim(result) == "true"){
@@ -150,7 +152,7 @@
                             location.href="/";
                         }
                         else{
-                            alert(result.id);
+                            alert('뭔가 에러 발생!');
                             return;
                         }
                     }
