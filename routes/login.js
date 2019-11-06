@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
-var isFirst = false;
 
 //로그인 페이지
 router.get('/', function(req, res){
@@ -10,13 +9,12 @@ router.get('/', function(req, res){
     //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
-            isFirst = true;
-          console.log('초기 사용자, DB 생성이 필요합니다.');
+            console.log('초기 사용자, DB 생성이 필요합니다.');
         }
         else console.log('Database 존재');
     });
     db.close();
-    if(isFirst) res.redirect('/initialSetting');
+    if(db == null) res.redirect('/initialSetting');
     else res.render('login/login');
 });
 
