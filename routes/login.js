@@ -54,7 +54,6 @@ router.post('/login', function(req, res){
     db.serialize();
     db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
         if(err){
-            console.log("어디야 대체?");
             return console.error(err.message);
         }
         else{
@@ -65,7 +64,7 @@ router.post('/login', function(req, res){
             return ;
         }
     });
-    console.log(id + password);
+    console.log(idInDb + "/" + pwInDb);
 
     if(id != personalData.site.id){
         res.send("id");
