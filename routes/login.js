@@ -18,7 +18,7 @@ router.get('/', function(req, res){
             isFirst = false;
         }
         console.log(isFirst);
-        if(isFirst) return res.redirect('/initialSetting');
+        if(isFirst) return res.redirect('/');
     });
     db.close();
     res.render('login/login');
