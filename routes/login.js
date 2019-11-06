@@ -10,7 +10,7 @@ router.get('/', function(req, res){
         if (err) {
           // isFirst = true;
           console.log('초기 사용자, DB 생성이 필요합니다.');
-          res.redirect('/initialSetting');
+          res.render('initialSetting/initialSetting');
         }
         else console.log('Database 존재');
     });
