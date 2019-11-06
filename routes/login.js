@@ -5,6 +5,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 //로그인 페이지
 router.get('/', function(req, res){
+    //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
           // isFirst = true;

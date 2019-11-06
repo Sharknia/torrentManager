@@ -3,17 +3,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var app = express();
-var sqlite3 = require('sqlite3').verbose();
-
-let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-      // isFirst = true;
-      console.log('초기 사용자, DB 생성이 필요합니다.');
-      res.redirect('/initialSetting');
-    }
-    else console.log('Database 존재');
-});
-db.close();
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
