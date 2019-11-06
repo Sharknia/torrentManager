@@ -11,17 +11,14 @@ router.get('/', function(req, res){
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
         if (err) {
             console.log('초기 사용자, DB 생성이 필요합니다.');
-            return false;
+            res.redirect('/initialSetting');
         }
         else {
             console.log('Database 존재');
-            return true;
         }
     });
-    console.log(db.toString());
     db.close();
-    if(isFirst) res.redirect('/initialSetting');
-    else res.render('login/login');
+    res.render('login/login');
 });
 
 //로그아웃
