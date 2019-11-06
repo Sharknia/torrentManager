@@ -2,18 +2,26 @@ var express = require('express');
 var router = express.Router();
 var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
+function SelResult(){
+    var selResult = false;
+    this.val = function(val){
+        if(val != null) selResult = val;
+        return selResult;
+    }
+}
+const selResult = new SelResult;
+function IsFirst(){
+    var isFirst = false;
+    this.val = function(val){
+        if(val != null) isFirst = val;
+        return isFirst;
+    }
+}
+const isFirst = new IsFirst;
 //로그인 페이지
 router.get('/', function(req, res){
     console.log("app get /login/");
 
-    function IsFirst(){
-        var isFirst = false;
-        this.val = function(val){
-            if(val != null) isFirst = val;
-            return isFirst;
-        }
-    }
-    const isFirst = new IsFirst;
     
     //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
@@ -52,15 +60,6 @@ router.post('/login', function(req, res){
     var date = new Date;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize();
-    
-    function SelResult(){
-        var selResult = false;
-        this.val = function(val){
-            if(val != null) selResult = val;
-            return selResult;
-        }
-    }
-    const selResult = new SelResult;
 
     db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
         if(err){
