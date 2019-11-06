@@ -24,7 +24,6 @@ router.get('/', function(req, res){
             isFirst.val(false);
         }
     });
-    console.log(isFirst.val());
     db.close();
     setTimeout(function(){
         if(isFirst.val() == true){
@@ -48,7 +47,24 @@ router.get('/logout', function(req, res){
 router.post('/login', function(req, res){
     var id = req.body.id;
     var password = req.body.password;
+    var idInDb = '';
+    var pwInDb = '';
     var date = new Date;
+    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    db.serialize();
+    db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
+        if(err){
+            return console.error(err.message);
+        }
+        else{
+            if(row){
+                idInDb = row.id;
+                pwInDb = row.password;
+            }
+            return ;
+        }
+    });
+    console.log(id + password);
 
     if(id != personalData.site.id){
         res.send("id");
