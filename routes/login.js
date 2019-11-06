@@ -18,7 +18,7 @@ router.get('/', function(req, res){
             return true;
         }
     });
-    console.log(db.constructor());
+    console.log(db.constructor.toString());
     db.close();
     if(isFirst) res.redirect('/initialSetting');
     else res.render('login/login');
