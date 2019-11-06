@@ -16,7 +16,7 @@ router.get('/', function(req, res){
     });
     console.log(db);
     db.close();
-    if(db. == null) res.redirect('/initialSetting');
+    if(db == null) res.redirect('/initialSetting');
     else res.render('login/login');
 });
 
