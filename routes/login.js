@@ -53,7 +53,7 @@ router.post('/login', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     var array = [];
     db.serialize();
-    db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
+    db.get("SELECT id, password FROM defaultSetting", array, (err, row) => {
         if(err){
             return console.error(err.message);
         }
