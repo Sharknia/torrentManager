@@ -67,32 +67,30 @@ router.post('/login', function(req, res){
         }
         else{
             selResult.val(row);
-            res.send(row);
-            console.log("변경사항있다고");
         }
     });
 
-    // setTimeout(function(){
-    //     if(id != selResult.val().id){
-    //         console.log(id);
-    //         console.log(selResult.val().id);
-    //         res.send("id");
-    //     }
-    //     else if(password != selResult.val().password){
-    //         res.send("password")
-    //     }
-    //     else{
-    //         var ip = req.connection.remoteAddress;
-    //         req.session.info = {
-    //             id : id,
-    //             lastConnTime : date,
-    //             ip : ip
-    //         }
-    //         console.log(req.session.info);
-    //         req.session.save(function(){});
-    //         res.send("true");
-    //     }
-    // }, 2)
+    setTimeout(function(){
+        if(id != selResult.val().id){
+            console.log(id);
+            console.log(selResult.val().id);
+            res.send("id");
+        }
+        else if(password != selResult.val().password){
+            res.send("password")
+        }
+        else{
+            var ip = req.connection.remoteAddress;
+            req.session.info = {
+                id : id,
+                lastConnTime : date,
+                ip : ip
+            }
+            console.log(req.session.info);
+            req.session.save(function(){});
+            res.send("true");
+        }
+    }, 2)
 });
 
 module.exports = router;
