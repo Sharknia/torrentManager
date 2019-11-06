@@ -22,7 +22,7 @@ const isFirst = new IsFirst;
 router.get('/', function(req, res){
     console.log("app get /login/");
 
-    
+
     //DB 존재유무 검사
     let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
         if (err) {
@@ -72,27 +72,27 @@ router.post('/login', function(req, res){
         }
     });
 
-    setTimeout(function(){
-        if(id != selResult.val().id){
-            console.log(id);
-            console.log(selResult.val().id);
-            res.send("id");
-        }
-        else if(password != selResult.val().password){
-            res.send("password")
-        }
-        else{
-            var ip = req.connection.remoteAddress;
-            req.session.info = {
-                id : id,
-                lastConnTime : date,
-                ip : ip
-            }
-            console.log(req.session.info);
-            req.session.save(function(){});
-            res.send("true");
-        }
-    }, 2)
+    // setTimeout(function(){
+    //     if(id != selResult.val().id){
+    //         console.log(id);
+    //         console.log(selResult.val().id);
+    //         res.send("id");
+    //     }
+    //     else if(password != selResult.val().password){
+    //         res.send("password")
+    //     }
+    //     else{
+    //         var ip = req.connection.remoteAddress;
+    //         req.session.info = {
+    //             id : id,
+    //             lastConnTime : date,
+    //             ip : ip
+    //         }
+    //         console.log(req.session.info);
+    //         req.session.save(function(){});
+    //         res.send("true");
+    //     }
+    // }, 2)
 });
 
 module.exports = router;
