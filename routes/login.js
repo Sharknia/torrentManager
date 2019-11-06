@@ -8,7 +8,7 @@ router.get('/', function(req, res){
     var isFirst = false;
     console.log("app get /login/");
     //DB 존재유무 검사
-    let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, isFirst = function(err) {
+    let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
         if (err) {
             console.log('초기 사용자, DB 생성이 필요합니다.');
             return false;
@@ -18,7 +18,7 @@ router.get('/', function(req, res){
             return true;
         }
     });
-    console.log(isFirst.valueOf());
+    console.log(db.constructor);
     db.close();
     if(isFirst) res.redirect('/initialSetting');
     else res.render('login/login');
@@ -27,8 +27,7 @@ router.get('/', function(req, res){
 //로그아웃
 router.get('/logout', function(req, res){
     console.log("app get /login/logout");
-    req.session.destroy(function(err){
-    });
+    req.session.destroy(function(err){});
     res.redirect("/login/");
 });
 
