@@ -34,7 +34,7 @@ router.post('/settingSave', function(req, res){
 
     db.serialize(function(){
         //기본 세팅 테이블 생성
-        db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPort' INTEGER)");
+        db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER)");
         //기본 세팅 테이블에 insert
         db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort) VALUES("+id+","+password+","+trId+","+trPw+",+"+trPort+")");
         //경로 설정을 저장할 테이블 생성
