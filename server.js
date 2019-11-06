@@ -5,8 +5,6 @@ var session = require('express-session');
 var app = express();
 var sqlite3 = require('sqlite3').verbose();
 
-// var isFirst = false;
-
 let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       // isFirst = true;
@@ -29,10 +27,7 @@ app.use(session({
     saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
 }));
 
-// /로 접속할 경우 바로 main으로 연결, 초기 설정이 필요할 경우 초기 설정 페이지로 이동
 app.get('/', function(req, res){
-    // if(isFirst == true) res.redirect('/initialSetting');
-    // else res.redirect('/main');
     res.redirect('/main');
 });
 
