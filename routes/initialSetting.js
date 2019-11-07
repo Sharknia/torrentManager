@@ -14,30 +14,22 @@ router.get('/', function(req, res){
 router.post('/settingSave', function(req, res){
     // console.log(req.body.test.test1);
     var data = req.body.data;
-    var torrentDownloadDir = data.torrentDownloadDir;
-    var tvProgramDir = data.tvProgramDir;
-    var movieDir = data.movieDir;
     var homeDir = data.homeDir;
-    var torrentWatchDir = data.torrentWatchDir;
     
-    if(data.torrentDownloadDir == '') torrentDownloadDir = '/';
-    if(data.tvProgramDir == '') tvProgramDir = '/';
-    if(data.movieDir == '') movieDir = '/';
     if(data.homeDir == '') homeDir = '/';
-    if(data.torrentWatchDir == '') torrentWatchDir = '/';
 
     var db = new sqlite3.Database('./Setting.db');
     
     db.serialize(()=>{                        
         //경로 설정을 저장할 테이블 생성
         db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
-        //경로 설정 테이블에 insert
+        //경로 설정 테이블에 insert /홈은 필수 지정(main - exlporer에서 보여줄 기본 폴더로 사용), watch 폴더는 torrent 파일 업로드를 위해 이름이 필수로 필요
         var intoDirPath = db.prepare('INSERT INTO dirPathList(name, path, sortNum) VALUES(?, ?, ?)');
-        intoDirPath.run('홈' , homeDir , 1);
-        intoDirPath.run('다운로드' , torrentDownloadDir , 2);
-        intoDirPath.run('TV 폴더' , tvProgramDir , 3);
-        intoDirPath.run('영화 폴더' , movieDir , 4);
-        intoDirPath.run('WATCH 폴더' , torrentWatchDir , 5);
+        intoDirPath.run('홈' , homeDir , 0);
+        if(data.torrentDownloadDir != '') intoDirPath.run('다운로드' , data.torrentDownloadDir , 1);
+        if(data.tvProgramDir != '') intoDirPath.run('TV 폴더' , data.tvProgramDir , 2);
+        if(data.movieDir != '') intoDirPath.run('영화 폴더' , data.movieDir , 3);
+        intoDirPath.run('WATCH 폴더' , data.torrentWatchDir , 4);
         intoDirPath.finalize();
         //기본 세팅 테이블 생성
         db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER, 'salt' TEXT)");
