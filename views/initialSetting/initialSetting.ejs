@@ -132,18 +132,17 @@
                     type:"POST",
                     url:"/initialSetting/settingSave",
                     data:{
-                        "id":id,
-                        "password":password,
-                        "trId":trId,
-                        "trPw":trPw,
-                        "trPort":trPort,
-                        "torrentDownloadDir":$('#torrentDownloadDir').val(),
-                        "tvProgramDir":$('#tvProgramDir').val(),
-                        "movieDir":$('#movieDir').val(),
-                        "homeDir":$('#homeDir').val(),
-                        "torrentWatchDir":$('#torrentWatchDir').val(),
-                        "test":{
-                            "test1":"test1"
+                        "data":{
+                            "id":id,
+                            "password":password,
+                            "trId":trId,
+                            "trPw":trPw,
+                            "trPort":trPort,
+                            "torrentDownloadDir":$('#torrentDownloadDir').val(),
+                            "tvProgramDir":$('#tvProgramDir').val(),
+                            "movieDir":$('#movieDir').val(),
+                            "homeDir":$('#homeDir').val(),
+                            "torrentWatchDir":$('#torrentWatchDir').val()                           
                         }
                     },
                     success:function(result){

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
+var crypto = require('crypto');
 
 /*************  GET  *************/
 // 초기설정 페이지 접속
@@ -13,30 +13,22 @@ router.get('/', function(req, res){
 /*************  POST  *************/
 router.post('/settingSave', function(req, res){
     // console.log(req.body.test.test1);
-    var id = req.body.id;
-    var password = req.body.password;
-    var trId = req.body.trId;
-    var trPw = req.body.trPw;
-    var trPort = req.body.trPort;
-    var torrentDownloadDir = req.body.torrentDownloadDir;
-    var tvProgramDir = req.body.tvProgramDir;
-    var movieDir = req.body.movieDir;
-    var homeDir = req.body.homeDir;
-    var torrentWatchDir = req.body.torrentWatchDir;
+    var data = req.body.data;
+    var torrentDownloadDir = data.torrentDownloadDir;
+    var tvProgramDir = data.tvProgramDir;
+    var movieDir = data.movieDir;
+    var homeDir = data.homeDir;
+    var torrentWatchDir = data.torrentWatchDir;
     
-    if(torrentDownloadDir == '') torrentDownloadDir = '/';
-    if(tvProgramDir == '') tvProgramDir = '/';
-    if(movieDir == '') movieDir = '/';
-    if(homeDir == '') homeDir = '/';
-    if(torrentWatchDir == '') torrentWatchDir = '/';
+    if(data.torrentDownloadDir == '') torrentDownloadDir = '/';
+    if(data.tvProgramDir == '') tvProgramDir = '/';
+    if(data.movieDir == '') movieDir = '/';
+    if(data.homeDir == '') homeDir = '/';
+    if(data.torrentWatchDir == '') torrentWatchDir = '/';
 
     var db = new sqlite3.Database('./Setting.db');
 
-    db.serialize(function(){
-        //기본 세팅 테이블 생성
-        db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER)");
-        //기본 세팅 테이블에 insert
-        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort) VALUES('"+id+"','"+password+"','"+trId+"','"+trPw+"','"+trPort+"')");
+    db.serialize(()=>{                        
         //경로 설정을 저장할 테이블 생성
         db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
         //경로 설정 테이블에 insert
@@ -47,21 +39,38 @@ router.post('/settingSave', function(req, res){
         intoDirPath.run('영화 폴더' , movieDir , 4);
         intoDirPath.run('WATCH 폴더' , torrentWatchDir , 5);
         intoDirPath.finalize();
+        //기본 세팅 테이블 생성
+        db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER, 'salt' TEXT)");
+        //salt 만들기
+        crypto.randomBytes(64, (err, buf) =>{
+            if(err) res.send(err);
+            crypto.pbkdf2(data.password, buf.toString('base64'), 111900, 64, 'sha512', (err, key) => {
+                var salt = key.toString('base64');
+                //비밀번호 암호화
+                crypto.pbkdf2(data.password, salt, 111900, 64, 'sha512', (err, derivedKey)=>{
+                    if(err) res.send(err);
+                    else{
+                        //기본 세팅 테이블에 insert
+                        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort, salt) VALUES('"+data.id+"','"+derivedKey+"','"+data.trId+"','"+data.trPw+"','"+data.trPort+"','"+salt+"')");
+                        db.close();
+                        res.send("true");
+                    }
+                });
+            });
+        });
     });
-    db.close();
-    res.send("true");
 });
 
-router.post('/pathListManager', function(req, res){
-    var name = req.body.name;
-    var path = req.body.path;
-    var sql = '';
-    sql += "INSERT INTO dirPathList(name, path) VALUES ";
-    sql += "("+name+","+path+")";
-    db.serialize(function(){
-        db.run(sql);
-    });
-    db.close();
-    res.send("true");
-});
+// router.post('/pathListManager', function(req, res){
+//     var name = req.body.name;
+//     var path = req.body.path;
+//     var sql = '';
+//     sql += "INSERT INTO dirPathList(name, path) VALUES ";
+//     sql += "("+name+","+path+")";
+//     db.serialize(function(){
+//         db.run(sql);
+//     });
+//     db.close();
+//     res.send("true");
+// });
 module.exports = router;

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
+var crypto = require('crypto');
 
 //로그인 페이지
 router.get('/', function(req, res){
@@ -35,28 +35,29 @@ router.post('/login', function(req, res){
     var date = new Date;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
-        db.get("SELECT id, password FROM defaultSetting", [], (err, row) => {
+        db.get("SELECT id, password, salt FROM defaultSetting", [], (err, row) => {
             if(err){
                 return console.error(err.message);
             }
             else{
-                if(id != row.id){
-                    res.send("id");
-                }
-                else if(password != row.password){
-                    res.send("password")
-                }
-                else{
-                    var ip = req.connection.remoteAddress;
-                    req.session.info = {
-                        id : id,
-                        lastConnTime : date,
-                        ip : ip
+                crypto.pbkdf2(password, row.salt, 111900, 64, 'sha512', (err, derivedKey)=>{
+                    if(id != row.id){
+                        res.send("id");
                     }
-                    console.log(req.session.info);
-                    req.session.save(function(){});
-                    res.send("true");
-                };
+                    else if(derivedKey != row.password){
+                        res.send("password")
+                    }
+                    else{
+                        req.session.info = {
+                            id : id,
+                            lastConnTime : date,
+                            ip : req.connection.remoteAddress
+                        }
+                        console.log(req.session.info);
+                        req.session.save(function(){});
+                        res.send("true");
+                    };
+                });
             }
         });
     });
