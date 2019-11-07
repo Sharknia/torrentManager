@@ -130,26 +130,21 @@
                     var favoriteList = '';
                     var fastMoveList = '';
                     for (var i in result.data){
-                        dir.nameList(result.data[i].name);
-                        dir.pathList(result.data[i].path);
-                        favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+result.data[i].path+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>';
-                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+result.data[i].path+'\');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>'+result.data[i].name+'로</a></li>'
-                    }
-                    $('#favoriteMenu').append(favoriteList);
-                    $('#fastMoveMenu').append(fastMoveList);
-                    //pwd 설정
-                    for (var i in result.data){
+                        //pwd 설정
                         if(result.data[i].name == '홈'){
                             dir.pwd(result.data[i].path);
                         }
+                        dir.nameList(result.data[i].name);
+                        dir.pathList(result.data[i].path);
+                        favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+result.data[i].path+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>';
+                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+result.data[i].path+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>'
                     }
-                    // console.log(dir.nameList());
-                    // console.log(dir.pathList()[1]);
-                    dir.download(result.dirSetting.torrentDownloadDir);
+                    $('#favoriteMenu').append(favoriteList);
+                    $('#fastMoveMenu').append(fastMoveList);
+
                     dir.tv(result.dirSetting.tvProgramDir);
                     dir.movie(result.dirSetting.movieDir);
                     dir.personal(result.dirSetting.personalDir);
-                    dir.watch(result.dirSetting.torrentWatchDir);
                 }
                 else{
                     alert(result.data);
@@ -313,23 +308,28 @@
         var movie;      //영화 폴더 
         var personal;   //개인용 폴더
         var download;   //토렌트 다운로드 폴더
+        var watch;      //토렌트 Watch 폴더
 
         var nameList = [];
         var pathList = [];
-
+        
+        //DB로부터 받아온 폴더들의 이름이 저장됨
         this.nameList = function(val){
             if(val != null) nameList.push(val);
             return nameList;
         }
+        //DB로부터 받아온 폴더들의 경로가 저장됨
         this.pathList = function(val){
             if(val != null) pathList.push(val);
             return pathList;
         }
 
+        //현재 보고 있는 경로가 저장됨
         this.pwd = function(val){
             if(val != null) pwd = val;
             return pwd;
         }
+        //티비, 영화, 개인 폴더 저장, 삭제예정
         this.tv = function(val){
             if(val != null) tv = val;
             return tv;
@@ -342,14 +342,13 @@
             if(val != null) personal = val;
             return personal;
         }
+        
         this.watch = function(val){
             if(val != null) watch = val;
             return watch;
         }
-        this.download = function(val){
-            if(val != null) download = val;
-            return download;
-        }
+
+        //pwd 갱신
         this.pwdPop = function(){
             var temp = pwd.split('/');
             temp.pop();
