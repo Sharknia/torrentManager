@@ -77,10 +77,11 @@
                     <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="fastMoveBtn" data-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-fighter-jet"></i>빠른이동<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('17');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a></li>
+                    <ul class="dropdown-menu" id="fastMoveMenu" role="menu" aria-labelledby="dropdownMenu">
+                        <!-- 빠른이동 메뉴에 추가될 내용 -->
+                        <!-- <li role="presentation"><a type="button" tabindex="-1" onclick="control('17');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a></li>
                         <li role="presentation"><a type="button" tabindex="-1" onclick="control('18');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>TV 폴더로</a></li>
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('19');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a></li>
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('19');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a></li> -->
                     </ul>
                 </div>
                 <div class="dropdown btn-group" role="group">
@@ -88,7 +89,7 @@
                             <i class="far fa-star"></i>즐겨찾기<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" id="favoriteMenu" role="menu" aria-labelledby="dropdownMenu">
-
+                        <!-- 즐겨찾기 메뉴에 추가될 내용 -->
                     </ul>
                 </div>
                 <span class="button-split"> | </span>
@@ -127,12 +128,15 @@
             success:function(result){
                 if($.trim(result.result) == "true"){
                     var favoriteList = '';
+                    var fastMoveList = '';
                     for (var i in result.data){
                         dir.nameList(result.data[i].name);
                         dir.pathList(result.data[i].path);
                         favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+result.data[i].path+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>';
+                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+result.data[i].path+'\');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>'+result.data[i].name+'로</a></li>'
                     }
                     $('#favoriteMenu').append(favoriteList);
+                    $('#fastMoveMenu').append(fastMoveList);
                     //pwd 설정
                     for (var i in result.data){
                         if(result.data[i].name == '홈'){
@@ -624,7 +628,7 @@
         var sendCmd = '';
         //1 : 시작 2 : 정지 3: 삭제 4: 로컬에서도 삭제 5 : 전체 시작 6 : 전체 정지 
         //7: 영화폴더로 8: TV폴더로 9:개인폴더로 10: minidlna 새로고침
-        //11 : 잘라내기, 12 : 붙여넣기 14 파일삭제 17 18 19 파일이동
+        //11 : 잘라내기, 12 : 붙여넣기 14 파일삭제
 
         //10 미만 : 트랜스미션 명령어
         if(cmd < 10){
@@ -663,9 +667,6 @@
                     sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
                 }
                 else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
-                else if(cmd == 17) sendCmd = "sudo mv " + targetList.refresh(select) + ' ' + dir.movie();
-                else if(cmd == 18) sendCmd = "sudo mv " + targetList.refresh(select) + ' ' + dir.tv();
-                else if(cmd == 19) sendCmd = "sudo mv " + targetList.refresh(select) + ' ' + dir.personal();
             }
         }
 
@@ -863,6 +864,26 @@
                 }
             }
         });
+    }
+
+    var fastMove = function fastMove(path){
+        var sendCmd = "sudo mv " + targetList.refresh('sh') + ' ' + path;
+        $.ajax({
+            type:"POST",
+            url:"/control",
+            data:{
+                select : "sh",
+                cmd : sendCmd
+            },
+            success:function(result){
+                if($.trim(result.result) == 'err' || $.trim(result.result) == 'stderr'){
+                    alert(result.data);
+                }
+                else{
+                    explorer();
+                }
+            }
+        })
     }
 </script>
 
