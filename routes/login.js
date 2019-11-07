@@ -39,6 +39,7 @@ router.post('/login', function(req, res){
                 return console.error(err.message);
             }
             else{
+                //비밀번호 암호화
                 const hash = crypto.pbkdf2Sync(password, row.salt, 111900, 64, 'sha512').toString('hex');
                 if(id != row.id) res.send('id');
                 else if(hash != row.password) res.send('password');
@@ -53,25 +54,6 @@ router.post('/login', function(req, res){
                     db.close();
                     res.send("true");
                 }
-                // crypto.pbkdf2(password, row.salt, 111900, 64, 'sha512', (err, derivedKey)=>{
-                //     if(id != row.id){
-                //         res.send("id");
-                //     }
-                //     else if(derivedKey != row.password){
-                //         res.send("password")
-                //     }
-                //     else{
-                //         req.session.info = {
-                //             id : id,
-                //             lastConnTime : date,
-                //             ip : req.connection.remoteAddress
-                //         }
-                //         console.log(req.session.info);
-                //         req.session.save(function(){});
-                //         db.close();
-                //         res.send("true");
-                //     };
-                // });
             }
         });
     });
