@@ -194,6 +194,7 @@ router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.get("SELECT name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
+            console.log(row);
             var data = {};
             if(err){
                 data = {

@@ -129,6 +129,7 @@
             success:function(result){
                 if($.trim(result.result) == "true"){
                     for (var i in result.data){
+                        console.log(result.data);
                         console.log(result.data[i].name);
                         console.log(result.data[i].path);
                     }
