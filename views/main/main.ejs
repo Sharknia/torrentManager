@@ -128,20 +128,18 @@
             url:"/main/getDefaultSetting",
             success:function(result){
                 if($.trim(result.result) == "true"){
-                    // for (var i in result.data){
-                    //     console.log(result.data[i].name);
-                    //     console.log(result.data[i].path);
-                    // }
+                    for (var i in result.data){
+                        dir.nameList(result.data[i].name);
+                        dir.pathList(result.data[i].path);
+                    }
                     //pwd 설정
                     for (var i in result.data){
                         if(result.data[i].name == '홈'){
                             dir.pwd(result.data[i].path);
                         }
                     }
-                    dir.nameList(result.data.name);
-                    dir.pathList(result.data.path);
                     console.log(dir.nameList());
-                    console.log(dir.pathList());
+                    console.log(dir.pathList()[1]);
                     // dir.pwd(result.dirSetting.torrentDownloadDir);
                     dir.download(result.dirSetting.torrentDownloadDir);
                     dir.tv(result.dirSetting.tvProgramDir);
@@ -316,11 +314,11 @@
         var pathList = [];
 
         this.nameList = function(val){
-            if(val != null) nameList = val;
+            if(val != null) nameList.push(val);
             return nameList;
         }
         this.pathList = function(val){
-            if(val != null) pathList = val;
+            if(val != null) pathList.push(val);
             return pathList;
         }
 
