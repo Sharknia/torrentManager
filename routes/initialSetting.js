@@ -42,22 +42,28 @@ router.post('/settingSave', function(req, res){
         //기본 세팅 테이블 생성
         db.run("CREATE TABLE 'defaultSetting'('id' TEXT NOT NULL PRIMARY KEY, 'password' TEXT, 'trId' TEXT, 'trPw' TEXT,'trPort' INTEGER, 'salt' TEXT)");
         //salt 만들기
-        crypto.randomBytes(64, (err, buf) =>{
-            if(err) res.send(err);
-            crypto.pbkdf2(data.password, buf.toString('base64'), 111900, 64, 'sha512', (err, key) => {
-                var salt = key.toString('base64');
-                //비밀번호 암호화
-                crypto.pbkdf2(data.password, salt, 111900, 64, 'sha512', (err, derivedKey)=>{
-                    if(err) res.send(err);
-                    else{
-                        //기본 세팅 테이블에 insert
-                        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort, salt) VALUES('"+data.id+"','"+derivedKey+"','"+data.trId+"','"+data.trPw+"','"+data.trPort+"','"+salt+"')");
-                        db.close();
-                        res.send("true");
-                    }
-                });
-            });
-        });
+        const buf = crypto.randomBytes(128).toString('base64');
+        const salt = crypto.pbkdf2Sync(data.password, buf, 111900, 64, 'sha512').toString('hex');
+        const hash = crypto.pbkdf2Sync(data.password, salt, 111900, 64, 'sha512').toString('hex');
+        db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort, salt) VALUES('"+data.id+"','"+hash+"','"+data.trId+"','"+data.trPw+"','"+data.trPort+"','"+salt+"')");
+        db.close();
+        res.send("true");
+        // crypto.randomBytes(64, (err, buf) =>{
+        //     if(err) res.send(err);
+        //     crypto.pbkdf2(data.password, buf.toString('base64'), 111900, 64, 'sha512', (err, key) => {
+        //         var salt = key.toString('base64');
+        //         //비밀번호 암호화
+        //         crypto.pbkdf2(data.password, salt, 111900, 64, 'sha512', (err, derivedKey)=>{
+        //             if(err) res.send(err);
+        //             else{
+        //                 //기본 세팅 테이블에 insert
+        //                 db.run("INSERT INTO defaultSetting(id, password, trId, trPw, trPort, salt) VALUES('"+data.id+"','"+derivedKey+"','"+data.trId+"','"+data.trPw+"','"+data.trPort+"','"+salt+"')");
+        //                 db.close();
+        //                 res.send("true");
+        //             }
+        //         });
+        //     });
+        // });
     });
 });
 

@@ -32,7 +32,6 @@ router.get('/logout', function(req, res){
 router.post('/login', function(req, res){
     var id = req.body.id;
     var password = req.body.password;
-    var date = new Date;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.get("SELECT id, password, salt FROM defaultSetting", [], (err, row) => {
@@ -40,28 +39,42 @@ router.post('/login', function(req, res){
                 return console.error(err.message);
             }
             else{
-                crypto.pbkdf2(password, row.salt, 111900, 64, 'sha512', (err, derivedKey)=>{
-                    if(id != row.id){
-                        res.send("id");
+                const hash = crypto.pbkdf2Sync(password, row.salt, 111900, 64, 'sha512').toString('hex');
+                if(id != row.id) res.send('id');
+                else if(hash != row.password) res.send('password');
+                else{
+                    req.session.info = {
+                        id : id,
+                        lastConnTime : new Date,
+                        ip : req.connection.remoteAddress
                     }
-                    else if(derivedKey != row.password){
-                        res.send("password")
-                    }
-                    else{
-                        req.session.info = {
-                            id : id,
-                            lastConnTime : date,
-                            ip : req.connection.remoteAddress
-                        }
-                        console.log(req.session.info);
-                        req.session.save(function(){});
-                        res.send("true");
-                    };
-                });
+                    console.log(req.session.info);
+                    req.session.save(function(){});
+                    db.close();
+                    res.send("true");
+                }
+                // crypto.pbkdf2(password, row.salt, 111900, 64, 'sha512', (err, derivedKey)=>{
+                //     if(id != row.id){
+                //         res.send("id");
+                //     }
+                //     else if(derivedKey != row.password){
+                //         res.send("password")
+                //     }
+                //     else{
+                //         req.session.info = {
+                //             id : id,
+                //             lastConnTime : date,
+                //             ip : req.connection.remoteAddress
+                //         }
+                //         console.log(req.session.info);
+                //         req.session.save(function(){});
+                //         db.close();
+                //         res.send("true");
+                //     };
+                // });
             }
         });
     });
-    db.close();
 });
 
 module.exports = router;
