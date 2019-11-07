@@ -213,11 +213,6 @@ router.post('/getDefaultSetting', function(req, res){
             res.json(data);
         });
     });
-    // var data = {
-    //     "result":"true",
-    //     "dirSetting":personalData.dirSetting
-    // }
-    // res.json(data);
 });
 
 module.exports = router;

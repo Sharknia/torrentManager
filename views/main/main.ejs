@@ -128,12 +128,20 @@
             url:"/main/getDefaultSetting",
             success:function(result){
                 if($.trim(result.result) == "true"){
+                    // for (var i in result.data){
+                    //     console.log(result.data[i].name);
+                    //     console.log(result.data[i].path);
+                    // }
+                    //pwd 설정
                     for (var i in result.data){
-                        console.log(result.data);
-                        console.log(result.data[i].name);
-                        console.log(result.data[i].path);
+                        if(result.data[i].name == '홈'){
+                            dir.pwd(result.data[i].path);
+                        }
                     }
-                    dir.pwd(result.dirSetting.torrentDownloadDir);
+                    dir.nameList.val(result.data.name);
+                    dir.pathList.val(result.data.path);
+                    console.log(dir.nameList.val());
+                    // dir.pwd(result.dirSetting.torrentDownloadDir);
                     dir.download(result.dirSetting.torrentDownloadDir);
                     dir.tv(result.dirSetting.tvProgramDir);
                     dir.movie(result.dirSetting.movieDir);
@@ -302,6 +310,18 @@
         var movie;      //영화 폴더 
         var personal;   //개인용 폴더
         var download;   //토렌트 다운로드 폴더
+
+        var nameList = [];
+        var pathList = [];
+
+        this.nameList = function(val){
+            if(val != null) nameList = val;
+            return nameList;
+        }
+        this.pathList = function(val){
+            if(val != null) pathList = val;
+            return pathList;
+        }
 
         this.pwd = function(val){
             if(val != null) pwd = val;
