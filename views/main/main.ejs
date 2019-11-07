@@ -704,6 +704,7 @@
         }
         //폴더 이동이 있다 --> 입력이 있다 --> 해당 디렉토리의 이름을 pwd에 푸쉬해서 pwd를 최신화한다.
         else if(openDir != null){
+            alert(openDir);
             //풀 경로(ex: /HDD/torrent/download 를 변수로 집어넣으면 그 폴더로 이동한다.)
             if(openDir.split('/').length > 2){
                 dir.pwd(openDir);
@@ -743,7 +744,6 @@
                         }
                     }
                     //디렉토리 목록, 파일 목록을 만든다.
-                    alert(dirList);
                     for (var i in dirList)
                     {
                         list += '<tr>';
