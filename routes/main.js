@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var personalData = require('../config/personalData.js');
+var sqlite3 = require('sqlite3').verbose();
 //쉘에 명령어 줄때 필요
 var exec =require('child_process').exec;
 //웹 크롤링에 필요
@@ -190,11 +191,32 @@ router.post('/torrentSearch', function(req, res){
 
 //main 페이지 기본 세팅값 반환
 router.post('/getDefaultSetting', function(req, res){
-    var data = {
-        "result":"true",
-        "dirSetting":personalData.dirSetting
-    }
-    res.json(data);
+    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    db.serialize(() => {
+        db.get("SELECT name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
+            var data = {};
+            if(err){
+                data = {
+                    "result":"false",
+                    "data":err.message
+                }
+            }
+            else{
+                data = {
+                    "result":"true",
+                    "data":row,
+                    "dirSetting":personalData.dirSetting
+                }
+            }
+            db.close();
+            res.json(data);
+        });
+    });
+    // var data = {
+    //     "result":"true",
+    //     "dirSetting":personalData.dirSetting
+    // }
+    // res.json(data);
 });
 
 module.exports = router;

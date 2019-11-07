@@ -128,6 +128,10 @@
             url:"/main/getDefaultSetting",
             success:function(result){
                 if($.trim(result.result) == "true"){
+                    for (var i in result.data){
+                        console.log(result.data[i].name);
+                        console.log(result.data[i].path);
+                    }
                     dir.pwd(result.dirSetting.torrentDownloadDir);
                     dir.download(result.dirSetting.torrentDownloadDir);
                     dir.tv(result.dirSetting.tvProgramDir);
