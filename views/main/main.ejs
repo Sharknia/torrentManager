@@ -5,40 +5,6 @@
         margin:1px;
     }
 </style>
-<script>
-    $(document).ready(function () {
-        $("#torrentTitle").focus();
-        //페이지가 처음 로딩될 때만 서버에서 기본 세팅값을 로딩한다.
-        $.ajax({
-            type:"POST",
-            url:"/main/getDefaultSetting",
-            success:function(result){
-                if($.trim(result.result) == "true"){
-                    for (var i in result.data){
-                        dir.nameList(result.data[i].name);
-                        dir.pathList(result.data[i].path);
-                    }
-                    //pwd 설정
-                    for (var i in result.data){
-                        if(result.data[i].name == '홈'){
-                            dir.pwd(result.data[i].path);
-                        }
-                    }
-                    // console.log(dir.nameList());
-                    // console.log(dir.pathList()[1]);
-                    dir.download(result.dirSetting.torrentDownloadDir);
-                    dir.tv(result.dirSetting.tvProgramDir);
-                    dir.movie(result.dirSetting.movieDir);
-                    dir.personal(result.dirSetting.personalDir);
-                    dir.watch(result.dirSetting.torrentWatchDir);
-                }
-                else{
-                    alert(result.data);
-                }
-            }
-        });
-    });
-</script>
 <!-- CONTENTS -->
 <div class="container">
     <div class="page-header">
@@ -121,9 +87,8 @@
                     <button class="btn btn-default dropdown-toggle btn-xs" type="button" id="fastMoveBtn" data-toggle="dropdown" aria-expanded="false">
                             <i class="far fa-star"></i>즐겨찾기<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('<%=dir.pathList()[1]%>');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>다운로드</a></li>
+                    <ul class="dropdown-menu" id="favoriteMenu" role="menu" aria-labelledby="dropdownMenu">
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/torrent/download/');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>다운로드</a></li>
                         <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/Shared/');" class="btn btn-default btn-xs"><i class="fas fa-share-alt"></i></i>공유폴더</a></li>
                         <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/Personal/');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인폴더</a></li>
                     </ul>
@@ -155,6 +120,41 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+        $("#torrentTitle").focus();
+        //페이지가 처음 로딩될 때만 서버에서 기본 세팅값을 로딩한다.
+        $.ajax({
+            type:"POST",
+            url:"/main/getDefaultSetting",
+            success:function(result){
+                if($.trim(result.result) == "true"){
+                    var favoriteList = '';
+                    for (var i in result.data){
+                        dir.nameList(result.data[i].name);
+                        dir.pathList(result.data[i].path);
+                        favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+result.data[i].path+'\');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>'+result.data[i].name+'</a></li>';
+                    }
+                    $('#favoriteMenu').append(favoriteList);
+                    //pwd 설정
+                    for (var i in result.data){
+                        if(result.data[i].name == '홈'){
+                            dir.pwd(result.data[i].path);
+                        }
+                    }
+                    // console.log(dir.nameList());
+                    // console.log(dir.pathList()[1]);
+                    dir.download(result.dirSetting.torrentDownloadDir);
+                    dir.tv(result.dirSetting.tvProgramDir);
+                    dir.movie(result.dirSetting.movieDir);
+                    dir.personal(result.dirSetting.personalDir);
+                    dir.watch(result.dirSetting.torrentWatchDir);
+                }
+                else{
+                    alert(result.data);
+                }
+            }
+        });
+    });
 
     //file 이름 앞 뒤에 "를 붙여 리눅스가 하나의 이름으로 인식하게 하는 파일명을 만들어주는 함수
     var fullname = function fullname(name){
