@@ -88,10 +88,10 @@
                             <i class="far fa-star"></i>즐겨찾기<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        <%for (var i = 0 ; i < dir.nameList().length ; i++){%>
+                        <!-- <%for (var i = 0 ; i < dir.nameList().length ; i++){%>
                             <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('<%=dir.pathList()[i]%>');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i><%=dir.nameList()[i]%></a></li>
-                        <%}%>
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/torrent/download/');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>다운로드</a></li>
+                        <%}%> -->
+                        <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('<%=dir.pathList()[1]%>');" class="btn btn-default btn-xs"><i class="fas fa-file-download"></i>다운로드</a></li>
                         <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/HDD/Shared/');" class="btn btn-default btn-xs"><i class="fas fa-share-alt"></i></i>공유폴더</a></li>
                         <li role="presentation"><a type="button" tabindex="-1" onclick="explorer('/Personal/');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인폴더</a></li>
                     </ul>
