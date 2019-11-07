@@ -138,9 +138,10 @@
                             dir.pwd(result.data[i].path);
                         }
                     }
-                    dir.nameList.val(result.data.name);
-                    dir.pathList.val(result.data.path);
-                    console.log(dir.nameList.val());
+                    dir.nameList(result.data.name);
+                    dir.pathList(result.data.path);
+                    console.log(dir.nameList());
+                    console.log(dir.pathList());
                     // dir.pwd(result.dirSetting.torrentDownloadDir);
                     dir.download(result.dirSetting.torrentDownloadDir);
                     dir.tv(result.dirSetting.tvProgramDir);
