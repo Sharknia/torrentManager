@@ -365,7 +365,7 @@
                 else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
             }
         }
-
+        alert("타겟리스트 길이 : " + targetList.val().length);
         if(cmd != 10 && targetList.val().length == 0 && cutFile.val() == ''){
             alert("선택된 항목이 없습니다.")
             return;
