@@ -663,6 +663,7 @@
                     return;
                 }
                 else if(cmd == 12) {
+                    alert(cutFile.val())
                     sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
                 }
                 else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
