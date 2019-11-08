@@ -96,26 +96,24 @@ var rename = function rename(select, oldFileName){
 
         if(names[0].split('.')[names[0].split('.').length-1] == 'smi'){
             //첫번째 이름names[0]이 자막이라면
-            oldFileName += names[0];
+            oldFileName += fullname(names[0]);
             for (var i = 0 ; i < names[1].split('.').length - 1 ; i++){
-                newFileName += names[1].split('.')[i];
+                newFileName += '"' + names[1].split('.')[i];
             }
-            newFileName += '.smi';
+            newFileName += '.smi"';
         }
         else if(names[1].split('.')[names[1].split('.').length-1] == 'smi'){
             //두번째 이름names[1]이 자막이라면
             oldFileName += names[1];
             for (var i = 0 ; i < names[0].split('.').length - 1 ; i++){
-                newFileName += names[0].split('.')[i];
+                newFileName += '"' + names[0].split('.')[i];
             }
-            newFileName += '.smi';
+            newFileName += '.smi"';
         }
         else{
             alert("자막 파일이 없습니다!");
             return;
         }
-        oldFileName = fullname(oldFileName);
-        newFileName = fullname(newFileName);
     }
     else{
         //파일 이름 변경인 경우, 파일 이름이 있다면 파일 이름 변경 메뉴 띄우기
