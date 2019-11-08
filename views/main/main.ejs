@@ -664,14 +664,13 @@
                 }
                 else if(cmd == 12) {
                     sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
-                    alert(sendCmd);
+                    alert("sendCmd : " + sendCmd);
                 }
                 else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
             }
         }
 
-        if(cmd != 10 && (targetList.val().length == 0 || cutFile.val() == '')){
-            alert(cutFile.val());
+        if(cmd != 10 && targetList.val().length == 0 && cutFile.val() == ''){
             alert("선택된 항목이 없습니다.")
             return;
         }
