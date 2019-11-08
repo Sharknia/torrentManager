@@ -30,6 +30,7 @@ var explorer = function explorer(openDir){
         "cmd":"ls -F " + dir.pwd()
     }
     var result = ajax('/control', data);
+    console.log(result);
     if($.trim(result.result) == "true"){
         var dirList = [];
         var fileList = [];
