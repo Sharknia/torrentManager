@@ -5,6 +5,66 @@ $("#torrentTitle").keyup(function(e){
     if(e.keyCode == 13) torrentSearch();
 });
 
+//마그넷 주소 리스트
+function MagnetList() { // var mglist;
+    var magnetList;
+
+    this.val = function(val) {
+        if(val != null) magnetList = val;
+        return magnetList;
+    }
+}
+const magnetList = new MagnetList();
+
+//검색한 파일 명
+function TorrentTitle() { // var mglist;
+    var torrentTitle = '';
+
+    this.val = function(val) {
+        if(val != null) torrentTitle = val;
+        return torrentTitle;
+    }
+}
+const torrentTitle = new TorrentTitle();
+
+//검색결과의 총 페이지수
+function TotalPage(){   // var totalpage;
+    var totalPage = 0;
+    
+    this.val = function(val){
+        if(val != null) totalPage = val;
+        return totalPage;
+    }
+}
+const totalPage = new TotalPage();
+
+//출력할 페이지 넘버
+function Page(){    // var page = 1;
+    var page = 1;
+
+    this.increase = function(){
+        return ++page;
+    }
+    this.decrease = function(){
+        return --page;
+    }
+    this.nextPage = function(){
+        page += 5;
+        if(page > totalPage.val()) page = totalPage.val();
+        return page;
+    }
+    this.prevPage = function(){
+        page -= 5;
+        if(page < 1) page = 1;
+        return page;
+    }
+    this.val = function(val){
+        if(val != null) page = val;
+        return page;
+    }
+}
+const page = new Page();
+
 //Torrent 검색
 var torrentSearch = function torrentSearch(trListPaging){
     if($("#torrentTitle").val() == '' && torrentTitle.val() == ''){
