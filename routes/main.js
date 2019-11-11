@@ -216,7 +216,7 @@ router.post('/getDefaultSetting', function(req, res){
 });
 
 //즐겨찾기 커스텀 기능
-router.posd('/favoriteUpdate', function(req, res){
+router.post('/favoriteUpdate', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     var select = req.body.select;
     var path = req.body.path;
@@ -230,7 +230,7 @@ router.posd('/favoriteUpdate', function(req, res){
     else if(select == 'del'){
         sql = "DELETE FROM dirPathList WHERE path = '" + path + "'";
     }
-    
+
     db.serialize(()=>{
         db.run(sql);
         db.close();
