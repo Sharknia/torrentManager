@@ -1,4 +1,15 @@
 <script>
+function IsFavorite(){
+    var isFavorite = false;
+
+    //pwd가 favorite에 있다면 true
+    this.val = function(val){
+        if(val!=null) isFavorite = val;
+        return isFavorite;
+    }
+}
+const isFavorite = new IsFavorite();
+
 /* Explorer Tab */
 //pwd의 내용으로 새로고침한다.
 var explorer = function explorer(openDir){
@@ -23,15 +34,13 @@ var explorer = function explorer(openDir){
     list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
     list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'');
     //즐겨찾기 마크 표시
-    var isFavorite = false;
     for (var i in dir.pathList()){
-        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite = true;
-        console.log(dir.pathList()[i] + ' vs ' + dir.pwd().replace(/"/gi,'') + ' ::: ' + isFavorite);
+        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite.val(true);
     }
     //즐찾 목록에 있다면 꽉 찬 별
-    if(isFavorite) list += '<a style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
+    if(isFavorite.val()) list += '<a onclick="favoriteCustom();" style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
     //즐찾 목록에 없다면 빈 별
-    else list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
+    else list += '<a onclick="favoriteCustom();" style="float:right"><i class="far fa-star" style="color:black"></i></a>';
     list += '</th></tr>';
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
@@ -180,6 +189,7 @@ var rename = function rename(select, oldFileName){
     });
 }
 
+//빠른 이동 function
 var fastMove = function fastMove(path){
     var tL = targetList.refresh('sh');
     if(tL == ''){
@@ -202,6 +212,14 @@ var fastMove = function fastMove(path){
                 explorer();
             }
         }
-    })
+    });
+
+    var favoriteCustom = function favoriteCustom(){
+        alert(isFavorite.val());
+        //true라면 클릭했을 때 즐겨찾기를 해제한다. 
+        if(isFavorite.val()) {}
+        //false라면 클릭했을 때 즐겨찾기 추가 메뉴를 띄운다. 
+        else {}
+    }
 }
 </script>
