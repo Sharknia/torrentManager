@@ -36,12 +36,12 @@ var explorer = function explorer(openDir){
     //즐겨찾기 마크 표시
     isFavorite.val(false);
     for (var i in dir.pathList()){
-        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite.val(true);
+        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'') || dir.pathList()[i] == dir.pwd()) isFavorite.val(true);
     }
     //즐찾 목록에 있다면 꽉 찬 별
-    if(isFavorite.val()) list += '<a onclick="favoriteCustom();" style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
+    if(isFavorite.val()) list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="fas fa-star" style="color:black"></i></a>';
     //즐찾 목록에 없다면 빈 별
-    else list += '<a onclick="favoriteCustom();" style="float:right"><i class="far fa-star" style="color:black"></i></a>';
+    else list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="far fa-star" style="color:black"></i></a>';
     list += '</th></tr>';
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
@@ -216,11 +216,73 @@ var fastMove = function fastMove(path){
     });
 }
 
-var favoriteCustom = function favoriteCustom(){
-    alert(isFavorite.val());
+//즐겨찾기 추가/해제 함수
+var favoriteCustom = function favoriteCustom(isAdd){
     //true라면 클릭했을 때 즐겨찾기를 해제한다. 
-    if(isFavorite.val()) {}
-    //false라면 클릭했을 때 즐겨찾기 추가 메뉴를 띄운다. 
-    else {}
+    if(isFavorite.val()){
+        if(confirm("정말로 즐겨찾기를 해제합니까?")){
+            $.ajax({
+                type:"POST",
+                url:"/main/favoriteUpdate",
+                data:{
+                    select:"del",
+                    path:dir.pwd()
+                },
+                success:function(result){
+                    if($.trim(result.result) == 'true'){
+                        explorer();
+                    }
+                    else{
+                        alert("err!");
+                        return;
+                    }
+                }
+            });
+        }
+    }
+    //false이고 isAdd가 빈 값이면 클릭했을 때 즐겨찾기 추가 메뉴(즐겨찾기 이름 입력)를 띄운다. 
+    else if(isAdd == null){
+        var modalBody = '';
+        //모달 타이틀
+        $("#modal-title").html("즐겨찾기 추가");
+        
+        //모달 바디
+        modalBody += '<div class="input-group">';
+        modalBody += '<input type="text" class="form-control" placeholder="즐겨찾기 이름을 입력해주세요." name="favoriteName" id="favoriteName">';
+        modalBody += '<span class="input-group-btn">';
+        modalBody += '<button class="btn btn-warning" onclick="favoriteCustom(\'add\');" type="button" data-dismiss="modal">추가</button>';
+        modalBody += '</span></div>'
+
+        $("#modal-body").html(modalBody);
+        $("#myModal").modal("show");
+        return;
+    }
+    //현재 즐겨찾기가 아니고(false)이고 isAdd가 빈값이 아니라면 즐겨찾기를 등록한다. 
+    else{
+        if($("#favoriteName").val() == ''){
+            alert("즐겨찾기 이름을 입력해주세요.");
+        }
+        else{
+            $.ajax({
+                type:"POST",
+                url:"/main/favoriteUpdate",
+                data:{
+                    selec:"add",
+                    path:dir.pwd(),
+                    name:$("#favoriteName").val()
+                },
+                success:function(result){
+                    if($.trim(result.result) == 'true'){
+                        alert("즐겨찾기가 추가되었습니다. ");
+                        explorer();
+                    }
+                    else{
+                        alert('err');
+                        return;
+                    }
+                }
+            });
+        }
+    }
 }
 </script>
