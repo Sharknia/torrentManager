@@ -220,7 +220,7 @@ var fastMove = function fastMove(path){
 var favoriteCustom = function favoriteCustom(isAdd){
     //true라면 클릭했을 때 즐겨찾기를 해제한다. 
     if(isFavorite.val()){
-        if(confirm("정말로 즐겨찾기를 해제합니까?")){
+        if(!confirm("정말로 즐겨찾기를 해제합니까?")){
             $.ajax({
                 type:"POST",
                 url:"/main/favoriteUpdate",
