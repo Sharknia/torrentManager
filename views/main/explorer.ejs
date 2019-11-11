@@ -24,9 +24,9 @@ var explorer = function explorer(openDir){
     list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'');
     //즐겨찾기 마크 표시
     var isFavorite = false;
-    for (var i in dir.nameList()){
-        console.log(dir.nameList()[i] + ' vs ' + dir.pwd().replace(/"/gi,''));
-        if(dir.nameList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite = true;
+    for (var i in dir.pathList()){
+        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite = true;
+        console.log(dir.pathList()[i] + ' vs ' + dir.pwd().replace(/"/gi,'') + ' ::: ' + isFavorite);
     }
     //즐찾 목록에 있다면 꽉 찬 별
     if(isFavorite) list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
