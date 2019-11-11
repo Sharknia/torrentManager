@@ -224,8 +224,8 @@ router.post('/favoriteUpdate', function(req, res){
     var sql = '';
 
     if(select == 'add'){
-        sql = 'INSERT INTO dirPathList(name, path) VALUES ';
-        sql += "('"+name+"', '"+path+"')";
+        sql = 'INSERT INTO dirPathList(name, path, sortNum) VALUES ';
+        sql += "('"+name+"', '"+path+"', 5)";
     }
     else if(select == 'del'){
         sql = "DELETE FROM dirPathList WHERE path = '" + path + "'";
