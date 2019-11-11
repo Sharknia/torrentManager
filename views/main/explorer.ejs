@@ -21,7 +21,8 @@ var explorer = function explorer(openDir){
     //다운로드 폴더 내 파일 목록
     $('#explorerContents').html('');
     list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
-    list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'')+'<i class="far fa-star"></i></th></tr>'
+    list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'')
+    list += '<a style="float:right"><i class="far fa-star"></i></a></th></tr>'
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
 
