@@ -29,9 +29,9 @@ var explorer = function explorer(openDir){
         console.log(dir.pathList()[i] + ' vs ' + dir.pwd().replace(/"/gi,'') + ' ::: ' + isFavorite);
     }
     //즐찾 목록에 있다면 꽉 찬 별
-    if(isFavorite == true) list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
+    if(isFavorite) list += '<a style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
     //즐찾 목록에 없다면 빈 별
-    else list += '<a style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
+    else list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
     list += '</th></tr>';
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
