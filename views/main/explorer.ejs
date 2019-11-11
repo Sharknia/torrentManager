@@ -25,6 +25,7 @@ var explorer = function explorer(openDir){
     //즐겨찾기 마크 표시
     var isFavorite = false;
     for (var i in dir.nameList()){
+        console.log(dir.nameList()[i] + ' vs ' + dir.pwd().replace(/"/gi,''));
         if(dir.nameList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite = true;
     }
     //즐찾 목록에 있다면 꽉 찬 별
