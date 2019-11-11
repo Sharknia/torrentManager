@@ -79,9 +79,6 @@
                     </button>
                     <ul class="dropdown-menu" id="fastMoveMenu" role="menu" aria-labelledby="dropdownMenu">
                         <!-- 빠른이동 메뉴에 추가될 내용 -->
-                        <!-- <li role="presentation"><a type="button" tabindex="-1" onclick="control('17');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a></li>
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('18');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>TV 폴더로</a></li>
-                        <li role="presentation"><a type="button" tabindex="-1" onclick="control('19');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a></li> -->
                     </ul>
                 </div>
                 <div class="dropdown btn-group" role="group">
@@ -142,7 +139,7 @@
                     $('#favoriteMenu').append(favoriteList);
                     $('#fastMoveMenu').append(fastMoveList);
 
-                    dir.tv(result.dirSetting.tvProgramDir);
+                    dir.tv(result.dirSetting.tvProgramDir); 
                     dir.movie(result.dirSetting.movieDir);
                     dir.personal(result.dirSetting.personalDir);
                 }
@@ -252,7 +249,8 @@
 
         var nameList = [];
         var pathList = [];
-        
+        var favoriteList = [];
+
         //DB로부터 받아온 폴더들의 이름이 저장됨
         this.nameList = function(val){
             if(val != null) nameList.push(val);
@@ -269,6 +267,7 @@
             if(val != null) pwd = val;
             return pwd;
         }
+
         //티비, 영화, 개인 폴더 저장, 삭제예정
         this.tv = function(val){
             if(val != null) tv = val;
