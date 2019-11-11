@@ -218,27 +218,14 @@ var fastMove = function fastMove(path){
 
 //즐겨찾기 추가/해제 함수
 var favoriteCustom = function favoriteCustom(isAdd){
+    var select = '';
+    var name = '';
     //true라면 클릭했을 때 즐겨찾기를 해제한다. 
     if(isFavorite.val()){
         if(!confirm("정말로 즐겨찾기를 해제합니까?")){
-            $.ajax({
-                type:"POST",
-                url:"/main/favoriteUpdate",
-                data:{
-                    select:"del",
-                    path:dir.pwd()
-                },
-                success:function(result){
-                    if($.trim(result.result) == 'true'){
-                        explorer();
-                    }
-                    else{
-                        alert("err!");
-                        return;
-                    }
-                }
-            });
+            return ;
         }
+        select = 'del';
     }
     //false이고 isAdd가 빈 값이면 클릭했을 때 즐겨찾기 추가 메뉴(즐겨찾기 이름 입력)를 띄운다. 
     else if(isAdd == null){
@@ -261,28 +248,29 @@ var favoriteCustom = function favoriteCustom(isAdd){
     else{
         if($("#favoriteName").val() == ''){
             alert("즐겨찾기 이름을 입력해주세요.");
+            return ;
         }
-        else{
-            $.ajax({
-                type:"POST",
-                url:"/main/favoriteUpdate",
-                data:{
-                    selec:"add",
-                    path:dir.pwd(),
-                    name:$("#favoriteName").val()
-                },
-                success:function(result){
-                    if($.trim(result.result) == 'true'){
-                        alert("즐겨찾기가 추가되었습니다. ");
-                        explorer();
-                    }
-                    else{
-                        alert('err');
-                        return;
-                    }
-                }
-            });
-        }
+        select = 'add';
+        name = $("#favoriteName").val();
     }
+
+    $.ajax({
+        type:"POST",
+        url:"/main/favoriteUpdate",
+        data:{
+            select:select,
+            path:dir.pwd(),
+            name:name
+        },
+        success:function(result){
+            if($.trim(result.result) == 'true'){
+                explorer();
+            }
+            else{
+                alert('err');
+                return;
+            }
+        }
+    });
 }
 </script>

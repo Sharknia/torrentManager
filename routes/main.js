@@ -215,4 +215,26 @@ router.post('/getDefaultSetting', function(req, res){
     });
 });
 
+//즐겨찾기 커스텀 기능
+router.posd('/favoriteUpdate', function(req, res){
+    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    var select = req.body.select;
+    var path = req.body.path;
+    var name = req.body.name;
+    var sql = '';
+
+    if(select == 'add'){
+        sql = 'INSERT INTO dirPathList(name, path) VALUES ';
+        sql += "('"+name+"', '"+path+"')";
+    }
+    else if(select == 'del'){
+        sql = "DELETE FROM dirPathList WHERE path = '" + path + "'";
+    }
+    
+    db.serialize(()=>{
+        db.run(sql);
+        db.close();
+        res.send("true");
+    });
+});
 module.exports = router;
