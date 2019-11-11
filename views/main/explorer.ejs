@@ -29,7 +29,7 @@ var explorer = function explorer(openDir){
         console.log(dir.pathList()[i] + ' vs ' + dir.pwd().replace(/"/gi,'') + ' ::: ' + isFavorite);
     }
     //즐찾 목록에 있다면 꽉 찬 별
-    if(isFavorite) list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
+    if(isFavorite == true) list += '<a style="float:right"><i class="far fa-star" style="color:black"></i></a>';
     //즐찾 목록에 없다면 빈 별
     else list += '<a style="float:right"><i class="fas fa-star" style="color:black"></i></a>';
     list += '</th></tr>';
