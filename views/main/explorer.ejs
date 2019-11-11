@@ -34,6 +34,7 @@ var explorer = function explorer(openDir){
     list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
     list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'');
     //즐겨찾기 마크 표시
+    isFavorite.val(false);
     for (var i in dir.pathList()){
         if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'')) isFavorite.val(true);
     }
@@ -214,7 +215,6 @@ var fastMove = function fastMove(path){
         }
     });
 }
-
 
 var favoriteCustom = function favoriteCustom(){
     alert(isFavorite.val());
