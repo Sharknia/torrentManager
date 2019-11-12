@@ -108,7 +108,7 @@ var rename = function rename(select, oldFileName){
         // 두개라면 각각의 확장자를 뗀 나머지값을 구한다. 
         // 확장자가 smi가 아닌 것의 이름으로 통일한다..!
         oldFileName = dir.pwd();
-        newFileName = dir.pwd() + '"';
+        newFileName = dir.pwd() + '"';  //fullname 만들기 위해 큰따옴표
         $("input:checkbox[name=expListCheck]:checked").each(function(){
             names.push($(this).val());
         });
@@ -127,7 +127,7 @@ var rename = function rename(select, oldFileName){
         }
         else if(names[1].split('.')[names[1].split('.').length-1] == 'smi'){
             //두번째 이름names[1]이 자막이라면
-            oldFileName += names[1];
+            oldFileName += fullname(names[1]);
             for (var i = 0 ; i < names[0].split('.').length - 1 ; i++){
                 if(i != 0) newFileName+='.';
                 newFileName += names[0].split('.')[i];
