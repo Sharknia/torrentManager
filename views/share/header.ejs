@@ -87,3 +87,26 @@ crossorigin="anonymous">
         </div>
     </nav>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<script>
+function AjaxReturnData(){
+    var result = '';
+    
+    this.val = function(val){
+        if(val != null) result = val;
+        return result;
+    }
+}
+const ajaxReturnData = new AjaxReturnData();
+
+var ajax = function ajax(url, data){
+    $.ajax({
+        type:"POST",
+        url:url,
+        data:data,
+        success:function(result){
+            ajaxReturnData.val(result);
+        }
+    });
+    return ajaxReturnData.val();
+}
+</script>
