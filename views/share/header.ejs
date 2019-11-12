@@ -104,8 +104,10 @@ var ajax = function ajax(url, data){
         url:url,
         data:data,
         success:function(result){
-            return ajaxReturnData.val(result);
+            ajaxReturnData.val(result);
+            return;
         }
     });
+    return ajaxReturnData.val();
 }
 </script>
