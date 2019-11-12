@@ -358,6 +358,10 @@
                     return;
                 }
                 else if(cmd == 12) {
+                    if(cutFile.val().length == 0 || cutFile.val() == ''){
+                        alert("선택된 항목이 없습니다. ");
+                        return;
+                    }
                     sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
                     alert("sendCmd : " + sendCmd);
                 }
