@@ -53,8 +53,8 @@ var explorer = function explorer(openDir){
         "select":"sh",
         "cmd":'ls -F ' + dir.pwd()
     });
-    console.log(result);
-    
+    console.log(ajaxReturnData.val());
+
     $.ajax({
         type:'POST',
         url:"/control",
