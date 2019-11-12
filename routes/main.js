@@ -194,7 +194,6 @@ router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.all("SELECT idx, name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
-            console.log(row[0].path);
             for (var i in row){
                 // var temp = row[i].path.split('/');
                 var temp = '/';
@@ -202,8 +201,9 @@ router.post('/getDefaultSetting', function(req, res){
                     if(row[i].path.split('/')[j] != ''){
                         temp += '"' + row[i].path.split('/')[j] + '"/';
                     }
+                    row[i].path = temp;
                 }
-                console.log("따르릉" + temp);
+                console.log(row);
             }
             var data = {};
             if(err){
