@@ -1,12 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var personalData = require('../config/personalData.js');
-//쉘에 명령어 줄때 필요
-var exec =require('child_process').exec;
-//웹 크롤링에 필요
-var client = require('cheerio-httpcli');
-var qs = require('querystring'); //url encoding
-
 
 /*************  GET  *************/
 // 리눅스 페이지 접속
