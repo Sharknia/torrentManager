@@ -20,9 +20,9 @@ var explorer = function explorer(openDir){
     }
     //폴더 이동이 있다 --> 입력이 있다 --> 해당 디렉토리의 이름을 pwd에 푸쉬해서 pwd를 최신화한다.
     else if(openDir != null){
-        //풀 경로(ex: /HDD/torrent/download 를 변수로 집어넣으면 그 폴더로 이동한다.)
+        // 숫자+// 꼴로 날아오면 해당 숫자의 dirPath로 이동한다.(ex: '1//' -> dir.pathList.val()[1]로 이동)
         if(openDir.split('/').length > 2){
-            dir.pwd(openDir);
+            dir.pwd(dir.pathList.val()[openDir.split('/')[0]]);
         }
         else{
             dir.pwdPush(fullname(openDir));
