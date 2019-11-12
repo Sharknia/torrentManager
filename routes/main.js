@@ -196,7 +196,14 @@ router.post('/getDefaultSetting', function(req, res){
         db.all("SELECT idx, name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
             console.log(row[0].path);
             for (var i in row){
-                var temp = row[i].path.split('/');
+                // var temp = row[i].path.split('/');
+                var temp = '/';
+                for (var j in row[i].path.split('/')){
+                    if(row[i].path.split('/')[j] != ''){
+                        temp += '"' + row[i].path.split('/')[j] + '"';
+                    }
+                }
+                temp += '/';
                 console.log(temp);
             }
             var data = {};
