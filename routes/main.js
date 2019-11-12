@@ -229,8 +229,7 @@ router.post('/getDefaultSetting', function(req, res){
 router.post('/favoriteUpdate', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     var select = req.body.select;
-    //DB에 저장할때는 쌍따옴표를 모두 없애준다.
-    var path = req.body.path.replace(/"/gi, '');
+    var path = req.body.path;
     var name = req.body.name;
     var sql = '';
     console.log("name : " + name + " :::: path : " + path);
@@ -240,7 +239,7 @@ router.post('/favoriteUpdate', function(req, res){
         sql += "('"+name+"', '"+path+"')";
     }
     else if(select == 'del'){
-        sql = "DELETE FROM dirPathList WHERE path = '" + path + "' and name = '" + name + "'";
+        sql = "DELETE FROM dirPathList WHERE path = '" + path + "'";
     }
 
     db.serialize(()=>{

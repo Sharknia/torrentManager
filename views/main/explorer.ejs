@@ -263,7 +263,7 @@ var favoriteCustom = function favoriteCustom(isAdd){
             name:name
         },
         success:function(result){
-            if($.trim(result.result) == 'true'){
+            if($.trim(result) == 'true'){
                 explorer();
             }
             else{
