@@ -200,11 +200,10 @@ router.post('/getDefaultSetting', function(req, res){
                 var temp = '/';
                 for (var j in row[i].path.split('/')){
                     if(row[i].path.split('/')[j] != ''){
-                        temp += '"' + row[i].path.split('/')[j] + '"';
+                        temp += '"' + row[i].path.split('/')[j] + '"/';
                     }
                 }
-                temp += '/';
-                console.log(temp);
+                console.log("따르릉" + temp);
             }
             var data = {};
             if(err){
