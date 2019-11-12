@@ -264,7 +264,7 @@ var favoriteCustom = function favoriteCustom(isAdd){
         },
         success:function(result){
             if($.trim(result) == 'true'){
-                explorer();
+                location.href='/main';
             }
             else{
                 alert('err');
