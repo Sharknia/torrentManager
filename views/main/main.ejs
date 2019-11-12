@@ -58,10 +58,6 @@
                 <a type="button" onclick="control('5');" class="btn btn-default btn-xs">전체 시작</a>
                 <a type="button" onclick="control('6');" class="btn btn-default btn-xs">전체 정지</a>
                 <span class="button-split"> | </span>
-                <!-- <a type="button" onclick="control('7');" class="btn btn-default btn-xs"><i class="fas fa-film"></i>영화 폴더로</a>
-                <a type="button" onclick="control('8');" class="btn btn-default btn-xs"><i class="fas fa-tv"></i>TV 폴더로</a>
-                <a type="button" onclick="control('9');" class="btn btn-default btn-xs"><i class="fas fa-lock"></i>개인 폴더로</a>
-                <span class="button-split"> | </span> -->
                 <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA 새로고침</a>
             </div>
             <div class="col-lg-12" id="transmission_contents">
@@ -134,14 +130,10 @@
                         dir.nameList(result.data[i].name);
                         dir.pathList(result.data[i].path);
                         favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+i+'//\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>';
-                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+i+'//\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>'
+                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+i+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>'
                     }
                     $('#favoriteMenu').append(favoriteList);
                     $('#fastMoveMenu').append(fastMoveList);
-
-                    dir.tv(result.dirSetting.tvProgramDir); 
-                    dir.movie(result.dirSetting.movieDir);
-                    dir.personal(result.dirSetting.personalDir);
                 }
                 else{
                     alert(result.data);
@@ -269,20 +261,7 @@
             return pwd;
         }
 
-        //티비, 영화, 개인 폴더 저장, 삭제예정
-        this.tv = function(val){
-            if(val != null) tv = val;
-            return tv;
-        }
-        this.movie = function(val){
-            if(val != null) movie = val;
-            return movie;
-        }
-        this.personal = function(val){
-            if(val != null) personal = val;
-            return personal;
-        }
-        
+        //토렌트 저장 폴더
         this.watch = function(val){
             if(val != null) watch = val;
             return watch;
@@ -340,9 +319,6 @@
             else if(cmd == 2 || cmd == 6) sendCmd += ' --stop';
             else if(cmd == 3) sendCmd += ' --remove';
             else if(cmd == 4) sendCmd += ' --remove-and-delete';
-            // else if(cmd == 7) sendCmd += ' --move ' + dir.movie();
-            // else if(cmd == 8) sendCmd += ' --move ' + dir.tv();
-            // else if(cmd == 9) sendCmd += ' --move ' + dir.personal();
         }
         //10이상 : 쉘 명령어, Explorer 탭
         else{
