@@ -223,14 +223,14 @@ var favoriteCustom = function favoriteCustom(isAdd){
     var select = '';
     var name = '';
     //isFavorite이 true라면 별을 클릭했을 때 즐겨찾기를 해제한다. 
-    if(isFavorite.val()){
+    if(isFavorite.val() == 'true'){
         if(!confirm("정말로 즐겨찾기를 해제합니까?")){
             return ;
         }
         select = 'del';
     }
     //isFavorite이 false이고 isAdd가 빈 값이면 클릭했을 때 즐겨찾기 추가 메뉴(즐겨찾기 이름 입력)를 띄운다. 
-    else if(isAdd == null){
+    else if(isAdd == null && isFavorite.val() == 'false'){
         var modalBody = '';
         //모달 타이틀
         $("#modal-title").html("즐겨찾기 추가");
@@ -247,7 +247,7 @@ var favoriteCustom = function favoriteCustom(isAdd){
         return;
     }
     //현재 즐겨찾기가 아니고(false)이고 isAdd가 빈값이 아니라면 즐겨찾기를 등록한다. 
-    else{
+    else if(isFavorite.val() == 'false'){
         if($("#favoriteName").val() == ''){
             alert("즐겨찾기 이름을 입력해주세요.");
             return ;
