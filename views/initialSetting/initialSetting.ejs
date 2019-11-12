@@ -93,10 +93,6 @@
                     <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 경로설정</h4></span></div>
                     <div class="col-lg-12 text-right"><span><h6>경로는 반드시 /까지 입력해야 합니다.</h4></span></div>
                     <input type="text" id="homeDir" class="form-control" placeholder="홈 디렉토리" required/>
-                    <input type="text" id="torrentDownloadDir" class="form-control" placeholder="토렌트 다운로드 폴더" required/>
-                    <input type="text" id="torrentWatchDir" class="form-control" placeholder="토렌트 watch 폴더" required/>
-                    <input type="text" id="tvProgramDir" class="form-control" placeholder="TV 프로그램 폴더" required/>
-                    <input type="text" id="movieDir" class="form-control" placeholder="영화 폴더" required/>
                 </div>
                 <div class="text-center" style="margin: 5%;">
                     <button type="button" class="btn btn-primary btn-block" onclick="goRegister();">설정완료</button>
@@ -139,9 +135,6 @@
                             "trId":trId,
                             "trPw":trPw,
                             "trPort":trPort,
-                            "torrentDownloadDir":$('#torrentDownloadDir').val(),
-                            "tvProgramDir":$('#tvProgramDir').val(),
-                            "movieDir":$('#movieDir').val(),
                             "homeDir":$('#homeDir').val(),                     
                         }
                     },
