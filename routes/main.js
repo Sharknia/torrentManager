@@ -201,9 +201,10 @@ router.post('/getDefaultSetting', function(req, res){
                     if(row[i].path.split('/')[j] != ''){
                         temp += '"' + row[i].path.split('/')[j] + '"/';
                     }
-                    row[i].path = temp;
                 }
-                console.log(row);
+                console.log(temp);
+                row[i].path = temp;
+                console.log(row[i].path);
             }
             var data = {};
             if(err){
