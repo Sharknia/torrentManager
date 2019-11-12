@@ -196,7 +196,7 @@ var rename = function rename(select, oldFileName){
 //빠른 이동 function
 var fastMove = function fastMove(idx){
     var tL = targetList.refresh('sh');
-    var path = dir.pathList()[i];
+    var path = dir.pathList()[idx];
     if(tL == ''){
         alert("선택된 항목이 없습니다. ");
         return ;
