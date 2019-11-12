@@ -193,18 +193,17 @@ router.post('/torrentSearch', function(req, res){
 router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
-        db.all("SELECT idx, name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
+        db.all("SELECT idx, name, path FROM dirPathList ORDER BY idx", [], (err, row) => {
             for (var i in row){
-                // var temp = row[i].path.split('/');
                 var temp = '/';
                 for (var j in row[i].path.split('/')){
                     if(row[i].path.split('/')[j] != ''){
                         temp += '"' + row[i].path.split('/')[j] + '"/';
                     }
                 }
-                console.log(temp);
+                // console.log(temp);
                 row[i].path = temp;
-                console.log(row[i].path);
+                // console.log(row[i].path);
             }
             var data = {};
             if(err){
