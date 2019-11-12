@@ -259,7 +259,7 @@ var favoriteCustom = function favoriteCustom(isAdd){
         url:"/main/favoriteUpdate",
         data:{
             select:select,
-            path:dir.pwd(),
+            path:dir.pwd().replace(/"/gi, ''),
             name:name
         },
         success:function(result){

@@ -233,6 +233,7 @@ router.post('/favoriteUpdate', function(req, res){
     var path = req.body.path.replace(/"/gi, '');
     var name = req.body.name;
     var sql = '';
+    console.log("name : " + name + " :::: path : " + path);
 
     if(select == 'add'){
         sql = 'INSERT INTO dirPathList(name, path) VALUES ';
