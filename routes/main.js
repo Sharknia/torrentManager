@@ -193,6 +193,7 @@ router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.all("SELECT idx, name, path FROM dirPathList ORDER BY idx", [], (err, row) => {
+            //Default Setting에서 꺼낸 값 중 path는 폴더 이름 앞뒤로 ""를 붙인 풀 네임으로 바꿔준다. 
             for (var i in row){
                 var temp = '/';
                 for (var j in row[i].path.split('/')){
@@ -228,7 +229,6 @@ router.post('/favoriteUpdate', function(req, res){
     var path = req.body.path;
     var name = req.body.name;
     var sql = '';
-    console.log("name : " + name + " :::: path : " + path);
 
     if(select == 'add'){
         sql = 'INSERT INTO dirPathList(name, path) VALUES ';

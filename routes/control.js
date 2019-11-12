@@ -22,13 +22,13 @@ router.post('/', function(req, res){
                 if(err){
                     returnData = {
                         "result" : "err",
-                        "data" : err
+                        "data" : err.message
                     }
                 }
                 else if(stderr){
                     returnData = {
                         "result" : "stderr",
-                        "data" : stderr
+                        "data" : stderr.toString()
                     }
                 }
                 else if(stdout){
