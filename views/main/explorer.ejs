@@ -49,12 +49,6 @@ var explorer = function explorer(openDir){
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
 
-    var result = await ajax('/control', {
-        "select":"sh",
-        "cmd":'ls -F ' + dir.pwd()
-    });
-    console.log(result);
-
     $.ajax({
         type:'POST',
         url:"/control",
@@ -201,13 +195,11 @@ var rename = function rename(select, oldFileName){
 
 //빠른 이동 function
 var fastMove = function fastMove(idx){
-    var tL = targetList.refresh('sh');
-    var path = dir.pathList()[idx];
-    if(tL == ''){
+    if(targetList.refresh('sh') == ''){
         alert("선택된 항목이 없습니다. ");
         return ;
     }
-    var sendCmd = "sudo mv " + tL + ' ' + path;
+    var sendCmd = "sudo mv " + targetList.refresh('sh') + ' ' + dir.pathList()[idx];
     $.ajax({
         type:"POST",
         url:"/control",
@@ -230,14 +222,14 @@ var fastMove = function fastMove(idx){
 var favoriteCustom = function favoriteCustom(isAdd){
     var select = '';
     var name = '';
-    //true라면 클릭했을 때 즐겨찾기를 해제한다. 
+    //isFavorite이 true라면 별을 클릭했을 때 즐겨찾기를 해제한다. 
     if(isFavorite.val()){
         if(!confirm("정말로 즐겨찾기를 해제합니까?")){
             return ;
         }
         select = 'del';
     }
-    //false이고 isAdd가 빈 값이면 클릭했을 때 즐겨찾기 추가 메뉴(즐겨찾기 이름 입력)를 띄운다. 
+    //isFavorite이 false이고 isAdd가 빈 값이면 클릭했을 때 즐겨찾기 추가 메뉴(즐겨찾기 이름 입력)를 띄운다. 
     else if(isAdd == null){
         var modalBody = '';
         //모달 타이틀
