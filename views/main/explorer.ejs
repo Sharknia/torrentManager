@@ -22,7 +22,7 @@ var explorer = function explorer(openDir){
     else if(openDir != null){
         // 숫자+// 꼴로 날아오면 해당 숫자의 dirPath로 이동한다.(ex: '1//' -> dir.pathList.val()[1]로 이동)
         if(openDir.split('/').length > 2){
-            dir.pwd(dir.pathList.val()[openDir.split('/')[0]]);
+            dir.pwd(dir.pathList()[openDir.split('/')[0]]);
         }
         else{
             dir.pwdPush(fullname(openDir));
