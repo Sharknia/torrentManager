@@ -195,8 +195,8 @@ router.post('/getDefaultSetting', function(req, res){
     db.serialize(() => {
         db.all("SELECT idx, name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
             console.log(row[0].path);
-            for (var i in row.path){
-                var temp = row.path[i].split('/');
+            for (var i in row){
+                var temp = row[i].path.split('/');
                 console.log(temp);
             }
             var data = {};
