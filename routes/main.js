@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var personalData = require('../config/personalData.js');
 var sqlite3 = require('sqlite3').verbose();
 //쉘에 명령어 줄때 필요
 var exec =require('child_process').exec;
@@ -201,9 +200,7 @@ router.post('/getDefaultSetting', function(req, res){
                         temp += '"' + row[i].path.split('/')[j] + '"/';
                     }
                 }
-                // console.log(temp);
                 row[i].path = temp;
-                // console.log(row[i].path);
             }
             var data = {};
             if(err){
@@ -215,8 +212,7 @@ router.post('/getDefaultSetting', function(req, res){
             else{
                 data = {
                     "result":"true",
-                    "data":row,
-                    "dirSetting":personalData.dirSetting
+                    "data":row
                 }
             }
             db.close();
