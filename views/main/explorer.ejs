@@ -1,6 +1,6 @@
 <script>
 function IsFavorite(){
-    var isFavorite = false;
+    var isFavorite = "false";
 
     //pwd가 favorite에 있다면 true
     this.val = function(val){
@@ -34,14 +34,17 @@ var explorer = function explorer(openDir){
     list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
     list += '<th class="text-center" style="width:5%"><input type="checkbox" onclick="checkboxAllCheck(2);" name="expCheckbox" id="expCheckbox"></th><th>'+dir.pwd().replace(/"/gi,'');
     //즐겨찾기 마크 표시
-    isFavorite.val(false);
+    isFavorite.val("false");
     for (var i in dir.pathList()){
-        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'') || dir.pathList()[i] == dir.pwd()) isFavorite.val(true);
+        if(dir.pathList()[i] == dir.pwd().replace(/"/gi,'') || dir.pathList()[i] == dir.pwd()){
+            if (i == 0) isFavorite.val("home");
+            else isFavorite.val("true");
+        } 
     }
-    //즐찾 목록에 있다면 꽉 찬 별
-    if(isFavorite.val()) list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="fas fa-star" style="color:black"></i></a>';
+    //즐찾 목록에 있고 홈이 아니라면 꽉 찬 별
+    if(isFavorite.val() == 'true') list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="fas fa-star" style="color:black"></i></a>';
     //즐찾 목록에 없다면 빈 별
-    else list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="far fa-star" style="color:black"></i></a>';
+    else if(isFavorite.val() == "false") list += '<a onclick="favoriteCustom();" style="float:right"><i id="favoriteIcon" class="far fa-star" style="color:black"></i></a>';
     list += '</th></tr>';
     //루트 폴더인 경우 상위폴더로 이동 표시 안함
     if(dir.pwd()!='/') list += '<td class="text-center" style="width:5%"></td><td><a onclick="explorer(\'....\')"><i class="fas fa-level-up-alt"></i>&nbsp;..</a></td></tr>'
