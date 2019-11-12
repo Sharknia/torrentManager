@@ -168,7 +168,7 @@
     /*전역 변수 대신 쓰이는 클로저*/
     //잘라낼 파일 리스트
     function CutFile(){
-        var cutFile;
+        var cutFile = '';
 
         this.val = function(val){
             if(val != null) cutFile = val;
@@ -346,27 +346,28 @@
         //10이상 : 쉘 명령어, Explorer 탭
         else{
             select = 'sh';
+            //dlna 새로고침
             if(cmd == 10){
                 sendCmd = "sudo service minidlna force-reload";
             }
-            else{
-                //잘라내기
-                if(cmd == 11) {
-                    cutFile.val(targetList.refresh(select));
-                    if(cutFile.val() == '') alert("선택된 항목이 없습니다.");
-                    else alert(cutFile.val());
+            //잘라내기
+            else if(cmd == 11){
+                cutFile.val(targetList.refresh(select));
+                if(cutFile.val() == '') alert("선택된 항목이 없습니다.");
+                else alert(cutFile.val());
+                return;
+            }
+            //붙여넣기
+            else if(cmd == 12){
+                if(cutFile.val() == ''){
+                    alert("선택된 항목이 없습니다. ");
                     return;
                 }
-                else if(cmd == 12) {
-                    if(cutFile.val().length == 0 || cutFile.val() == ''){
-                        alert("선택된 항목이 없습니다. ");
-                        return;
-                    }
-                    sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
-                    alert("sendCmd : " + sendCmd);
-                }
-                else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
+                sendCmd = "sudo mv " + cutFile.val() + ' ' + dir.pwd();
+                alert("sendCmd : " + sendCmd);
             }
+            //파일 삭제
+            else if(cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
         }
         
         if(cmd != 10 && targetList.val().length == 0 && cutFile.val() == ''){
