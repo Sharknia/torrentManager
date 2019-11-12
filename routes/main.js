@@ -194,7 +194,11 @@ router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.all("SELECT name, path FROM dirPathList ORDER BY sortNum", [], (err, row) => {
-            console.log(row);
+            // console.log(row);
+            for (var i in row.path){
+                var temp = row.path[i].split('/');
+                console.log(temp);
+            }
             var data = {};
             if(err){
                 data = {
@@ -219,16 +223,17 @@ router.post('/getDefaultSetting', function(req, res){
 router.post('/favoriteUpdate', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     var select = req.body.select;
-    var path = req.body.path;
+    //DB에 저장할때는 쌍따옴표를 모두 없애준다.
+    var path = req.body.path.replace(/"/gi, '');
     var name = req.body.name;
     var sql = '';
 
     if(select == 'add'){
-        sql = 'INSERT INTO dirPathList(name, path, sortNum) VALUES ';
-        sql += "('"+name+"', '"+path+"', 5)";
+        sql = 'INSERT INTO dirPathList(name, path) VALUES ';
+        sql += "('"+name+"', '"+path+"')";
     }
     else if(select == 'del'){
-        sql = "DELETE FROM dirPathList WHERE path = '" + path + "'";
+        sql = "DELETE FROM dirPathList WHERE path = '" + path + "' and name = '" + name + "'";
     }
 
     db.serialize(()=>{

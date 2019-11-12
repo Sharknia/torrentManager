@@ -22,7 +22,7 @@ router.post('/settingSave', function(req, res){
     
     db.serialize(()=>{                        
         //경로 설정을 저장할 테이블 생성
-        db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTEGER NOT NULL)");
+        db.run("CREATE TABLE 'dirPathList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' AUTOINCREMENT INTEGER NOT NULL)");
         //경로 설정 테이블에 insert /홈은 필수 지정(main - exlporer에서 보여줄 기본 폴더로 사용), watch 폴더는 torrent 파일 업로드를 위해 이름이 필수로 필요
         var intoDirPath = db.prepare('INSERT INTO dirPathList(name, path, sortNum) VALUES(?, ?, ?)');
         intoDirPath.run('홈' , homeDir , 0);
@@ -43,17 +43,4 @@ router.post('/settingSave', function(req, res){
         res.send("true");
     });
 });
-
-// router.post('/pathListManager', function(req, res){
-//     var name = req.body.name;
-//     var path = req.body.path;
-//     var sql = '';
-//     sql += "INSERT INTO dirPathList(name, path) VALUES ";
-//     sql += "("+name+","+path+")";
-//     db.serialize(function(){
-//         db.run(sql);
-//     });
-//     db.close();
-//     res.send("true");
-// });
 module.exports = router;
