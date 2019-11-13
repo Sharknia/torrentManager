@@ -22,7 +22,7 @@ router.post('/settingSave', function(req, res){
     
     db.serialize(()=>{                        
         //경로 설정을 저장할 테이블 생성
-        db.run("CREATE TABLE 'favoriteList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL, 'sortNum' INTERGER AUTOINCREMENT)");
+        db.run("CREATE TABLE 'favoriteList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL)");
         db.run("CREATE TABLE 'dirList'('idx' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'path' TEXT NOT NULL)");
         //경로 설정 테이블에 insert /홈은 필수 지정(main - exlporer에서 보여줄 기본 폴더로 사용), watch 폴더는 torrent 파일 업로드를 위해 이름이 필수로 필요
         var intoDirPath = db.prepare('INSERT INTO favoriteList(name, path) VALUES(?, ?)');

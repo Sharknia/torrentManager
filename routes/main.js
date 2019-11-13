@@ -192,7 +192,7 @@ router.post('/torrentSearch', function(req, res){
 router.post('/getDefaultSetting', function(req, res){
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
-        db.all("SELECT idx, name, path FROM favoriteList ORDER BY sortNum", [], (err, row) => {
+        db.all("SELECT idx, name, path FROM favoriteList ORDER BY idx", [], (err, row) => {
             //Default Setting에서 꺼낸 값 중 path는 폴더 이름 앞뒤로 ""를 붙인 풀 네임으로 바꿔준다. 
             for (var i in row){
                 var temp = '/';
@@ -230,15 +230,15 @@ router.post('/favoriteUpdate', function(req, res){
     var name = req.body.name;
     var sql = '';
 
-    if(select == 'add'){
-        sql = 'INSERT INTO favoriteList(name, path) VALUES ';
-        sql += "('"+name+"', '"+path+"')";
-    }
-    else if(select == 'del'){
-        sql = "DELETE FROM favoriteList WHERE path = '" + path + "'";
-    }
-
     db.serialize(()=>{
+        if(select == 'add'){
+            sql = 'INSERT INTO favoriteList(name, path) VALUES ';
+            sql += "('"+name+"', '"+path+"')";
+        }
+        else if(select == 'del'){
+            sql = "DELETE FROM favoriteList WHERE path = '" + path + "'";
+        }
+
         db.run(sql);
         db.close();
         res.send("true");
