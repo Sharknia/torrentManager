@@ -210,6 +210,7 @@ router.post('/getDefaultSetting', function(req, res){
                             temp += '"' + rowDir[i].path.split('/')[j] + '"/';
                         }
                     }
+                }
                 rowDir[i].path = temp;
 
                 var data = {};
