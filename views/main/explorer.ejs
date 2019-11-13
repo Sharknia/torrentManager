@@ -62,7 +62,7 @@ var explorer = function explorer(openDir){
                 var fileList = [];
                 //받아온 파일 목록을 \n으로 구분해서 리스트화 한다. 
                 var tempList = result.data.split('\n');
-                //해당 파일 명에 /가 포함되어 있다면 디렉토리, 없다면 파일이다.  
+                //해당 파일명에 /가 포함되어 있다면 디렉토리, 없다면 파일이다.  
                 for (var i = 0 ; i<tempList.length -1 ; i++){   
                     if(tempList[i].indexOf('/') > -1){
                         dirList.push(tempList[i]);
@@ -137,11 +137,9 @@ var rename = function rename(select, oldFileName){
     function makingNFN(name){
         var nfn = dir.pwd() + '"';  //fullname 만들기 위해 큰따옴표
         for (var i = 0 ; i < name.split('.').length - 1 ; i++){
-            console.log("i : " + i + " >>>> " + nfn);
             if(i != 0) nfn += '.';
             nfn += name.split('.')[i];
         }
-        console.log("결과 : " + nfn);
         return nfn;
     }
 
