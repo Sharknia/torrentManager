@@ -130,8 +130,8 @@
                         }
                         dir.nameList(result.favoriteData[i].name);
                         dir.pathList(result.favoriteData[i].path);
-                        favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+i+'//\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>';
-                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+i+'\');" class="btn btn-default btn-xs">'+result.data[i].name+'</a></li>'
+                        favoriteList += '<li role="presentation"><a type="button" tabindex="-1" onclick="explorer(\''+i+'//\');" class="btn btn-default btn-xs">'+result.favoriteData[i].name+'</a></li>';
+                        fastMoveList += '<li role="presentation"><a type="button" tabindex="-1" onclick="fastMove(\''+i+'\');" class="btn btn-default btn-xs">'+result.favoriteData[i].name+'</a></li>'
                     }
                     $('#favoriteMenu').append(favoriteList);
                     $('#fastMoveMenu').append(fastMoveList);
