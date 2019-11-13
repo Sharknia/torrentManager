@@ -139,7 +139,7 @@ var rename = function rename(select, oldFileName){
         for (var i = 0 ; i < name.split('.').length - 1 ; i++){
             console.log("i : " + i + " >>>> " + nfn);
             if(i != 0) nfn += '.';
-            nfn += '.' + name[i].split('.')[i];
+            nfn += '.' + name.split('.')[i];
         }
         console.log("결과 : " + nfn);
         return nfn;
