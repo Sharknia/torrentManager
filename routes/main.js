@@ -202,6 +202,16 @@ router.post('/getDefaultSetting', function(req, res){
                 row[i].path = temp;
             }
             db.all("SELECT * FROM dirList", [], (err, rowDir) =>{
+                //path는 폴더 이름 앞뒤로 ""를 붙인 풀 네임으로 바꿔준다. 
+                for (var i in rowDir){
+                    temp = '/';
+                    for (var j in rowDir[i].path.split('/')){
+                        if(rowDir[i].path.split('/')[j] != ''){
+                            temp += '"' + rowDir[i].path.split('/')[j] + '"/';
+                        }
+                    }
+                rowDir[i].path = temp;
+
                 var data = {};
                 if(err){
                     data = {
