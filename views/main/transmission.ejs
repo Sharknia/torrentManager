@@ -118,4 +118,21 @@ var transmission = function transmission(){
         }
     });
 }
+
+//토렌트 파일 업로드 함수
+var torrentUpload = function torrentUpload(select){
+    //select가 1이면 모달 띄움
+    if (select == '1'){
+        var modalBody = '';
+        $("#modal-title").html("torrent 파일 업로드");
+
+        modalBody += '<form id="torrentUpload" method="POST" ectype="multipart/form-data" action="/main/torrentUpload">';
+        modalBody += '<div class="input-group">';
+        modalBody += '<input type="file" class="form-control" name="fileForm" id="fileForm">';
+        modalBody += '<span class="input-group-btn">';
+        modalBody += '<button class="btn btn-warning" onclick="torrentUpload(\'2\');" type="button" data-dismiss="modal">업로드</button>';
+        modalBody += '</span></div>'
+    }
+
+}
 </script>
