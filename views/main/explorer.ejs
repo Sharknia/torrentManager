@@ -20,7 +20,7 @@ var explorer = function explorer(openDir){
     }
     //폴더 이동이 있다 --> 입력이 있다 --> 해당 디렉토리의 이름을 pwd에 푸쉬해서 pwd를 최신화한다.
     else if(openDir != null){
-        // 숫자+// 꼴로 날아오면 해당 숫자의 dirPath로 이동한다.(ex: '1//' -> dir.pathList.val()[1]로 이동)
+        // 숫자+// 꼴로 날아오면 해당 숫자의 즐겨찾기 dirPath로 이동한다.(ex: '1//' -> dir.pathList.val()[1]로 이동)
         if(openDir.split('/').length > 2){
             dir.pwd(dir.pathList()[openDir.split('/')[0]]);
         }
@@ -76,14 +76,19 @@ var explorer = function explorer(openDir){
                 {
                     list += '<tr>';
                     list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + dirList[i] + '"></td>'
-                    list += '<td><a onclick="explorer(\''+dirList[i].replace(/'/gi,'\\\'')+'\')"><i class="far fa-folder"></i>&nbsp;'+dirList[i].substr(0, 100).replace('/','')+'</a><a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+dirList[i]+'\')"><i class="far fa-edit"></i></a></td>'
+                    list += '<td><a onclick="explorer(\''+dirList[i].replace(/'/gi,'\\\'')+'\')"><i class="far fa-folder"></i>&nbsp;'+dirList[i].substr(0, 100).replace('/','')+'</a>';
+                    list += '<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+dirList[i]+'\')"><i class="far fa-edit"></i></a></td>';
                     list += '</td></tr>'
                 }
                 for (var i in fileList)
                 {
                     list += '<tr>';
                     list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + fileList[i] + '"></td>'
-                    list += '<td><i class="far fa-file"></i>&nbsp;'+fileList[i].substr(0, 100)+'<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+fileList[i]+'\')"><i class="far fa-edit"></i></a></td>'
+                    list += '<td><i class="far fa-file"></i>&nbsp;'+fileList[i].substr(0, 100);
+                    if(fileList[i].split('.')[fileList[i].split('.').length - 1] == 'zip'){
+                        list+="압축파일이다";
+                    }
+                    list += '<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+fileList[i]+'\')"><i class="far fa-edit"></i></a></td>'
                     list += '</td></tr>'
                 }
                 list += '</table>';
