@@ -58,6 +58,12 @@
                 <a type="button" onclick="control('5');" class="btn btn-default btn-xs">전체 시작</a>
                 <a type="button" onclick="control('6');" class="btn btn-default btn-xs">전체 정지</a>
                 <span class="button-split"> | </span>
+                <form method="POST" enctype="multipart/form-data" action="/main/save">
+                    <input type="hidden" name="t-sn" value="1">
+                    <input type="hidden" name="q-sn" value="2">
+                    <input type="file" name="file">
+                </form>
+                <span class="button-split"> | </span>
                 <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA 새로고침</a>
             </div>
             <!-- 트랜스미션 작업 리스트 -->
