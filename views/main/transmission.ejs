@@ -132,6 +132,13 @@ var torrentUpload = function torrentUpload(select){
         modalBody += '<span class="input-group-btn">';
         modalBody += '<button class="btn btn-warning" onclick="torrentUpload(\'2\');" type="button" data-dismiss="modal">업로드</button>';
         modalBody += '</span></div>'
+
+        $("#modal-body").html(modalBody);
+        $("#myModal").modal("show");
+        return;
+    }
+    else if (select == '2'){
+        alert("업로드!");
     }
 
 }
