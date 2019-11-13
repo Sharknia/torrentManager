@@ -132,7 +132,7 @@ var rename = function rename(select, oldFileName){
     var newFileName = '';
     
     function makingOFN(name){
-        return dir.pwd() += fullname(name);
+        return dir.pwd() + fullname(name);
     }
     function makingNFN(name){
         var nfn = dir.pwd() + '"';  //fullname 만들기 위해 큰따옴표
