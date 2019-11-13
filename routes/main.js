@@ -86,9 +86,7 @@ router.get('/torrentView/:url', function(req, res){
             "setSize":setSize,
             "tableSize":tableSize,
             "url":req.params.url,
-            "filename" : filename,
-            "watchDir" : "/HDD/torrent/watch/",
-            "downloadDir" : "/HDD/torrent/download/"
+            "filename" : filename
         }
         // console.log(data);
         res.render('main/torrentView', {data});
@@ -203,21 +201,24 @@ router.post('/getDefaultSetting', function(req, res){
                 }
                 row[i].path = temp;
             }
-            var data = {};
-            if(err){
-                data = {
-                    "result":"false",
-                    "data":err.message
+            db.all("SELECT * FROM dirList", [], (err, rowDir) =>{
+                var data = {};
+                if(err){
+                    data = {
+                        "result":"false",
+                        "data":err.message
+                    }
                 }
-            }
-            else{
-                data = {
-                    "result":"true",
-                    "data":row
+                else{
+                    data = {
+                        "result":"true",
+                        "favoriteData":row,
+                        "dirListData":rowDir
+                    }
                 }
-            }
-            db.close();
-            res.json(data);
+                db.close();
+                res.json(data);
+            });
         });
     });
 });

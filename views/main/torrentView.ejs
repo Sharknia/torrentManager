@@ -27,6 +27,41 @@
     <!-- 헤더 끝 -->
 
     <script>
+        $(document).ready(function () {
+            $("#torrentTitle").focus();
+            //페이지가 처음 로딩될 때만 서버에서 기본 세팅값을 로딩한다.
+            $.ajax({
+                type:"POST",
+                url:"/main/getDefaultSetting",
+                success:function(result){
+                    if($.trim(result.result) == "true"){
+                        for (var i in result.dirListData){
+                            if(result.dirListData[i].name == 'watch') dirList.watch(result.dirListData[i].path);
+                            else if(result.dirListData[i].name == 'download') dirList.download(result.dirListData[i].path);
+                        }
+                    }
+                    else{
+                        alert(result.data);
+                    }
+                }
+            });
+        });
+    
+        function DirList(){
+            var watch = '';
+            var download = '';
+
+            this.watch = function(val){
+                if(val != null) watch = val;
+                return val;
+            }
+            this.download = function(val){
+                if(val != null) download = val;
+                return val;
+            }
+        }
+        const dirList = new DirList();
+
         //torrent 뷰 페이지의 함수가 _filetender인 경우
         var _filetender = function _filetender(url){
             alert("외부파일이므로 원본페이지 접속 필수");
@@ -37,10 +72,10 @@
             url = url.replace("≀", "&wr_");
 
             //torrent 파일인 경우에만 watch 폴더에 넣어준다. 
-            var downDir = $('#downloadDir').val();
+            var downDir = dirList.download();
             if(filename.indexOf(".torrent") > 0){
                 filename += ".torrent";
-                downDir = $('#watchDir').val();
+                downDir = dirList.watch();
             }
 
             var cmd = "wget -O \"" + downDir +  filename + "\" \"" + url+"\"";
@@ -65,8 +100,8 @@
 
     </script>
     <!-- CONTENTS -->
-    <input type="hidden" id="watchDir" value="<%=data.watchDir%>">
-    <input type="hidden" id="downloadDir" value="<%=data.downloadDir%>">
+    <!-- <input type="hidden" id="watchDir" value="<%=data.watchDir%>">
+    <input type="hidden" id="downloadDir" value="<%=data.downloadDir%>"> -->
     <div class="container">
         <div class="col-lg-12" id="contents">
             <!-- 파일테이블 -->

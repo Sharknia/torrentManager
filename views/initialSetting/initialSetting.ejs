@@ -90,9 +90,11 @@
                     <input type="text" id="trId" class="form-control" placeholder="필수 : 트랜스미션 아이디" required/>
                     <input type="password" id="trPw" class="form-control" placeholder="필수 : 트랜스미션 비밀번호" required/>
                     <input type="text" id="trPort" class="form-control" placeholder="필수 : 트랜스미션 포트" required/>
-                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 경로설정</h4></span></div>
-                    <div class="col-lg-12 text-right"><span><h6>경로는 반드시 /까지 입력해야 합니다.</h4></span></div>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 홈 디렉토리 설정</h4></span></div>
                     <input type="text" id="homeDir" class="form-control" placeholder="홈 디렉토리" required/>
+                    <div class="col-lg-12 text-left"><span><h4><i class="fas fa-wrench"></i> 토렌트 설정</h4></span></div>
+                    <input type="text" id="downloadDir" class="form-control" placeholder="토렌트 다운로드 폴더" required/>
+                    <input type="text" id="watchDir" class="form-control" placeholder="torrent 파일 업로드 폴더(Watch 폴더)" required/>
                 </div>
                 <div class="text-center" style="margin: 5%;">
                     <button type="button" class="btn btn-primary btn-block" onclick="goRegister();">설정완료</button>
@@ -135,7 +137,9 @@
                             "trId":trId,
                             "trPw":trPw,
                             "trPort":trPort,
-                            "homeDir":$('#homeDir').val(),                     
+                            "homeDir":$('#homeDir').val(),  
+                            "downloadDir":$('#downloadDir').val(),  
+                            "watchDir":$('#watchDir').val(),                     
                         }
                     },
                     success:function(result){
@@ -144,7 +148,7 @@
                             location.href="/login";
                         }
                         else{
-                            alert('뭔가 에러 발생!');
+                            alert(result);
                             return;
                         }
                     }
