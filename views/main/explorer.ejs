@@ -111,7 +111,7 @@ var unzip = function unzip(zipName){
         url:"/control",
         data:{
             select : 'sh',
-            cmd : 'unzip ' + zipName
+            cmd : 'sudo unzip ' + zipName + ' -d ' + dir.pwd()
         },
         success:function(result){
             if($.trim(result.result) == 'err' || $.trim(result.result) == 'stderr'){
