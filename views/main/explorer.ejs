@@ -104,8 +104,8 @@ var explorer = function explorer(openDir){
 
 //압축 풀기 함수
 var unzip = function unzip(zipName){
-    console.log("UNZIP");
     zipName = dir.pwd() + fullname(zipName);
+    console.log('unzip ' + zipName);
     $.ajax({
         type:"POST",
         url:"/control",
