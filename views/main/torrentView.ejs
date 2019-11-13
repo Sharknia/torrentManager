@@ -36,6 +36,7 @@
                 success:function(result){
                     if($.trim(result.result) == "true"){
                         for (var i in result.dirListData){
+                            console.log(result.dirListData[i]);
                             if(result.dirListData[i].name == 'watch') dirList.watch(result.dirListData[i].path);
                             else if(result.dirListData[i].name == 'download') dirList.download(result.dirListData[i].path);
                         }
