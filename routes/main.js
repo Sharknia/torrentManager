@@ -87,8 +87,8 @@ router.get('/torrentView/:url', function(req, res){
             "tableSize":tableSize,
             "url":req.params.url,
             "filename" : filename,
-            "watchDir" : personalData.dirSetting.torrentWatchDir,
-            "downloadDir" : personalData.dirSetting.torrentDownloadDir
+            "watchDir" : "/HDD/torrent/watch/",
+            "downloadDir" : "/HDD/torrent/download/"
         }
         // console.log(data);
         res.render('main/torrentView', {data});
