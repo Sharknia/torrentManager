@@ -139,7 +139,7 @@ var rename = function rename(select, oldFileName){
         for (var i = 0 ; i < name.split('.').length - 1 ; i++){
             console.log("i : " + i + " >>>> " + nfn);
             if(i != 0) nfn += '.';
-            nfn += '.' + name.split('.')[i];
+            nfn += name.split('.')[i];
         }
         console.log("결과 : " + nfn);
         return nfn;
@@ -174,7 +174,7 @@ var rename = function rename(select, oldFileName){
             alert("자막 파일이 없습니다!");
             return;
         }
-        newFileName += ext;
+        newFileName += '.' + ext;
     }
     else{
         //파일 이름 변경인 경우, 파일 이름이 있다면 파일 이름 변경 메뉴 띄우기
