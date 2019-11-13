@@ -36,7 +36,6 @@
                 success:function(result){
                     if($.trim(result.result) == "true"){
                         for (var i in result.dirListData){
-                            console.log(result.dirListData[i]);
                             if(result.dirListData[i].name == 'watch') dirList.watch(result.dirListData[i].path);
                             else if(result.dirListData[i].name == 'download') dirList.download(result.dirListData[i].path);
                         }
@@ -101,8 +100,6 @@
 
     </script>
     <!-- CONTENTS -->
-    <!-- <input type="hidden" id="watchDir" value="<%=data.watchDir%>">
-    <input type="hidden" id="downloadDir" value="<%=data.downloadDir%>"> -->
     <div class="container">
         <div class="col-lg-12" id="contents">
             <!-- 파일테이블 -->
