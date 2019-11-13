@@ -88,7 +88,7 @@ var explorer = function explorer(openDir){
                     list += '<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+fileList[i]+'\')"><i class="far fa-edit"></i></a>'
                     //압축파일이라면 압축풀기 버튼 추가
                     if(fileList[i].split('.')[fileList[i].split('.').length - 1] == 'zip'){
-                        list += '<a style="float:right;color:gray;cursor:pointer" title="압축풀기" onclick="unzip(\''+fileList[i]+'\')"><i class="far fa-file-archive">&nbsp;</i></a>';
+                        list += '<a style="float:right;color:gray;cursor:pointer;margin-left:1px;margin-right:1px" title="압축풀기" onclick="unzip(\''+fileList[i]+'\')"><i class="far fa-file-archive">&nbsp;</i></a>';
                     }
                     list += '</td></td></tr>'
                 }
@@ -104,6 +104,7 @@ var explorer = function explorer(openDir){
 
 //압축 풀기 함수
 var unzip = function unzip(zipName){
+    console.log("UNZIP");
     zipName = dir.pwd() + fullname(zipName);
     $.ajax({
         type:"POST",
