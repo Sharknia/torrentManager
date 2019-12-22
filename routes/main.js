@@ -163,7 +163,7 @@ router.post('/torrentSearch', function(req, res){
             });
         }
         catch (e){
-            res.send("err : " + e.stack);
+            console.log(e.stack);
         }
         
         //넘길 데이터 정리
@@ -180,8 +180,8 @@ router.post('/torrentSearch', function(req, res){
             // console.log(data);
             res.json(data);
         }
-        catch{
-            res.send("false");
+        catch(e){
+            console.log(e.stack);
         }
     });
 });
