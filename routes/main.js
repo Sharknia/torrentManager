@@ -40,7 +40,7 @@ router.get('/torrentView/:url', function(req, res){
     var setSize = 0;
     var tableSize = 0;
     client.fetch(url, param, function(err, $, response, body){
-        console.log(body);
+        console.log("body : " + body);
         if(err){
             console.log(err);
             res.render('main/torrentView',{
