@@ -39,7 +39,7 @@ router.get('/torrentView/:url', function(req, res){
     var num = 0;
     var setSize = 0;
     var tableSize = 0;
-    client.fetch(url, param, function(err, $, response, body){
+    client.fetch(url, param, function(err, $, response){
         if(err){
             console.log(err);
             res.render('main/torrentView',{
@@ -111,7 +111,7 @@ router.post('/torrentSearch', function(req, res){
     let url = 'https://torrentwal.com/bbs/s.php?k='+ title + '&page=' + page;
     var count = '';
 
-    client.fetch(url, param, function(err, $, response){
+    client.fetch(url, param, function(err, $, response, body){
         console.log("body : " + body);
         if(err){
             console.log(err);
