@@ -112,79 +112,77 @@ router.post('/torrentSearch', function(req, res){
     var count = '';
 
     client.fetch(url, param, function(err, $, response){
-        while(isOk){
-            if(err){
-                console.log(err);
-            }
-            try{
-                //title 검색 결과 추출
-                $('.subject > a').each(function(link){
-                    if(num%2 != 0){
-                        urllist[num/2 - 0.5] = $(this).attr("href");
-                        urllist[num/2 - 0.5] = urllist[num/2 - 0.5].replace("..", "https://torrentwal.com");
-                        var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
-                        subject[num/2 - 0.5] = temp.replace('\t\t\t', '');
-                        subject[num/2 - 0.5] = isSmi[num/2 - 0.5] + subject[num/2 - 0.5];
-                    }
-                    else{
-                        isSmi[num/2] = $(this).parent().children("font").text();
-                    }
-                    num++;
-                });
-                num = 0;
-    
-                //검색결과의 magnet 추출
-                $('td.num > a').each(function(link){
-                    var mgnet = $(this).attr("href");
-                    mgnet = mgnet.replace("javascript:Mag_dn(", "");
-                    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-                    mgnet = mgnet.replace(regExp, "");
-                    mglist[num] = 'magnet:?xt=urn:btih:' + mgnet;
-                    num++;
-                });
-                num = 0;
-    
-                //검색결과의 파일 크기 추출
-                $('td.hit').each(function(link){
-                    volumelist[num] = $(this).text();
-                    num++;
-                })
-                num = 0;
-    
-                //검색결과의 업로드 날짜 추출
-                $('td.datetime').each(function(link){
-                    datelist[num] = $(this).text();
-                    num++;
-                })
-    
-                //총 검색결과 숫자 추출
-                $('#blist').each(function(link){
-                    count = $(this).text().substring(0,30);
-                    count = count.replace(new RegExp("[^(0-9)]", "gi"), "");
-                });
-            }
-            catch (e){
-                console.log(e.stack);
-            }
-            
-            //넘길 데이터 정리
-            try{
-                var data = {
-                    "subject":subject,
-                    "mglist":mglist,
-                    "datelist":datelist,
-                    "volumelist":volumelist,
-                    "num":num,
-                    "count":count,
-                    "urllist":urllist
+        if(err){
+            console.log(err);
+        }
+        try{
+            //title 검색 결과 추출
+            $('.subject > a').each(function(link){
+                if(num%2 != 0){
+                    urllist[num/2 - 0.5] = $(this).attr("href");
+                    urllist[num/2 - 0.5] = urllist[num/2 - 0.5].replace("..", "https://torrentwal.com");
+                    var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
+                    subject[num/2 - 0.5] = temp.replace('\t\t\t', '');
+                    subject[num/2 - 0.5] = isSmi[num/2 - 0.5] + subject[num/2 - 0.5];
                 }
-                // console.log(data);
-                isOk = true;
-                res.json(data);
+                else{
+                    isSmi[num/2] = $(this).parent().children("font").text();
+                }
+                num++;
+            });
+            num = 0;
+
+            //검색결과의 magnet 추출
+            $('td.num > a').each(function(link){
+                var mgnet = $(this).attr("href");
+                mgnet = mgnet.replace("javascript:Mag_dn(", "");
+                var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+                mgnet = mgnet.replace(regExp, "");
+                mglist[num] = 'magnet:?xt=urn:btih:' + mgnet;
+                num++;
+            });
+            num = 0;
+
+            //검색결과의 파일 크기 추출
+            $('td.hit').each(function(link){
+                volumelist[num] = $(this).text();
+                num++;
+            })
+            num = 0;
+
+            //검색결과의 업로드 날짜 추출
+            $('td.datetime').each(function(link){
+                datelist[num] = $(this).text();
+                num++;
+            })
+
+            //총 검색결과 숫자 추출
+            $('#blist').each(function(link){
+                count = $(this).text().substring(0,30);
+                count = count.replace(new RegExp("[^(0-9)]", "gi"), "");
+            });
+        }
+        catch (e){
+            console.log(e.stack);
+        }
+        
+        //넘길 데이터 정리
+        try{
+            var data = {
+                "subject":subject,
+                "mglist":mglist,
+                "datelist":datelist,
+                "volumelist":volumelist,
+                "num":num,
+                "count":count,
+                "urllist":urllist
             }
-            catch(e){
-                console.log(e.stack);
-            }
+            // console.log(data);
+            isOk = true;
+            res.json(data);
+        }
+        catch(e){
+            console.log(e.stack);
         }
     });
 });
