@@ -39,6 +39,7 @@ router.get('/torrentView/:url', function(req, res){
     var num = 0;
     var setSize = 0;
     var tableSize = 0;
+    var urlorigin = req.param.url;
     client.fetch(url, param, function(err, $, response){
         if(err){
             console.log(err);
@@ -89,7 +90,7 @@ router.get('/torrentView/:url', function(req, res){
                 "fieldset":fieldset,
                 "setSize":setSize,
                 "tableSize":tableSize,
-                "url":req.params.url,
+                "url":urlorigin,
                 "filename" : filename
             }
             res.render('main/torrentView', {data});
