@@ -113,7 +113,7 @@ router.post('/torrentSearch', function(req, res){
     var datelist = {};
     var urllist = {};
     var isSmi = {};
-    let url = 'https://torrentwal.com/bbs/s.php?k='+ title + '&page=' + page;
+    let url = 'https://torrentwal2.com/bbs/s.php?k='+ title + '&page=' + page;
     var count = '';
 
     client.fetch(url, param, function(err, $, response, body){
@@ -131,7 +131,7 @@ router.post('/torrentSearch', function(req, res){
             $('.subject > a').each(function(link){
                 if(num%2 != 0){
                     urllist[num/2 - 0.5] = $(this).attr("href");
-                    urllist[num/2 - 0.5] = urllist[num/2 - 0.5].replace("..", "https://torrentwal.com");
+                    urllist[num/2 - 0.5] = urllist[num/2 - 0.5].replace("..", "https://torrentwal2.com");
                     var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
                     subject[num/2 - 0.5] = temp.replace('\t\t\t', '');
                     subject[num/2 - 0.5] = isSmi[num/2 - 0.5] + subject[num/2 - 0.5];
