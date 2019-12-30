@@ -70,7 +70,11 @@ router.get('/torrentView/:url', function(req, res){
                     // console.log(fieldset[i]);
                 }
             });
-
+        }
+        catch(e){
+            console.log(e.stack);
+        }
+        finally{
             //넘길 데이터 정리
             //filetable : 사이트에 올라온 자막/토렌트 파일
             //fieldset : 토렌트 파일 정보
@@ -88,11 +92,6 @@ router.get('/torrentView/:url', function(req, res){
                 "url":req.params.url,
                 "filename" : filename
             }
-        }
-        catch(e){
-            console.log(e.stack);
-        }
-        finally{
             res.render('main/torrentView', {data});
         }
     });
