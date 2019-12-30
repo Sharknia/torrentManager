@@ -218,7 +218,6 @@ router.post('/getDefaultSetting', function(req, res){
                     }
                     rowDir[i].path = temp;
                 }
-
                 var data = {};
                 if(err){
                     data = {
