@@ -91,9 +91,10 @@ var torrentSearch = function torrentSearch(trListPaging){
 
     //로딩화면 출력
     $('#torrentList').html("");
-    $('#torrentList').append("<div class='text-center'>");
-    $('#torrentList').append("<img src='/img/loading.gif'>");
-    $('#torrentList').append("</div>");
+    var list = "<div class='text-center'>";
+    list += "<img src='/img/loading.gif'>";
+    list += "</div>"
+    $('#torrentList').append(list);
 
     // $.ajax({
     //     type:"POST",
@@ -115,7 +116,7 @@ var torrentSearch = function torrentSearch(trListPaging){
     //             $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.");
 
     //             //검색결과 출력 파트
-    //             var list ='';
+    //             list ='';
     //             list += '<div class="col-lg-12" style="padding:0"><ul class="list-group">';
     //             for(var i = 0 ; i < result.num ; i++){
     //                 list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;cursor:pointer">' + result.subject[i] + "</a>";
