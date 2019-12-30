@@ -93,68 +93,69 @@ var torrentSearch = function torrentSearch(trListPaging){
     $('#torrentList').html("<div class='text-center'>");
     $('#torrentList').html("<img src='/img/loading.gif'>");
     $('#torrentList').html("</div>");
-    $.ajax({
-        type:"POST",
-        url:"/main/torrentSearch",
-        data:{
-            "torrentTitle":torrentTitle.val(), 
-            "page":page.val()
-        },
-        success:function(result){
-            if($.trim(result) == "false"){
-                alert("알 수 없는 오류입니다. 관리자에게 문의해주세요!");
-            }
-            else{
-                //데이터 수신
-                magnetList.val(result.mglist);
-                totalPage.val(parseInt(result.count / 20 + 1));
+    
+    // $.ajax({
+    //     type:"POST",
+    //     url:"/main/torrentSearch",
+    //     data:{
+    //         "torrentTitle":torrentTitle.val(), 
+    //         "page":page.val()
+    //     },
+    //     success:function(result){
+    //         if($.trim(result) == "false"){
+    //             alert("알 수 없는 오류입니다. 관리자에게 문의해주세요!");
+    //         }
+    //         else{
+    //             //데이터 수신
+    //             magnetList.val(result.mglist);
+    //             totalPage.val(parseInt(result.count / 20 + 1));
 
-                $('#torrentList').html("");
-                $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.");
+    //             $('#torrentList').html("");
+    //             $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.");
 
-                //검색결과 출력 파트
-                var list ='';
-                list += '<div class="col-lg-12" style="padding:0"><ul class="list-group">';
-                for(var i = 0 ; i < result.num ; i++){
-                    list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;cursor:pointer">' + result.subject[i] + "</a>";
-                    list += '<a onclick="addMagnet('+ i +');" style="float:right;cursor:pointer;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
-                    list += '<span style="float:right">' + result.datelist[i] + ' / ' + result.volumelist[i] + '&nbsp&nbsp&nbsp;</span>';
-                    list += '</li>'
-                }
-                list += '</ul></div>';
-                //검색결과 출력 파트 끝
+    //             //검색결과 출력 파트
+    //             var list ='';
+    //             list += '<div class="col-lg-12" style="padding:0"><ul class="list-group">';
+    //             for(var i = 0 ; i < result.num ; i++){
+    //                 list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;cursor:pointer">' + result.subject[i] + "</a>";
+    //                 list += '<a onclick="addMagnet('+ i +');" style="float:right;cursor:pointer;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
+    //                 list += '<span style="float:right">' + result.datelist[i] + ' / ' + result.volumelist[i] + '&nbsp&nbsp&nbsp;</span>';
+    //                 list += '</li>'
+    //             }
+    //             list += '</ul></div>';
+    //             //검색결과 출력 파트 끝
                 
-                //페이징 파트
-                list+='<nav class="text-center"><ul class="pagination"><li>';
-                list+='<a style="cursor:pointer" onclick="torrentSearch(\'Pre\')" aria-label="Previous">';
-                list+='<span aria-hidden="true">&laquo;</span></a></li>';
-                var temp;
-                if(page.val()>2){
-                    temp = page.val() - 2;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
-                }
-                if(page.val()>1){
-                    temp = page.val() - 1;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
-                }
-                list+='<li class="active"><a>'+page.val()+'</a></li>';
-                if(page.val()<totalPage.val()){
-                    temp = page.val() + 1;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
-                }
-                if(page.val()<totalPage.val()-1){
-                    temp = page.val() + 2;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
-                }
-                list+='<li>';
-                list+='<a style="cursor:pointer" onclick="torrentSearch(\'Next\')" aria-label="Next">';
-                list+='<span aria-hidden="true">&raquo;</span>';
-                list+='</a></li></ul></nav>';
-                //페이징 파트 끝
-                $('#torrentList').append(list);
-            }
-        }
-    });
+    //             //페이징 파트
+    //             list+='<nav class="text-center"><ul class="pagination"><li>';
+    //             list+='<a style="cursor:pointer" onclick="torrentSearch(\'Pre\')" aria-label="Previous">';
+    //             list+='<span aria-hidden="true">&laquo;</span></a></li>';
+    //             var temp;
+    //             if(page.val()>2){
+    //                 temp = page.val() - 2;
+    //                 list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+    //             }
+    //             if(page.val()>1){
+    //                 temp = page.val() - 1;
+    //                 list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+    //             }
+    //             list+='<li class="active"><a>'+page.val()+'</a></li>';
+    //             if(page.val()<totalPage.val()){
+    //                 temp = page.val() + 1;
+    //                 list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+    //             }
+    //             if(page.val()<totalPage.val()-1){
+    //                 temp = page.val() + 2;
+    //                 list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+    //             }
+    //             list+='<li>';
+    //             list+='<a style="cursor:pointer" onclick="torrentSearch(\'Next\')" aria-label="Next">';
+    //             list+='<span aria-hidden="true">&raquo;</span>';
+    //             list+='</a></li></ul></nav>';
+    //             //페이징 파트 끝
+    //             $('#torrentList').append(list);
+    //         }
+    //     }
+    // });
 }
 
 //토렌트 상세 정보 페이지를 모달로 띄우는 함수
