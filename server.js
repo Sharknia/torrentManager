@@ -41,7 +41,7 @@ var initialSetting = require('./routes/initialSetting');
 app.use('/initialSetting', initialSetting);
 
 //정적파일(이미지 폴더)
-app.use('/img',express.static(__dirname + 'public'));
+app.use(express.static('public'));
 
 app.listen(80, function(){
     console.log("80번 포트 서버 오픈")
