@@ -47,49 +47,54 @@ router.get('/torrentView/:url', function(req, res){
                 result : "false"
             });
         }
+        try{
+            //파일테이블 추출
+            $('#file_table > tr').each(function(link){
+                filetable[num] = $(this).find("a").attr("href");
+                filename[num] = $(this).find("a").text();
+                if(filetable[num].indexOf("_filetender") > -1) filename[num] = "[외부링크]" + filename[num];
+                //javascript: 명령어가 없다면 붙여준다. 그 꼴로 만들어야 함
+                if(filetable[num].indexOf("javascript")){
+                    filetable[num] = "javascript:file_download(\'" + filetable[num] + "\',\'" + filename[num] + "\');";
+                }
+                num++;
+            });
 
-        //파일테이블 추출
-        $('#file_table > tr').each(function(link){
-            filetable[num] = $(this).find("a").attr("href");
-            filename[num] = $(this).find("a").text();
-            if(filetable[num].indexOf("_filetender") > -1) filename[num] = "[외부링크]" + filename[num];
-            //javascript: 명령어가 없다면 붙여준다. 그 꼴로 만들어야 함
-            if(filetable[num].indexOf("javascript")){
-                filetable[num] = "javascript:file_download(\'" + filetable[num] + "\',\'" + filename[num] + "\');";
+            tableSize = num;
+            //필드셋 추출
+            $("#main_body").each(function(link){
+                setSize = $(this).find("li").length;
+                // console.log($(this).find("li"));
+                for (var i = 0 ; i < $(this).find("li").length ; i ++ ){
+                    fieldset[i] = $(this).find("li")[i].children[0].data;
+                    // console.log(fieldset[i]);
+                }
+            });
+
+            //넘길 데이터 정리
+            //filetable : 사이트에 올라온 자막/토렌트 파일
+            //fieldset : 토렌트 파일 정보
+            //setSize : 파일 정보 배열 크기
+            //tableSize : 자막/토렌트 파일 자료 개수
+            //url : 원본주소, '/'가 ','로 변형된 상태
+            //filename : 파일의 이름.
+            //watchDir : watch Dir
+            //downloadDir : downloadDir
+            var data = {
+                "filetable":filetable,
+                "fieldset":fieldset,
+                "setSize":setSize,
+                "tableSize":tableSize,
+                "url":req.params.url,
+                "filename" : filename
             }
-            num++;
-        });
-
-        tableSize = num;
-        //필드셋 추출
-        $("#main_body").each(function(link){
-            setSize = $(this).find("li").length;
-            // console.log($(this).find("li"));
-            for (var i = 0 ; i < $(this).find("li").length ; i ++ ){
-                fieldset[i] = $(this).find("li")[i].children[0].data;
-                // console.log(fieldset[i]);
-            }
-        });
-
-        //넘길 데이터 정리
-        //filetable : 사이트에 올라온 자막/토렌트 파일
-        //fieldset : 토렌트 파일 정보
-        //setSize : 파일 정보 배열 크기
-        //tableSize : 자막/토렌트 파일 자료 개수
-        //url : 원본주소, '/'가 ','로 변형된 상태
-        //filename : 파일의 이름.
-        //watchDir : watch Dir
-        //downloadDir : downloadDir
-        var data = {
-            "filetable":filetable,
-            "fieldset":fieldset,
-            "setSize":setSize,
-            "tableSize":tableSize,
-            "url":req.params.url,
-            "filename" : filename
         }
-        // console.log(data);
-        res.render('main/torrentView', {data});
+        catch(e){
+            console.log(e.stack);
+        }
+        finally{
+            res.render('main/torrentView', {data});
+        }
     });
 });
 
@@ -171,9 +176,8 @@ router.post('/torrentSearch', function(req, res){
         catch (e){
             console.log(e.stack);
         }
-        
-        //넘길 데이터 정리
-        try{
+        //데이터를 넘긴다.
+        finally{
             var data = {
                 "subject":subject,
                 "mglist":mglist,
@@ -183,12 +187,7 @@ router.post('/torrentSearch', function(req, res){
                 "count":count,
                 "urllist":urllist
             }
-            // console.log(data);
-            isOk = true;
             res.json(data);
-        }
-        catch(e){
-            console.log(e.stack);
         }
     });
 });
