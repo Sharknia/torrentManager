@@ -112,12 +112,12 @@ router.post('/torrentSearch', function(req, res){
     var count = '';
 
     client.fetch(url, param, function(err, $, response, body){
-        console.log("url : " + url);
-        console.log("param : " + param);
-        console.log("err : " + err);
-        console.log("$ : " + $);
-        console.log("response : " + response);
-        console.log("body : " + body);
+        // console.log("url : " + url);
+        // console.log("param : " + param);
+        // console.log("err : " + err);
+        // console.log("$ : " + $);
+        // console.log("response : " + response);
+        // console.log("body : " + body);
         if(err){
             console.log(err);
         }
@@ -182,14 +182,6 @@ router.post('/torrentSearch', function(req, res){
                 "urllist":urllist
             }
             res.json(data);
-        }
-        //넘길 데이터 정리
-        try{
-            // console.log(data);
-            isOk = true;
-        }
-        catch(e){
-            console.log(e.stack);
         }
     });
 });
