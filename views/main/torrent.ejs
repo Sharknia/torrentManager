@@ -90,10 +90,11 @@ var torrentSearch = function torrentSearch(trListPaging){
     else page.val(trListPaging);
 
     //로딩화면 출력
-    $('#torrentList').html("<div class='text-center'>");
-    $('#torrentList').html("<img src='/img/loading.gif'>");
-    $('#torrentList').html("</div>");
-    
+    $('#torrentList').html("");
+    $('#torrentList').append("<div class='text-center'>");
+    $('#torrentList').append("<img src='/img/loading.gif'>");
+    $('#torrentList').append("</div>");
+
     // $.ajax({
     //     type:"POST",
     //     url:"/main/torrentSearch",
