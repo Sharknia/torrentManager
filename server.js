@@ -40,6 +40,10 @@ app.use('/control', control);
 var initialSetting = require('./routes/initialSetting');
 app.use('/initialSetting', initialSetting);
 
+//정적파일(이미지 폴더)
+var staticDir = require('./img')
+app.use(express.static('/img', staticDir));
+
 app.listen(80, function(){
     console.log("80번 포트 서버 오픈")
 });
