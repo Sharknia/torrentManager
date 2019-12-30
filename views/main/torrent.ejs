@@ -89,6 +89,10 @@ var torrentSearch = function torrentSearch(trListPaging){
     else if (trListPaging == "Next") page.nextPage();
     else page.val(trListPaging);
 
+    //로딩화면 출력
+    $('#torrentList').html("<div class='text-center'>");
+    $('#torrentList').html("<img src='/img/loading.gif'>");
+    $('#torrentList').html("</div>");
     $.ajax({
         type:"POST",
         url:"/main/torrentSearch",
