@@ -9,14 +9,14 @@ app.set('views', './views');
 
 //미들웨어
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret : '!@#$%^&*()',          //이 값을 통해 세션 암호화
-    resave : false,                 //세션을 언제나 저장할 지 정하는 값(false 권장)
+    secret: '!@#$%^&*()',          //이 값을 통해 세션 암호화
+    resave: false,                 //세션을 언제나 저장할 지 정하는 값(false 권장)
     saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
 }));
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.redirect('/main');
 });
 
@@ -43,6 +43,6 @@ app.use('/initialSetting', initialSetting);
 //정적파일(이미지 폴더)
 app.use('/img', express.static('img'));
 
-app.listen(80, function(){
+app.listen(80, function () {
     console.log("80번 포트 서버 오픈")
 });

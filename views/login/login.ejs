@@ -92,43 +92,43 @@
 
     <script>
         //엔터키 치면 로그인 버튼을 누른것과 같은 효과가 나게 하는 함수
-        $("#id").keyup(function(e){
-            if(e.keyCode == 13) loginConfirm();
+        $("#id").keyup(function (e) {
+            if (e.keyCode == 13) loginConfirm();
         });
-        $("#password").keyup(function(e){
-            if(e.keyCode == 13) loginConfirm();
+        $("#password").keyup(function (e) {
+            if (e.keyCode == 13) loginConfirm();
         });
 
-        var loginConfirm = function loginConfirm(){
-            if($("#id").val() == ''){
+        var loginConfirm = function loginConfirm() {
+            if ($("#id").val() == '') {
                 alert("아이디를 입력해주세요.");
                 $('#id').focus();
             }
-            else if($('#password').val() == ''){
+            else if ($('#password').val() == '') {
                 alert("비밀번호를 입력해주세요.");
                 $('#password').focus();
             }
-            else{
+            else {
                 $.ajax({
-                    type:"POST",
-                    url:"/login/login",
-                    data:{
-                        "id":$('#id').val(),
-                        "password":$('#password').val()                    
+                    type: "POST",
+                    url: "/login/login",
+                    data: {
+                        "id": $('#id').val(),
+                        "password": $('#password').val()
                     },
-                    success:function(data){
-                        if($.trim(data) == "id"){
+                    success: function (data) {
+                        if ($.trim(data) == "id") {
                             alert("잘못된 아이디입니다.");
                             $('#id').val('');
                             $('#id').focus();
                         }
-                        else if($.trim(data) == "password"){
+                        else if ($.trim(data) == "password") {
                             alert("잘못된 비밀번호입니다.");
                             $('#password').val('');
                             $('#password').focus();
                         }
-                        else{
-                            location.href="/main/";
+                        else {
+                            location.href = "/main/";
                         }
                     }
                 });

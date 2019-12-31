@@ -4,11 +4,11 @@ var sqlite3 = require('sqlite3').verbose();
 var crypto = require('crypto');
 
 //로그인 페이지
-router.get('/', function(req, res){
+router.get('/', function (req, res) {
     console.log("app get /login/");
 
     //DB 존재유무 검사
-    let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function(err) {
+    let db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE, function (err) {
         if (err) {
             console.log('초기 사용자, DB 생성이 필요합니다.');
             res.redirect('/initialSetting');
@@ -22,35 +22,35 @@ router.get('/', function(req, res){
 });
 
 //로그아웃
-router.get('/logout', function(req, res){
+router.get('/logout', function (req, res) {
     console.log("app get /login/logout");
-    req.session.destroy(function(err){});
+    req.session.destroy(function (err) { });
     res.redirect("/login/");
 });
 
 //로그인
-router.post('/login', function(req, res){
+router.post('/login', function (req, res) {
     var id = req.body.id;
     var password = req.body.password;
     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
     db.serialize(() => {
         db.get("SELECT id, password, salt FROM defaultSetting", [], (err, row) => {
-            if(err){
+            if (err) {
                 return console.error(err.message);
             }
-            else{
+            else {
                 //비밀번호 암호화
                 const hash = crypto.pbkdf2Sync(password, row.salt, 111900, 64, 'sha512').toString('hex');
-                if(id != row.id) res.send('id');
-                else if(hash != row.password) res.send('password');
-                else{
+                if (id != row.id) res.send('id');
+                else if (hash != row.password) res.send('password');
+                else {
                     req.session.info = {
-                        id : id,
-                        lastConnTime : new Date,
-                        ip : req.connection.remoteAddress
+                        id: id,
+                        lastConnTime: new Date,
+                        ip: req.connection.remoteAddress
                     }
                     console.log(req.session.info);
-                    req.session.save(function(){});
+                    req.session.save(function () { });
                     db.close();
                     res.send("true");
                 }

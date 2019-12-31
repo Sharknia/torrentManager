@@ -111,43 +111,43 @@
             var trPort = $('#trPort').val();
             var isOk = true;
 
-            if(id == '' || password == '' || password2 == '' || trId == '' || trPw == '' || trPort == ''){
+            if (id == '' || password == '' || password2 == '' || trId == '' || trPw == '' || trPort == '') {
                 alert("필수사항은 반드시 입력해야 합니다.");
                 isOk = false;
             }
-            if(id.length >= 10){
+            if (id.length >= 10) {
                 alert("아이디는 열글자 이하여야 합니다. ");
                 $('#id').focus();
                 isOk = false;
             }
-            if(password != password2){
+            if (password != password2) {
                 alert("입력된 비밀번호가 일치하지 않습니다. ");
                 $('#password').focus();
                 isOk = false;
             }
 
-            if(isOk){
+            if (isOk) {
                 $.ajax({
-                    type:"POST",
-                    url:"/initialSetting/settingSave",
-                    data:{
-                        "data":{
-                            "id":id,
-                            "password":password,
-                            "trId":trId,
-                            "trPw":trPw,
-                            "trPort":trPort,
-                            "homeDir":$('#homeDir').val(),  
-                            "downloadDir":$('#downloadDir').val(),  
-                            "watchDir":$('#watchDir').val(),                     
+                    type: "POST",
+                    url: "/initialSetting/settingSave",
+                    data: {
+                        "data": {
+                            "id": id,
+                            "password": password,
+                            "trId": trId,
+                            "trPw": trPw,
+                            "trPort": trPort,
+                            "homeDir": $('#homeDir').val(),
+                            "downloadDir": $('#downloadDir').val(),
+                            "watchDir": $('#watchDir').val(),
                         }
                     },
-                    success:function(result){
-                        if($.trim(result) == "true"){
+                    success: function (result) {
+                        if ($.trim(result) == "true") {
                             alert("저장완료! 로그인해주세요!");
-                            location.href="/login";
+                            location.href = "/login";
                         }
-                        else{
+                        else {
                             alert(result);
                             return;
                         }
