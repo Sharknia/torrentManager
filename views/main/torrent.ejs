@@ -121,8 +121,8 @@ var torrentSearch = function torrentSearch(trListPaging){
                 list ='';
                 list += '<div class="col-lg-12" style="padding:0"><ul class="list-group">';
                 for(var i = 0 ; i < result.num ; i++){
-                    list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;cursor:pointer">' + result.subject[i] + "</a>";
-                    list += '<a onclick="addMagnet('+ i +');" style="float:right;cursor:pointer;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
+                    list += '<li class="list-group-item">' + '<a onclick="torrentView(\''+result.urllist[i]+'\', \''+result.subject[i]+'\');" style="color:black;">' + result.subject[i] + "</a>";
+                    list += '<a onclick="addMagnet('+ i +');" style="float:right;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
                     list += '<span style="float:right">' + result.datelist[i] + ' / ' + result.volumelist[i] + '&nbsp&nbsp&nbsp;</span>';
                     list += '</li>'
                 }
@@ -131,28 +131,28 @@ var torrentSearch = function torrentSearch(trListPaging){
                 
                 //페이징 파트
                 list+='<nav class="text-center"><ul class="pagination"><li>';
-                list+='<a style="cursor:pointer" onclick="torrentSearch(\'Pre\')" aria-label="Previous">';
+                list+='<a onclick="torrentSearch(\'Pre\')" aria-label="Previous">';
                 list+='<span aria-hidden="true">&laquo;</span></a></li>';
                 var temp;
                 if(page.val()>2){
                     temp = page.val() - 2;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    list+='<li><a onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
                 }
                 if(page.val()>1){
                     temp = page.val() - 1;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    list+='<li><a onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
                 }
                 list+='<li class="active"><a>'+page.val()+'</a></li>';
                 if(page.val()<totalPage.val()){
                     temp = page.val() + 1;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    list+='<li><a onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
                 }
                 if(page.val()<totalPage.val()-1){
                     temp = page.val() + 2;
-                    list+='<li><a style="cursor:pointer" onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
+                    list+='<li><a onclick="torrentSearch('+temp+')">'+temp+'</a></li>';
                 }
                 list+='<li>';
-                list+='<a style="cursor:pointer" onclick="torrentSearch(\'Next\')" aria-label="Next">';
+                list+='<a onclick="torrentSearch(\'Next\')" aria-label="Next">';
                 list+='<span aria-hidden="true">&raquo;</span>';
                 list+='</a></li></ul></nav>';
                 //페이징 파트 끝
