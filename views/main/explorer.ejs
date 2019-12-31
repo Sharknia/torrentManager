@@ -76,7 +76,7 @@ var explorer = function explorer(openDir){
                 {
                     list += '<tr>';
                     list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + dirList[i] + '"></td>'
-                    list += '<td><a onclick="explorer(\''+dirList[i].replace(/'/gi,'\\\'')+'\')"><i class="far fa-folder"></i>&nbsp;'+dirList[i].substr(0, 100).replace('/','')+'</a>';
+                    list += '<td><a style="cursor:pointer" onclick="explorer(\''+dirList[i].replace(/'/gi,'\\\'')+'\')"><i class="far fa-folder"></i>&nbsp;'+dirList[i].substr(0, 100).replace('/','')+'</a>';
                     list += '<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+dirList[i]+'\')"><i class="far fa-edit"></i></a></td>';
                     list += '</td></tr>'
                 }
@@ -84,7 +84,7 @@ var explorer = function explorer(openDir){
                 {
                     list += '<tr>';
                     list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + fileList[i] + '"></td>'
-                    list += '<td><i class="far fa-file"></i>&nbsp;'+fileList[i].substr(0, 100);
+                    list += '<td style="cursor:default"><i class="far fa-file"></i>&nbsp;'+fileList[i].substr(0, 100);
                     list += '<a style="float:right;color:gray;cursor:pointer" title="이름바꾸기" onclick="rename(2, \''+fileList[i]+'\')"><i class="far fa-edit"></i></a>'
                     //압축파일이라면 압축풀기 버튼 추가
                     if(fileList[i].split('.')[fileList[i].split('.').length - 1] == 'zip'){
