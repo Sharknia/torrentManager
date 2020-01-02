@@ -112,12 +112,12 @@ router.post('/torrentSearch', function (req, res) {
     var count = '';
 
     client.fetch(url, param, function (err, $, response, body) {
-        // console.log("url : " + url);
-        // console.log("param : " + param);
-        // console.log("err : " + err);
-        // console.log("$ : " + $);
-        // console.log("response : " + response);
-        // console.log("body : " + body);
+        console.log("url : " + url);
+        console.log("param : " + param);
+        console.log("err : " + err);
+        console.log("$ : " + $);
+        console.log("response : " + response);
+        console.log("body : " + body);
         if (err) {
             console.log(err);
         }
