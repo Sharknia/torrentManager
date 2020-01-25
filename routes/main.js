@@ -111,6 +111,10 @@ router.post('/torrentSearch', function (req, res) {
     let url = 'https://torrentwal.com/bbs/s.php?k=' + title + '&page=' + page;
     var count = '';
 
+    // unable to verify the first certificate 에러 해결 (2020-01-26)
+    // 출처 : https://bbokkun.tistory.com/137
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
     client.fetch(url, param, function (err, $, response, body) {
         console.log("url : " + url);
         console.log("param : " + param);
@@ -179,7 +183,8 @@ router.post('/torrentSearch', function (req, res) {
                 "volumelist": volumelist,
                 "num": num,
                 "count": count,
-                "urllist": urllist
+                "urllist": urllist,
+                "url":url
             }
             res.json(data);
         }

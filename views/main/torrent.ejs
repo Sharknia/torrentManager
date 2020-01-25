@@ -115,7 +115,8 @@
                     totalPage.val(parseInt(result.count / 20 + 1));
 
                     $('#torrentList').html("");
-                    $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.");
+                    $('#torrentList').append("검색 결과는 " + result.num * page.val() + " / " + result.count + "건 입니다.<br/>");
+                    $('#torrentList').append("<a href='" + result.url + "'>검색 결과 상세보기</a>");
 
                     //검색결과 출력 파트
                     list = '';
