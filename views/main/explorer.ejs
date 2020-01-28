@@ -226,6 +226,55 @@
         });
     }
 
+    //새로운 폴더 만드는 함수
+    var newDirMaking = function newDirMaking(select) {
+        var newDirName = '';
+
+        //새로운 폴더 이름 입력 메뉴 띄우기
+        if (select == 1) {
+            var bodyHtml = '';
+            //모달 타이틀
+            $("#modal-title").html("새로운 폴더 생성");
+
+            //모달 바디
+            bodyHtml += '<div class="input-group">';
+            bodyHtml += '<input type="text" class="form-control" value="새로운 폴더 이름" placeholder="새로운 폴더 이름" name="newDirName" id="newDirName">';
+            bodyHtml += '<span class="input-group-btn">';
+            bodyHtml += '<button class="btn btn-warning" onclick="newDirMaking(2);" type="button" data-dismiss="modal">수정</button>';
+            bodyHtml += '</span></div>'
+
+            $("#modal-body").html(bodyHtml);
+            $("#myModal").modal("show");
+            return;
+        }
+        else if(select == 2){
+            if ($("#newDirName").val() == '') {
+                alert("폴더명을 써야지!");
+                return;
+            }
+            newDirName = dir.pwd() + fullname($("#newDirName").val());
+            alert(newDirName);
+            return;
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/control",
+            //     data: {
+            //         select: "sh",
+            //         cmd: "sudo mv " + oldFileName + ' ' + newFileName
+            //     },
+            //     success: function (result) {
+            //         if ($.trim(result.result) == "true" || $.trim(result.result) == "none") {
+            //             alert("이름이 변경되었습니다. ");
+            //             explorer();
+            //         }
+            //         else {
+            //             alert(result.data);
+            //         }
+            //     }
+            // });
+        }
+    }
+
     //빠른 이동 function
     var fastMove = function fastMove(idx) {
         if (targetList.refresh('sh') == '') {
