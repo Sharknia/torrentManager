@@ -238,7 +238,7 @@
 
             //모달 바디
             bodyHtml += '<div class="input-group">';
-            bodyHtml += '<input type="text" class="form-control" value="새로운 폴더 이름" placeholder="새로운 폴더 이름" name="newDirName" id="newDirName">';
+            bodyHtml += '<input type="text" class="form-control" value="새폴더" placeholder="새폴더" name="newDirName" id="newDirName">';
             bodyHtml += '<span class="input-group-btn">';
             bodyHtml += '<button class="btn btn-warning" onclick="newDirMaking(2);" type="button" data-dismiss="modal">수정</button>';
             bodyHtml += '</span></div>'
@@ -253,25 +253,23 @@
                 return;
             }
             newDirName = dir.pwd() + fullname($("#newDirName").val());
-            alert(newDirName);
-            return;
-            // $.ajax({
-            //     type: "POST",
-            //     url: "/control",
-            //     data: {
-            //         select: "sh",
-            //         cmd: "sudo mv " + oldFileName + ' ' + newFileName
-            //     },
-            //     success: function (result) {
-            //         if ($.trim(result.result) == "true" || $.trim(result.result) == "none") {
-            //             alert("이름이 변경되었습니다. ");
-            //             explorer();
-            //         }
-            //         else {
-            //             alert(result.data);
-            //         }
-            //     }
-            // });
+            $.ajax({
+                type: "POST",
+                url: "/control",
+                data: {
+                    select: "sh",
+                    cmd: "mkdir " + newDirName
+                },
+                success: function (result) {
+                    if ($.trim(result.result) == "true" || $.trim(result.result) == "none") {
+                        alert(newDirName + "가 생성되었습니다.");
+                        explorer();
+                    }
+                    else {
+                        alert(result.data);
+                    }
+                }
+            });
         }
     }
 
