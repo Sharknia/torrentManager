@@ -6,7 +6,9 @@ var exec = require('child_process').exec;
 //웹 크롤링에 필요
 var client = require('cheerio-httpcli');
 var qs = require('querystring'); //url encoding
+var request = require('request');
 
+출처: https://wonderbout.tistory.com/46 [원더바웃]
 /*************  GET  *************/
 // main 페이지 접속
 router.get('/', function (req, res) {
@@ -195,7 +197,7 @@ router.post('/torrentSearch', function (req, res) {
     }
     else if (siteSelect == 10){
         url = "https://torrentube.net/search/kt?page=" + page + "&q=" + title;
-        require('request').get(url, function(err, res, body){
+        request.get(url, function(err, res, body){
             res.json(JSON.parse(body));
         });
     }
