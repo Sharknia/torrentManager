@@ -196,7 +196,7 @@ router.post('/torrentSearch', function (req, res) {
     else if (siteSelect == 10){
         url = "https://torrentube.net/search/kt?page=" + page + "&q=" + title;
         require('request').get(url, function(err, res, body){
-            res.json(JSON.parse(body).pageItems);
+            res.json(JSON.parse(body));
         });
     }
 });
