@@ -123,7 +123,9 @@
 <script>
     $(document).ready(function () {
         $("#torrentTitle").focus();
+        //사이트 선택 기본값 토렌튜브로 설정
         $('input[name="siteSelect"]').val(['10']);
+        
         //페이지가 처음 로딩될 때만 서버에서 기본 세팅값을 로딩한다.
         $.ajax({
             type: "POST",
