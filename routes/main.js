@@ -8,7 +8,6 @@ var client = require('cheerio-httpcli');
 var qs = require('querystring'); //url encoding
 var request = require('request');
 
-출처: https://wonderbout.tistory.com/46 [원더바웃]
 /*************  GET  *************/
 // main 페이지 접속
 router.get('/', function (req, res) {
