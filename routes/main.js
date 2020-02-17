@@ -117,9 +117,7 @@ router.post('/torrentSearch', function (req, res) {
     // 출처 : https://bbokkun.tistory.com/137
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    console.log("선택된 사이트 : " + siteSelect);
-
-    if(siteSelect == 20){
+    if (siteSelect == 20){
         client.fetch(url, param, function (err, $, response, body) {
             console.log("url : " + url);
             console.log("param : " + param);
@@ -195,8 +193,7 @@ router.post('/torrentSearch', function (req, res) {
             }
         });
     }
-    else if(siteSelect == 20){
-        console.log("if문 안에 진입!");
+    else if (siteSelect == 10){
         url = "https://torrentube.net/search/kt?page=" + page + "&q=" + title;
         res.send(url);
         // res.json("");
