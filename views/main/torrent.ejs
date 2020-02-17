@@ -168,7 +168,9 @@
                     //토렌튜브를 선택한 경우
                     else if(siteSelect == 10){
                         $('#torrentList').html("");
-                        $('#torrentList').append(result);
+                        for (var key of result){
+                            $('#torrentList').append(`${key.dt}`);
+                        }
                     }
                 }
             }
