@@ -99,6 +99,8 @@ router.post('/torrentSearch', function (req, res) {
     var isOk = false;
     var title = req.body.torrentTitle;
     var page = req.body.page;
+    //사이트 선택 10 : 토렌튜브, 20 : 토렌트왈
+    var siteSelect = req.body.siteSelect;
     title = qs.escape(title);
     var param = {};
     var num = 0;
@@ -115,80 +117,87 @@ router.post('/torrentSearch', function (req, res) {
     // 출처 : https://bbokkun.tistory.com/137
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    client.fetch(url, param, function (err, $, response, body) {
-        console.log("url : " + url);
-        console.log("param : " + param);
-        console.log("err : " + err);
-        console.log("$ : " + $);
-        console.log("response : " + response);
-        console.log("body : " + body);
-        if (err) {
-            console.log(err);
-        }
-        try {
-            //title 검색 결과 추출
-            $('.subject > a').each(function (link) {
-                if (num % 2 != 0) {
-                    urllist[num / 2 - 0.5] = $(this).attr("href");
-                    urllist[num / 2 - 0.5] = urllist[num / 2 - 0.5].replace("..", "https://torrentwal.com");
-                    var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
-                    subject[num / 2 - 0.5] = temp.replace('\t\t\t', '');
-                    subject[num / 2 - 0.5] = isSmi[num / 2 - 0.5] + subject[num / 2 - 0.5];
-                }
-                else {
-                    isSmi[num / 2] = $(this).parent().children("font").text();
-                }
-                num++;
-            });
-            num = 0;
-
-            //검색결과의 magnet 추출
-            $('td.num > a').each(function (link) {
-                var mgnet = $(this).attr("href");
-                mgnet = mgnet.replace("javascript:Mag_dn(", "");
-                var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-                mgnet = mgnet.replace(regExp, "");
-                mglist[num] = 'magnet:?xt=urn:btih:' + mgnet;
-                num++;
-            });
-            num = 0;
-
-            //검색결과의 파일 크기 추출
-            $('td.hit').each(function (link) {
-                volumelist[num] = $(this).text();
-                num++;
-            })
-            num = 0;
-
-            //검색결과의 업로드 날짜 추출
-            $('td.datetime').each(function (link) {
-                datelist[num] = $(this).text();
-                num++;
-            })
-
-            //총 검색결과 숫자 추출
-            $('#blist').each(function (link) {
-                count = $(this).text().substring(0, 30);
-                count = count.replace(new RegExp("[^(0-9)]", "gi"), "");
-            });
-        }
-        catch (e) {
-            console.log(e.stack);
-        }
-        finally {
-            var data = {
-                "subject": subject,
-                "mglist": mglist,
-                "datelist": datelist,
-                "volumelist": volumelist,
-                "num": num,
-                "count": count,
-                "urllist": urllist,
-                "url":url
+    if(siteSelect == 20){
+        client.fetch(url, param, function (err, $, response, body) {
+            console.log("url : " + url);
+            console.log("param : " + param);
+            console.log("err : " + err);
+            console.log("$ : " + $);
+            console.log("response : " + response);
+            console.log("body : " + body);
+            if (err) {
+                console.log(err);
             }
-            res.json(data);
-        }
-    });
+            try {
+                //title 검색 결과 추출
+                $('.subject > a').each(function (link) {
+                    if (num % 2 != 0) {
+                        urllist[num / 2 - 0.5] = $(this).attr("href");
+                        urllist[num / 2 - 0.5] = urllist[num / 2 - 0.5].replace("..", "https://torrentwal.com");
+                        var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
+                        subject[num / 2 - 0.5] = temp.replace('\t\t\t', '');
+                        subject[num / 2 - 0.5] = isSmi[num / 2 - 0.5] + subject[num / 2 - 0.5];
+                    }
+                    else {
+                        isSmi[num / 2] = $(this).parent().children("font").text();
+                    }
+                    num++;
+                });
+                num = 0;
+    
+                //검색결과의 magnet 추출
+                $('td.num > a').each(function (link) {
+                    var mgnet = $(this).attr("href");
+                    mgnet = mgnet.replace("javascript:Mag_dn(", "");
+                    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+                    mgnet = mgnet.replace(regExp, "");
+                    mglist[num] = 'magnet:?xt=urn:btih:' + mgnet;
+                    num++;
+                });
+                num = 0;
+    
+                //검색결과의 파일 크기 추출
+                $('td.hit').each(function (link) {
+                    volumelist[num] = $(this).text();
+                    num++;
+                })
+                num = 0;
+    
+                //검색결과의 업로드 날짜 추출
+                $('td.datetime').each(function (link) {
+                    datelist[num] = $(this).text();
+                    num++;
+                })
+    
+                //총 검색결과 숫자 추출
+                $('#blist').each(function (link) {
+                    count = $(this).text().substring(0, 30);
+                    count = count.replace(new RegExp("[^(0-9)]", "gi"), "");
+                });
+            }
+            catch (e) {
+                console.log(e.stack);
+            }
+            finally {
+                var data = {
+                    "subject": subject,
+                    "mglist": mglist,
+                    "datelist": datelist,
+                    "volumelist": volumelist,
+                    "num": num,
+                    "count": count,
+                    "urllist": urllist,
+                    "url":url
+                }
+                res.json(data);
+            }
+        });
+    }
+    else if(siteSelect == 20){
+        url = "https://torrentube.net/search/kt?page=" + page + "&q=" + title;
+        res.send(url);
+        // res.json("");
+    }
 });
 
 //main 페이지 기본 세팅값 반환
