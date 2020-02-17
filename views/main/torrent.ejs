@@ -68,7 +68,7 @@
     //Torrent 검색
     var torrentSearch = function torrentSearch(trListPaging) {
         if ($("#torrentTitle").val() == '' && torrentTitle.val() == '') {
-            alert("검색어 입력은 필수입니다.");
+            alert("검색어 입력은 필수입니다." + $("input[name=siteSelect]").val());
             $("#torrentTitle").focus();
             return;
             ////테스트용 코드 입력 없을 경우 스파이더맨
