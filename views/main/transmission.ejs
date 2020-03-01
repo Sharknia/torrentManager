@@ -77,16 +77,21 @@
                                     else remaintimeList[j] = temp[i];
                                 }
                                 else if (visit == downspeednum) {
-                                    if (temp[i] == '0.0') {
-                                        downspeedList[j] = '-';
+                                    try{
+                                        if (temp[i] == '0.0') {
+                                            downspeedList[j] = '-';
+                                        }
+                                        else if (temp[i] * 1 > 1000) {
+                                            downspeedList[j] = (temp[i] * 1 / 1024).toFixed(2) + "Mb/s";
+                                        }
+                                        else downspeedList[j] = temp[i].toFixed(2) + "Kb/s";
+                                    }catch{
+                                        //다운로드 속도가 언노운으로 잡힐 경우가 있음, 그런 경우 fixed에서 에러가 남
+                                        downspeedList[j] = "-";
                                     }
-                                    else if (temp[i] * 1 > 1000) {
-                                        downspeedList[j] = (temp[i] * 1 / 1024).toFixed(2) + "Mb/s";
-                                    }
-                                    else downspeedList[j] = temp[i].toFixed(2) + "Kb/s";
                                 }
                                 else if (visit == statenum) {
-                                    if (temp[i] == 'Up') {
+                                    if (temp[i].indexOf('Up') > -1) {
                                         stateList[j] = "다운로드중";
                                         subnum += 2;
                                     }
