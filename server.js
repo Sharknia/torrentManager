@@ -16,6 +16,8 @@ app.use(session({
     saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
 }));
 
+app.use('/scripts', express.static(__dirname + "/scripts"));
+
 app.get('/', function (req, res) {
     res.redirect('/main');
 });
