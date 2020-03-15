@@ -118,6 +118,7 @@ router.post('/torrentSearch', function (req, res) {
     // 출처 : https://bbokkun.tistory.com/137
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+    //토렌트왈인 경우
     if (siteSelect == 20){
         client.fetch(url, param, function (err, $, response, body) {
             console.log("url : " + url);
@@ -194,10 +195,26 @@ router.post('/torrentSearch', function (req, res) {
             }
         });
     }
+    //토렌튜브인 경우
     else if (siteSelect == 10){
-        url = "https://torrentube.net/search/kt?page=" + page + "&q=" + title;
-        request.get(url, function(err, result, body){
-            res.json(JSON.parse(body).pageItems);
+        var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+        db.serialize(() => {
+            db.all("SELECT * FROM urlList WHERE NAME='토렌튜브' LIMIT 1", [], (err, row) => {
+                url = row[0].url + "search/kt?page=" + page + "&q=" + title;
+                request.get(url, function(err, result, body){
+                    try{
+                        res.json(JSON.parse(body).pageItems);
+                    }
+                    catch(e){
+                        console.log(url);
+                        var data ={
+                            "result":"false",
+                            "url":url
+                        }
+                        res.json(data);
+                    }
+                });
+            });
         });
     }
 });
@@ -228,23 +245,26 @@ router.post('/getDefaultSetting', function (req, res) {
                     }
                     rowDir[i].path = temp;
                 }
-
-                var data = {};
-                if (err) {
-                    data = {
-                        "result": "false",
-                        "data": err.message
+                //urlList에서 저장된 url들을 꺼내온다.
+                db.all("select * from urlList", [], (err, rowUrl) => {
+                    var data = {};
+                    if (err) {
+                        data = {
+                            "result": "false",
+                            "data": err.message
+                        }
                     }
-                }
-                else {
-                    data = {
-                        "result": "true",
-                        "favoriteData": row,
-                        "dirListData": rowDir
+                    else {
+                        data = {
+                            "result": "true",
+                            "favoriteData": row,
+                            "dirListData": rowDir,
+                            'urlListData':rowUrl
+                        }
                     }
-                }
-                db.close();
-                res.json(data);
+                    db.close();
+                    res.json(data);
+                });
             });
         });
     });

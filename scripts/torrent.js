@@ -107,8 +107,9 @@ var torrentSearch = function torrentSearch(trListPaging) {
             "siteSelect" : siteSelect
         },
         success: function (result) {
-            if ($.trim(result) == "false") {
-                alert("알 수 없는 오류입니다. 관리자에게 문의해주세요!");
+            if ($.trim(result.result) == "false") {
+                alert("ERROR!! : " + url);
+                return;
             }
             else {
                 //토렌트왈을 선택한 경우
@@ -136,7 +137,7 @@ var torrentSearch = function torrentSearch(trListPaging) {
                 //토렌튜브를 선택한 경우
                 else if(siteSelect == 10){
                     list += '<div class="col-lg-12">';
-                    list += "<a target='_blink' href='https://torrentube.net/kt/search?page=" + page.val() + "&q=" + torrentTitle.val() + "'>검색 결과 상세보기</a>";
+                    list += "<a target='_blink' href='https://torrentube-apple.com/kt/search?page=" + page.val() + "&q=" + torrentTitle.val() + "'>검색 결과 상세보기</a>";
                     
                     //검색결과 출력 파트
                     var cnt = 0;
@@ -144,7 +145,7 @@ var torrentSearch = function torrentSearch(trListPaging) {
                     for (var key of result){
                         var size = `${key.sz}`;
                         size = (size / 1073741824).toFixed(1);
-                        list += '<li class="list-group-item">' + '<a href="https://torrentube.net/kt/read?p=' + `${key.id}` + '" style="color:black;" target="_blank">' + `${key.fn}` + "</a>";
+                        list += '<li class="list-group-item">' + '<a href="https://torrentube-apple.com/kt/read?p=' + `${key.id}` + '" style="color:black;" target="_blank">' + `${key.fn}` + "</a>";
                         list += '<a onclick="addMagnet(\'magnet:?xt=urn:btih:' + `${key.hs}` + '\');" style="float:right;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
                         list += '<span style="float:right">' + `${key.dt}` + ' / ' + size + 'G&nbsp&nbsp&nbsp;</span>';
                         list += '</li>'

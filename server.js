@@ -16,7 +16,6 @@ app.use(session({
     saveUninitialized: true         //세션이 저장되기 전에 Uninitialized 상태로 만들어서 저장
 }));
 
-app.use('/scripts', express.static(__dirname + "/scripts"));
 
 app.get('/', function (req, res) {
     res.redirect('/main');
@@ -44,6 +43,8 @@ app.use('/initialSetting', initialSetting);
 
 //정적파일(이미지 폴더)
 app.use('/img', express.static('img'));
+//스크립트 파일
+app.use('/scripts', express.static(__dirname + "/scripts"));
 
 app.listen(80, function () {
     console.log("80번 포트 서버 오픈")

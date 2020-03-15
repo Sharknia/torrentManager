@@ -41,6 +41,7 @@
                     <div class="col-lg-10">
                         <input type="checkbox" onclick="torrentTitle.val('');" style="margin-left:10px" id="check1080"><label for="check1080">1080p</label>
                         <a type="button" onclick="torrentSearch();" class="btn btn-sm btn-default" style="float: right;">검색</a>
+                        <a class="btn btn-sm btn-default" onclick="helpUrl()" title="토렌트가 안돼요!" style="float:right;margin-right: 5px;">?</a>
                     </div>
                 </div>
             </div>
@@ -153,6 +154,11 @@
                     for (var i in result.dirListData) {
                         if (result.dirListData[i].name == 'watch') dir.watch(result.dirListData[i].path);
                         else if (result.dirListData[i].name == 'download') dir.download(result.dirListData[i].path);
+                    }
+
+                    for (var i in result.urlListData){
+                        urllist.nameList(result.urlListData[i].name);
+                        urllist.urlList(result.urlListData[i].url);
                     }
                 }
                 else {

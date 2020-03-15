@@ -86,6 +86,22 @@ function ReturnTargetList() {
 }
 const returnTargetList = new ReturnTargetList();
 
+//URL 리스트
+function URLLIST(){
+    var urlList = [];   //받아온 urlList;
+    var nameList = [];  //받아온 주소의 이름 리스트
+
+    this.nameList = function(val){
+        if(val != null) nameList.push(val);
+        return nameList;
+    }
+    this.urlList = function(val){
+        if(val != null) urlList.push(val);
+        return urlList;
+    }
+}
+const urllist = new URLLIST();
+
 //Dir 세팅 저장, pwd에 대해 pop, push 가능
 function DIR() {
     var pwd = '';        //현재폴더
@@ -94,7 +110,6 @@ function DIR() {
 
     var nameList = [];
     var pathList = [];
-    var favoriteList = [];
 
     //DB로부터 받아온 폴더들의 이름이 저장됨
     this.nameList = function (val) {
@@ -227,4 +242,38 @@ var control = function control(cmd) {
             }
         }
     });
+}
+
+var helpUrl = function helpUrl(){
+    var name = "";
+    var url = "";
+    var noticeUrl = "";
+    if ($('input[name="siteSelect"]').val() == "10") name = "토렌튜브";
+    else if($('input[name="siteSelect"]').val() == "20") name = "토렌트왈";
+
+    for(var i in urllist.nameList()){
+        if(urllist.nameList()[i] == name) url = urllist.urlList()[i];
+        if(urllist.nameList()[i] == name + "안내") noticeUrl = urllist.urlList()[i];
+    }
+
+    var bodyHtml = '';
+    //모달 타이틀
+    $("#modal-title").html(name + " 주소 설정");
+
+    //모달 바디
+    bodyHtml += '<div class="input-group">';
+    bodyHtml += '<input type="hidden" id="oldUrl" value="' + url + '">';
+    bodyHtml += '<input type="text" class="form-control" value="' + url + '" placeholder="' + url + '" name="newUrl" id="newUrl">';
+    bodyHtml += '<span class="input-group-btn">';
+    bodyHtml += '<button class="btn btn-warning" onclick="alert(\'패치예정\');" type="button" data-dismiss="modal">수정</button>';
+    bodyHtml += '</span></div>'
+    bodyHtml += '<div class="col-lg-12 text-right" style="padding-right:0px">';
+    bodyHtml += "<a href='" + noticeUrl + "' target='_blank'>" + name + "안내</a>";
+    bodyHtml += '</div>';
+    bodyHtml += '<div stlye="padding:0px">&nbsp;';
+    bodyHtml += '</div>';
+
+    $("#modal-body").html(bodyHtml);
+    $("#myModal").modal("show");
+    return;
 }
