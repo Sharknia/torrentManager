@@ -265,10 +265,11 @@ var helpUrl = function helpUrl(){
     bodyHtml += '<input type="hidden" id="oldUrl" value="' + url + '">';
     bodyHtml += '<input type="text" class="form-control" value="' + url + '" placeholder="' + url + '" name="newUrl" id="newUrl">';
     bodyHtml += '<span class="input-group-btn">';
-    bodyHtml += '<button class="btn btn-warning" onclick="alert(\'패치예정\');" type="button" data-dismiss="modal">수정</button>';
+    bodyHtml += '<button class="btn btn-warning" onclick="urlUpdate(\'' + name + '\', $(\'#newUrl\').val()\);" type="button" data-dismiss="modal">수정</button>';
     bodyHtml += '</span></div>'
     bodyHtml += '<div class="col-lg-12 text-right" style="padding-right:0px">';
-    bodyHtml += "<a href='" + noticeUrl + "' target='_blank'>" + name + "안내</a>";
+    bodyHtml += "<a href='" + noticeUrl + "' target='_blank'>" + name + "안내</a></br>";
+    bodyHtml += "<span>https부터 쓰고 마지막에 / 를 반드시 붙여주세요!</span>";
     bodyHtml += '</div>';
     bodyHtml += '<div stlye="padding:0px">&nbsp;';
     bodyHtml += '</div>';
@@ -276,4 +277,24 @@ var helpUrl = function helpUrl(){
     $("#modal-body").html(bodyHtml);
     $("#myModal").modal("show");
     return;
+}
+
+var urlUpdate = function urlUpdat(name, nurl){
+    $.ajax({
+        type: "POST",
+        url: "/main/torrentUrlUpdate",
+        data: {
+            name:name,
+            url:nurl
+        },
+        success: function (result) {
+            if ($.trim(result.result) == 'err' || $.trim(result.result) == 'stderr') {
+                alert(result.data);
+            }
+            else {
+                alert("토렌트 주소가 갱신되었습니다.");
+                location.reload();
+            }
+        }
+    });
 }

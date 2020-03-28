@@ -201,19 +201,24 @@ router.post('/torrentSearch', function (req, res) {
         db.serialize(() => {
             db.all("SELECT * FROM urlList WHERE NAME='토렌튜브' LIMIT 1", [], (err, row) => {
                 url = row[0].url + "search/kt?page=" + page + "&q=" + title;
-                request.get(url, function(err, result, body){
-                    try{
-                        res.json(JSON.parse(body).pageItems);
-                    }
-                    catch(e){
-                        console.log(url);
+                try{
+                    request.get(url, function(err, result, body){
                         var data ={
-                            "result":"false",
-                            "url":url
+                            "url":row[0].url,
+                            "result":JSON.parse(body).pageItems
                         }
                         res.json(data);
+                    });
+                }
+                catch(e)
+                {
+                    console.log(url);
+                    var data ={
+                        "result":"false",
+                        "url":url
                     }
-                });
+                    res.json(data);
+                }
             });
         });
     }
@@ -292,4 +297,20 @@ router.post('/favoriteUpdate', function (req, res) {
         res.send("true");
     });
 });
+
+//url 업데이트기능
+router.post('/torrentUrlUpdate', function (req, res) {
+    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    var name = req.body.name;
+    var url = req.body.url;
+
+    db.serialize(() => {
+        sql = "update urlList set url='" + url + "'  WHERE NAME='" + name + "'";
+
+        db.run(sql);
+        db.close();
+        res.send("true");
+    });
+});
+
 module.exports = router;
