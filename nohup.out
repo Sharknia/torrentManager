@@ -1,0 +1,12 @@
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[09/Aug/2020 16:28:50] "GET / HTTP/1.1" 200 16351
+Watching for file changes with StatReloader
+[09/Aug/2020 16:29:57] "GET / HTTP/1.1" 200 16351
+[09/Aug/2020 17:07:26] "GET / HTTP/1.1" 200 16351
+[09/Aug/2020 17:07:26] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[09/Aug/2020 17:07:26] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[09/Aug/2020 17:07:26] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[09/Aug/2020 17:07:26] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
