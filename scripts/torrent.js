@@ -62,7 +62,7 @@ const page = new Page();
 //Torrent 검색
 var torrentSearch = function torrentSearch(trListPaging) {
     //선택된 사이트 10 : 토렌튜브, 20 : 토렌트왈
-    var siteSelect = $("input[name=siteSelect]:checked").val();
+    var siteSelect = $("#siteSelect").val();
 
     if ($("#torrentTitle").val() == '' && torrentTitle.val() == '') {
         alert("검색어 입력은 필수입니다.");
@@ -126,9 +126,9 @@ var torrentSearch = function torrentSearch(trListPaging) {
                     //검색결과 출력 파트
                     list += '<div class="col-lg-12"><ul class="list-group">';
                     for (var i = 0; i < result.num; i++) {
-                        list += '<li class="list-group-item">' + '<a onclick="torrentView(\'' + result.urllist[i] + '\', \'' + result.subject[i] + '\');" style="color:black;">' + result.subject[i] + "</a>";
-                        list += '<a onclick="addMagnet(' + i + ');" style="float:right;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
-                        list += '<span style="float:right">' + result.datelist[i] + ' / ' + result.volumelist[i] + '&nbsp&nbsp&nbsp;</span>';
+                        list += '<li class="list-group-item">' + '<a href="' + result.urllist[i] + '" style="color:black;" target="_blank">' + result.subject[i] + "</a>";
+                        list += '<a onclick="addMagnet(\'' + result.mglist[i] + '\');" style="float:right;color:gray" aria-hidden="true"><i class="fas fa-magnet"></i></a>'
+                        list += '<span style="float:right">' + result.datelist[i] + '&nbsp&nbsp&nbsp;</span>';
                         list += '</li>'
                     }
                     list += '</ul></div>';

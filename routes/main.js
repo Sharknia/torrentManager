@@ -94,19 +94,30 @@ router.get('/torrentView/:url', function (req, res) {
     });
 });
 
+//
+function MGLIST() {   // var totalpage;
+    var mglist = {};
+
+    this.val = function (val, value) {
+        if (val != null) mglist[val] = value;
+        return mglist;
+    }
+}
+const mglist = new MGLIST();
+
 /*************  POST  *************/
 //토렌트 검색
 router.post('/torrentSearch', function (req, res) {
     var isOk = false;
     var title = req.body.torrentTitle;
     var page = req.body.page;
-    //사이트 선택 10 : 토렌튜브, 20 : 토렌트왈
+    //사이트 선택 20 : 토렌트 아이씨유, 10 : 토렌튜브
     var siteSelect = req.body.siteSelect;
+    if(!siteSelect) siteSelect="20";
     title = qs.escape(title);
     var param = {};
     var num = 0;
     var subject = {};
-    var mglist = {};
     var volumelist = {};
     var datelist = {};
     var urllist = {};
@@ -118,83 +129,80 @@ router.post('/torrentSearch', function (req, res) {
     // 출처 : https://bbokkun.tistory.com/137
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    //토렌트왈인 경우
+    //토렌트ICU인 경우
     if (siteSelect == 20){
+        url = 'https://www.torrent11.icu/bbs/board.php?bo_table=yenung&stx=' + title + '&page=' + page;
         client.fetch(url, param, function (err, $, response, body) {
             console.log("url : " + url);
-            console.log("param : " + param);
+            console.log("param : " + param.stack);
             console.log("err : " + err);
             console.log("$ : " + $);
-            console.log("response : " + response);
-            console.log("body : " + body);
+            console.log("response : " + response.stack);
+            // console.log("body : " + body);
             if (err) {
                 console.log(err);
             }
             try {
-                //title 검색 결과 추출
-                $('.subject > a').each(function (link) {
-                    if (num % 2 != 0) {
-                        urllist[num / 2 - 0.5] = $(this).attr("href");
-                        urllist[num / 2 - 0.5] = urllist[num / 2 - 0.5].replace("..", "https://torrentwal.com");
-                        var temp = ($(this).text().replace('\n\t\t\t\t\t\t\n\t\t\t', ''));
-                        subject[num / 2 - 0.5] = temp.replace('\t\t\t', '');
-                        subject[num / 2 - 0.5] = isSmi[num / 2 - 0.5] + subject[num / 2 - 0.5];
-                    }
-                    else {
-                        isSmi[num / 2] = $(this).parent().children("font").text();
-                    }
-                    num++;
-                });
-                num = 0;
-    
-                //검색결과의 magnet 추출
-                $('td.num > a').each(function (link) {
-                    var mgnet = $(this).attr("href");
-                    mgnet = mgnet.replace("javascript:Mag_dn(", "");
-                    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-                    mgnet = mgnet.replace(regExp, "");
-                    mglist[num] = 'magnet:?xt=urn:btih:' + mgnet;
-                    num++;
-                });
-                num = 0;
-    
-                //검색결과의 파일 크기 추출
-                $('td.hit').each(function (link) {
-                    volumelist[num] = $(this).text();
-                    num++;
-                })
-                num = 0;
-    
                 //검색결과의 업로드 날짜 추출
-                $('td.datetime').each(function (link) {
-                    datelist[num] = $(this).text();
-                    num++;
+                $('.font-11').each(function (link) {
+                    if ($(this).text().trim().indexOf(".") > -1) {
+                        datelist[num] = $(this).text().trim();
+                        num++;
+                    }
                 })
-    
+                num = 0;
+
+                //title 검색 결과 추출
+                $('.list-subject > a').each(function () {
+                    subject[num] = $(this).text().replace(/\n/g, "");
+                    urllist[num] = $(this).attr("href");
+                    isSmi[num] = "0";
+                    volumelist[num] = "0";
+                    num++;
+                });
+
                 //총 검색결과 숫자 추출
                 $('#blist').each(function (link) {
-                    count = $(this).text().substring(0, 30);
-                    count = count.replace(new RegExp("[^(0-9)]", "gi"), "");
+                    count = 0;
                 });
             }
             catch (e) {
-                console.log(e.stack);
+                console.log("error" + e.stack);
             }
             finally {
-                var data = {
-                    "subject": subject,
-                    "mglist": mglist,
-                    "datelist": datelist,
-                    "volumelist": volumelist,
-                    "num": num,
-                    "count": count,
-                    "urllist": urllist,
-                    "url":url
+                setMgList()
+                .then(() => {
+                    setTimeout(function(){
+                        var data = {
+                            "subject": subject,
+                            "mglist": mglist.val(),
+                            "datelist": datelist,
+                            "volumelist": volumelist,
+                            "num": num,
+                            "count": count,
+                            "urllist": urllist,
+                            "url": url
+                        }
+                        res.json(data)
+                    }, 3000);
+                })
+                async function setMgList() {
+                    for (var i = 0; i < num; i++) {
+                        await (getMagnet(i));
+                    }
                 }
-                res.json(data);
+                function getMagnet(index) {
+                    client.fetch(urllist[index], param, function (err, $, response, body){
+                        $('.list-group-item > a').each(function (){
+                            mglist.val(index, $(this).attr("href"));
+                        });
+                    });
+                }
+                
             }
         });
     }
+
     //토렌튜브인 경우
     else if (siteSelect == 10){
         var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);

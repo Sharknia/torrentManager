@@ -34,11 +34,12 @@
                     <input type="text" class="form-control" id="torrentTitle" placeholder="프로그램 제목을 입력하세요" required>
                 </div>
                 <div>
-                    <div class="col-lg-2 text-center" data-toggle="buttons" style="padding-right: 0px;">
+                    <input type="hidden" id="siteSelect" name="siteSelect" value="20">
+                    <!-- <div class="col-lg-2 text-center" data-toggle="buttons" style="padding-right: 0px;">
                         <label class="btn btn-sm btn-default active" style="width:48%"><input type="radio" name="siteSelect" value="10">토렌튜브</label>
                         <label class="btn btn-sm btn-default" style="width:48%"><input type="radio" name="siteSelect" value="20"></i>토렌트왈</label>
-                    </div>
-                    <div class="col-lg-10">
+                    </div> -->
+                    <div class="col-lg-12">
                         <input type="checkbox" onclick="torrentTitle.val('');" style="margin-left:10px" id="check1080"><label for="check1080">1080p</label>
                         <a type="button" onclick="torrentSearch();" class="btn btn-sm btn-default" style="float: right;">검색</a>
                         <a class="btn btn-sm btn-default" onclick="helpUrl()" title="토렌트가 안돼요!" style="float:right;margin-right: 5px;">?</a>
@@ -125,8 +126,8 @@
 <script>
     $(document).ready(function () {
         $("#torrentTitle").focus();
-        //사이트 선택 기본값 토렌튜브로 설정
-        $('input[name="siteSelect"]').val(['10']);
+        //사이트 선택 기본값 토렌트아이씨유로 설정
+        $('input[name="siteSelect"]').val(['20']);
         //기본 검색값 1080p로 설정
         $("#check1080").prop("checked", true);
         
