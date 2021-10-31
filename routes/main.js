@@ -201,24 +201,24 @@ router.post('/torrentSearch', function (req, res) {
         db.serialize(() => {
             db.all("SELECT * FROM urlList WHERE NAME='토렌튜브' LIMIT 1", [], (err, row) => {
                 url = row[0].url + "search/kt?page=" + page + "&q=" + title;
-                try{
-                    request.get(url, function(err, result, body){
+                request.get(url, function(err, result, body){
+                    try{
                         var data ={
                             "url":row[0].url,
                             "result":JSON.parse(body).pageItems
                         }
                         res.json(data);
-                    });
-                }
-                catch(e)
-                {
-                    console.log(url);
-                    var data ={
-                        "result":"false",
-                        "url":url
                     }
-                    res.json(data);
-                }
+                    catch(e)
+                    {
+                        console.log(url);
+                        var data ={
+                            "result":"false",
+                            "url":url
+                        }
+                        res.json(data);
+                    }
+                });
             });
         });
     }
