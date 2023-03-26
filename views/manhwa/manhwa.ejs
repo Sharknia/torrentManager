@@ -1,0 +1,43 @@
+<% include ../share/header.ejs %>
+
+    <style type="text/css">
+        .btn-xs {
+            margin: 1px;
+        }
+    </style>
+    <!-- CONTENTS -->
+    <div class="container">
+        <div class="page-header">
+            <h1>만화 관리<br><small>만화 관리(고마워요 마나토끼)</small></h1>
+        </div>
+        <!-- 컨트롤 바 -->
+        <div class="col-lg-12">
+            <a type="button" onclick="manhwaControl('Add');" class="btn btn-default btn-xs"><i
+                    class="fas fa-plus"></i>만화추가</a>
+            <a type="button" onclick="manhwaControl('Del');" class="btn btn-default btn-xs"><i
+                    class="fas fa-trash-alt"></i>만화삭제</a>
+            <a type="button" onclick="manhwaControl('Refresh');" class="btn btn-default btn-xs"><i
+                    class="fas fa-sync"></i>새로고침</a>
+            <a type="button" onclick="manhwaControl('List');" class="btn btn-default btn-xs"><i
+                    class="fas fas fa-cogs"></i>테스트</a>
+            <span class="button-split"> | </span>
+            <a type="button" onclick="visitTokki()" class="btn btn-default btn-xs"><i
+                    class="fas fa-book"></i>본가방문</a>
+            <a type="button" onclick="Edit('Add');" class="btn btn-default btn-xs"><i
+                    class="fas fa-edit"></i>주소수정</a>
+
+            <hr class="margin:2%">
+        </div>
+        <!-- 컨트롤 바 끝 -->
+        <div class="col-lg-12" id="contents">
+            <table id="manhwa-list" class="table table-bordered table-hover">
+                <tr style="background-color:lightgray">
+                    <th class="text-center" style="width:50px"><input type="checkbox" onclick="checkboxAllCheck(1);"
+                            name="manhwaListCheckbox" id="manhwaListCheckbox"></th>
+                    <th>제목</th>
+                    <th style="width:150px">관리</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <% include ../share/footer.ejs %>

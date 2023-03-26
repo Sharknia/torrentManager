@@ -61,6 +61,8 @@ const page = new Page();
 
 //Torrent 검색
 var torrentSearch = function torrentSearch(trListPaging) {
+    alert("서비스 종료");
+    return;
     //선택된 사이트 10 : 토렌튜브, 20 : 토렌트왈
     var siteSelect = $("#siteSelect").val();
 

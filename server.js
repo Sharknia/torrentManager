@@ -33,6 +33,10 @@ app.use('/login', login);
 var linux = require('./routes/linux');
 app.use('/linux', linux);
 
+//쇼다운 관리, 로그 등 리눅스 관련 기능
+var manhwa = require('./routes/manhwa');
+app.use('/manhwa', manhwa);
+
 //쉘에 명령 내릴 때
 var control = require('./routes/control');
 app.use('/control', control);

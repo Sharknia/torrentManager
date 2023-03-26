@@ -11,7 +11,6 @@ var request = require('request');
 /*************  GET  *************/
 // main 페이지 접속
 router.get('/', function (req, res) {
-    console.log("app get /");
     if (!req.session.info) {
         var today = new Date();
         var message = "접속시도 :" + req.connection.remoteAddress + " ::: " + today.toLocaleString()
@@ -204,29 +203,28 @@ router.post('/torrentSearch', function (req, res) {
     }
 
     //토렌튜브인 경우
-    else if (siteSelect == 10){
+    else if (siteSelect == 10) {
         var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
         db.serialize(() => {
             db.all("SELECT * FROM urlList WHERE NAME='토렌튜브' LIMIT 1", [], (err, row) => {
                 url = row[0].url + "search/kt?page=" + page + "&q=" + title;
-                request.get(url, function(err, result, body){
-                    try{
-                        var data ={
-                            "url":row[0].url,
-                            "result":JSON.parse(body).pageItems
-                        }
+                axios.get(url)
+                    .then((response) => {
+                        const data = {
+                            "url": row[0].url,
+                            "result": JSON.parse(response.data).pageItems
+                        };
                         res.json(data);
-                    }
-                    catch(e)
-                    {
+                    })
+                    .catch((error) => {
+                        console.error(error);
                         console.log(url);
-                        var data ={
-                            "result":"false",
-                            "url":url
-                        }
+                        const data = {
+                            "result": "false",
+                            "url": url
+                        };
                         res.json(data);
-                    }
-                });
+                    });
             });
         });
     }
