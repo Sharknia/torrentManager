@@ -73,17 +73,19 @@ var manhwaControl = function manhwaControl(cmd, page) {
         });
     }
     else if (cmd == "getUrl") {
-        $.ajax({
-            type: 'post',
-            url: "/manhwa/getUrl",
-            success: function (json) {
-                if (json.message) {
-                    alert(json.message);
-                } else {
-                    manaUrl.val(json.url);
+        if (!manaUrl.val()) {
+            $.ajax({
+                type: 'post',
+                url: "/manhwa/getUrl",
+                success: function (json) {
+                    if (json.message) {
+                        alert(json.message);
+                    } else {
+                        manaUrl.val(json.url);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
     else {
         alert("제작중입니다.");
@@ -93,7 +95,7 @@ var manhwaControl = function manhwaControl(cmd, page) {
 
 function init() {
     manhwaControl('List');
-    // manhwaControl('getUrl');
+    manhwaControl('getUrl');
 }
 
 function visitTokki(){

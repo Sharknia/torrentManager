@@ -127,6 +127,7 @@ router.post('/cmd', function (req, res) {
                             continue;
                         }
                         const title = $(link).contents().filter((_, el) => el.nodeType === 3).text().trim();
+                        //한 번에 너무 많이 접근하면 밴 됨
                         SaveManhwa(idx, id);
                         results.push({ id: id, title: title });
                     }
@@ -163,22 +164,23 @@ function SaveManhwa(masteridx, idx) {
 
         const url = `https://manatoki${row.codename}.net/comic/${idx}`;
         console.log(url)
-        client.fetch(url, (err, $, response) => {
-            if (err) {
-                console.error(err.message);
-                return;
-            }
+        //한 번에 너무 많이 접근하면 밴 됨
+        // client.fetch(url, (err, $, response) => {
+        //     if (err) {
+        //         console.error(err.message);
+        //         return;
+        //     }
             
-            const imgs = $('#html_encoder_div img');
-            if (imgs.length === 0) {
-                console.log('No images found.');
-            } else {
-                imgs.each((idx, img) => {
-                    const src = $(img).attr('src');
-                    console.log(src);
-                });
-            }
-        });
+        //     const imgs = $('#html_encoder_div img');
+        //     if (imgs.length === 0) {
+        //         console.log('No images found.');
+        //     } else {
+        //         imgs.each((idx, img) => {
+        //             const src = $(img).attr('src');
+        //             console.log(src);
+        //         });
+        //     }
+        // });
     });
 }
 
