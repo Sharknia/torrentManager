@@ -4,6 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 var request = require('request');
 const client = require('cheerio-httpcli');
 
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3';
 /*************  GET  *************/
 // 리눅스 페이지 접속
 router.get('/', function (req, res) {
@@ -14,6 +15,7 @@ router.get('/', function (req, res) {
         res.render('manhwa/manhwa', { info: req.session.info });
     }
 });
+
 
 /*************  POST  *************/
 router.post('/getUrl', function (req, res) {
@@ -31,7 +33,7 @@ router.post('/getUrl', function (req, res) {
         let url = `https://manatoki${currentNum}.net/`;
 
         const attemptConnection = () => {
-            request(url, { timeout: 1000 }, (err, response, body) => {
+            request(url, { timeout: 1000, headers: { 'User-Agent': userAgent } }, (err, response, body) => {
                 if (err || response.statusCode !== 200) {
                     count++;
 
@@ -91,7 +93,7 @@ router.post('/cmd', function (req, res) {
     const { idx, cmd } = req.body;
     if (cmd === 'update') {
         var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READONLY);
-        db.get("SELECT * FROM tcode WHERE code='manhwa'", [], (err, row) => {
+        db.get("SELECT * FROM tcode WHERE code='manhwa'", [], async (err, row) => {
             if (err) {
                 console.error(err.message);
                 res.status(500).json({ error: err.message });
@@ -99,7 +101,7 @@ router.post('/cmd', function (req, res) {
             }
 
             const url = `https://manatoki${row.codename}.net/comic/${idx}`;
-            client.fetch(url, (err, $, response) => {
+            client.fetch(url, { headers: { 'User-Agent': userAgent }, encoding: 'utf-8' }, (err, $, response) => {
                 if (err) {
                     console.error(err.message);
                     res.status(500).json({ error: err.message });
@@ -110,7 +112,7 @@ router.post('/cmd', function (req, res) {
                 const results = [];
 
                 const masteridx = idx;
-                db.all("SELECT * FROM manhwalist WHERE masteridx=?", [masteridx], (err, rows) => {
+                db.all("SELECT * FROM manhwalist WHERE masteridx=?", [masteridx], async (err, rows) => {
                     if (err) {
                         console.error(err.message);
                         res.status(500).json({ error: err.message });
@@ -118,8 +120,8 @@ router.post('/cmd', function (req, res) {
                     }
                     const existingIds = new Set(rows.map(row => row.idx));
 
-                    for (let i = links.length - 1; i >= 0; i--) {
-                        const link = links[i];
+                    // for 반복문을 for...of 반복문으로 수정
+                    for (const link of links) {
                         const href = $(link).attr('href');
                         const id = href.match(/\/(\d+)\?/)[1];
                         if (existingIds.has(id)) {
@@ -128,22 +130,10 @@ router.post('/cmd', function (req, res) {
                         }
                         const title = $(link).contents().filter((_, el) => el.nodeType === 3).text().trim();
                         //한 번에 너무 많이 접근하면 밴 됨
-                        SaveManhwa(idx, id);
+                        await SaveManhwa(idx, id);
                         results.push({ id: id, title: title });
                     }
-                    
-                    // links.forEach(link => {
-                    //     const href = $(link).attr('href');
-                    //     const id = href.match(/\/(\d+)\?/)[1];
-                    //     if (existingIds.has(id)) {
-                    //         // manhwalist 테이블에 있는 것이면 skip
-                    //         return;
-                    //     }
-                    //     const title = $(link).contents().filter((_, el) => el.nodeType === 3).text().trim();
-                    //     SaveManhwa(idx, id)
-                    //     results.push({ id: id, title: title });
-                    // });
-
+                    console.log("완료")
                     // 결과 전송
                     res.json({ results: results });
                 });
@@ -152,37 +142,74 @@ router.post('/cmd', function (req, res) {
     }
 });
 
-function SaveManhwa(masteridx, idx) {
-    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READONLY);
+async function SaveManhwa(masteridx, idx) {
+    try {
+        var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READONLY);
 
-    db.get("SELECT * FROM tcode WHERE code='manhwa'", [], (err, row) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).json({ error: err.message });
-            return;
-        }
-
-        const url = `https://manatoki${row.codename}.net/comic/${idx}`;
-        console.log(url)
-        //한 번에 너무 많이 접근하면 밴 됨
-        // client.fetch(url, (err, $, response) => {
-        //     if (err) {
-        //         console.error(err.message);
-        //         return;
-        //     }
-            
-        //     const imgs = $('#html_encoder_div img');
-        //     if (imgs.length === 0) {
-        //         console.log('No images found.');
-        //     } else {
-        //         imgs.each((idx, img) => {
-        //             const src = $(img).attr('src');
-        //             console.log(src);
-        //         });
-        //     }
-        // });
-    });
+        db.get("SELECT * FROM tcode WHERE code='manhwa'", [], async (err, row) => {
+            if (err) {
+                console.error(err.message);
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            const url = `https://manatoki${row.codename}.net/comic/${idx}`;
+            console.log(url);
+            // 한 번에 너무 많이 접근하면 밴 됨
+            await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 1000) + 1000)); // 실행 시간 랜덤하게 대기
+            client.fetch(url, { headers: { 'User-Agent': userAgent }, encoding: 'utf-8' }, async (err, $, response) => {
+                if (err) {
+                    console.error(err.message);
+                    return;
+                }
+                //URL 로드 직후에는 이미지가 없는 것 같다.. 진짜 없는것인지 확인해야함..
+                const imgs = $('img');
+                if (imgs.length === 0) {
+                    console.log('No images found.');
+                } else {
+                    imgs.each((_, img) => {
+                        const src = $(img).attr('src');
+                        if (src.includes(idx)) {
+                            console.log(src);
+                        }
+                    });
+                }
+            });
+        });
+    } catch (error) {
+        console.error(`Error accessing : ${error.message}`);
+    }
 }
+
+// function SaveManhwa(masteridx, idx) {
+//     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READONLY);
+
+//     db.get("SELECT * FROM tcode WHERE code='manhwa'", [], (err, row) => {
+//         if (err) {
+//             console.error(err.message);
+//             res.status(500).json({ error: err.message });
+//             return;
+//         }
+
+//         const url = `https://manatoki${row.codename}.net/comic/${idx}`;
+//         console.log(url)
+//         //한 번에 너무 많이 접근하면 밴 됨
+//         // client.fetch(url, { headers: { 'User-Agent': userAgent } }, (err, $, response) => {
+//         //     if (err) {
+//         //         console.error(err.message);
+//         //         return;
+//         //     }
+//         //     const imgs = $('#html_encoder_div img');
+//         //     if (imgs.length === 0) {
+//         //         console.log('No images found.');
+//         //     } else {
+//         //         imgs.each((idx, img) => {
+//         //             const src = $(img).attr('src');
+//         //             console.log(src);
+//         //         });
+//         //     }
+//         // });
+//     });
+// }
 
 
 module.exports = router;
