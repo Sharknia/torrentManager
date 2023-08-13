@@ -31,9 +31,8 @@ var transmission = function transmission() {
                 alert(result.data);
             }
             else if ($.trim(result.result) == 'none') {
-                $('#transmission_contents').html("");
                 var list = '<h3 class="text-center">현재 작업중인 토렌트가 없습니다.</h3>';
-                $('#transmission_contents').append(list)
+                $('#transmission_contents').html(list)
             }
             else if ($.trim(result.result) == 'true') {
                 var list = '';
@@ -108,23 +107,47 @@ var transmission = function transmission() {
                 }
 
                 //토렌트 리스트 테이블
-                list += '<table class="table table-bordered table-hover"><tr style="background-color:lightgray">';
-                list += '<th class="text-center"><input type="checkbox" onclick="checkboxAllCheck(1);" name="torrentListCheckbox" id="torrentListCheckbox"></th><th>제목</th><th>용량</th><th>진행상황</th><th>남은시간</th><th>속도</th><th>상태</th></tr>'
-                for (var i = 0; i < j; i++) {
-                    list += '<tr><td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="torrentListCheck" value="' + idxList[i] + '"></td>'
-                    list += '<td>' + subjectList[i].substr(0, 50) + '</td>'
-                    list += '<td>' + volumeList[i] + '</td>'
-                    list += '<td><div class="progress"><div class="progress-bar" aria-valuenow="' + percentList[i] + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percentList[i] + '">' + percentList[i] + '</div></div></td>'
-                    list += '<td>' + remaintimeList[i] + '</td>'
-                    list += '<td>' + downspeedList[i] + '</td>'
-                    list += '<td>' + stateList[i] + '</td>'
-                    list += '</tr>'
+                list += `
+                <table class="table table-bordered table-hover">
+                    <tr style="background-color:lightgray">
+                        <th class="text-center">
+                            <input type="checkbox" onclick="checkboxAllCheck(1);" name="torrentListCheckbox" id="torrentListCheckbox">
+                        </th>
+                        <th>제목</th>
+                        <th>용량</th>
+                        <th>진행상황</th>
+                        <th>남은시간</th>
+                        <th>속도</th>
+                        <th>상태</th>
+                    </tr>
+                `;
+                
+                for (let i = 0; i < j; i++) {
+                    list += `
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="custom-control custom-checkbox" name="torrentListCheck" value="${idxList[i]}">
+                            </td>
+                            <td>${subjectList[i].substr(0, 50)}</td>
+                            <td>${volumeList[i]}</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar" aria-valuenow="${percentList[i]}" aria-valuemin="0" aria-valuemax="100" style="width:${percentList[i]}%">
+                                        ${percentList[i]}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${remaintimeList[i]}</td>
+                            <td>${downspeedList[i]}</td>
+                            <td>${stateList[i]}</td>
+                        </tr>
+                    `;
                 }
+                
                 list += '</table>';
                 //토렌트 리스트 테이블 끝
 
-                $('#transmission_contents').html("");
-                $('#transmission_contents').append(list)
+                $('#transmission_contents').html(list);
             }
         }
     });
@@ -134,21 +157,55 @@ var transmission = function transmission() {
 var torrentUpload = function torrentUpload(select) {
     //select가 1이면 모달 띄움
     if (select == '1') {
-        var modalBody = '';
         $("#modal-title").html("torrent 파일 업로드");
-
-        modalBody += '<form id="torrentUpload" method="POST" ectype="multipart/form-data" action="/main/torrentUpload">';
-        modalBody += '<div class="input-group">';
-        modalBody += '<input multiple="multiple" type="file" class="form-control" name="fileForm[]" id="fileForm">';
-        modalBody += '<span class="input-group-btn">';
-        modalBody += '<button class="btn btn-warning" onclick="torrentUpload(\'2\');" type="button" data-dismiss="modal">업로드</button>';
-        modalBody += '</span></div></form>'
-
+        let modalBody = `
+        <form id="torrentUpload" method="POST" enctype="multipart/form-data" action="/main/torrentUpload">
+            <div class="input-group">
+                <input multiple="multiple" type="file" class="form-control" name="fileForm[]" id="fileForm">
+                <span class="input-group-btn">
+                    <button class="btn btn-warning" onclick="torrentUpload('2');" type="button" data-dismiss="modal">업로드</button>
+                </span>
+            </div>
+        </form>
+        `;
         $("#modal-body").html(modalBody);
         $("#myModal").modal("show");
         return;
     }
     else if (select == '2') {
-        alert("업로드!");
+        // .torrent 파일인지 검사
+        let isTorrent = true;
+        const files = $('#fileForm')[0].files;
+
+        for(let i = 0; i < files.length; i++) {
+            const fileName = files[i].name;
+            const fileExt = fileName.split('.').pop();
+
+            if (fileExt.toLowerCase() !== 'torrent') {
+                isTorrent = false;
+                break;
+            }
+        }
+
+        if (!isTorrent) {
+            alert('업로드할 파일은 .torrent 형식이어야 합니다.');
+            return;
+        }
+
+        const formData = new FormData($('#torrentUpload')[0]);
+        $.ajax({
+            url: '/main/torrentUpload',
+            type: 'POST',
+            data: formData,
+            processData: false,  // 필수: FormData를 사용할 때는 false로 설정해야 합니다.
+            contentType: false,  // 필수: FormData를 사용할 때는 false로 설정해야 합니다.
+            success: function (data) {
+                //성공
+                transmission();
+            },
+            error: function (error) {
+                console.error(error); 
+            }
+        });
     }
 }

@@ -7,8 +7,10 @@ var exec = require('child_process').exec;
 var client = require('cheerio-httpcli');
 var qs = require('querystring'); //url encoding
 var request = require('request');
+const multer = require('multer');
 
 /*************  GET  *************/
+
 // main 페이지 접속
 router.get('/', function (req, res) {
     if (!req.session.info) {
@@ -317,6 +319,37 @@ router.post('/torrentUrlUpdate', function (req, res) {
         db.close();
         res.send("true");
     });
+});
+
+
+//토렌트 파일 업로드 위치
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/HDD/torrent/watch')  // 파일이 저장될 경로
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ storage: storage });
+//torrent 파일 업로드
+router.post('/torrentUpload', upload.array('fileForm[]'), function (req, res) {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+
+    // 업로드 성공에 대한 응답
+    res.send('File uploaded!');
+});
+
+// 오류 핸들링 (예: 파일 업로드 크기 제한, 파일 형식 불일치 등)
+router.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        return res.status(500).send(`Multer error: ${err.message}`);
+    } else if (err) {
+        return res.status(500).send(`Unknown error: ${err.message}`);
+    }
+    next();
 });
 
 module.exports = router;

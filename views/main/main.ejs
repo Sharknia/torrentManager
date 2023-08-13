@@ -12,14 +12,14 @@
     </div>
     <!-- 네비게이션 메뉴 -->
     <nav class="col-lg-12">
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-            <li class="nav-item text-center active">
+        <ul class="nav nav-tabs" role="tablist">
+            <!-- <li class="nav-item text-center">
                 <a class="nav-link" data-toggle="tab" href="#torrent">Torrent</a>
-            </li>
-            <li class="nav-item text-center">
+            </li> -->
+            <li class="nav-item text-center col-xs-6 active">
                 <a class="nav-link" data-toggle="tab" onclick="transmission();" href="#transmission">Transmission</a>
             </li>
-            <li class="nav-item text-center">
+            <li class="nav-item text-center col-xs-6">
                 <a class="nav-link" data-toggle="tab" onclick="explorer();" href="#Explorer">Explorer</a>
             </li>
         </ul>
@@ -27,7 +27,7 @@
     <!-- 네비게이션 메뉴 끝 -->
     <div class="col-lg-12 tab-content">
         <!-- 토렌트 파트 -->
-        <div class="tab-pane active" id="torrent" role="tabpanel">
+        <div class="tab-pane" id="torrent" role="tabpanel">
             <!-- 토렌트 검색 -->
             <div id="form1" class="col-lg-12" style="margin: 1%">
                 <div class="form-group col-lg-12">
@@ -56,7 +56,7 @@
         <!-- 토렌트 파트 끝 -->
 
         <!-- transmission 파트 -->
-        <div class="tab-pane" id="transmission" role="tabpanel">
+        <div class="tab-pane active" id="transmission" role="tabpanel">
             <!-- //위쪽 상태바 재개, 정지, 삭제, 로컬에서 함께 삭제, || 전체 재개, 전체 정지 || 파일이동-->
             <div class="col-lg-12 text-center" style="padding:1%">
                 <a type="button" onclick="control('1');" class="btn btn-default btn-xs"><i class="fas fa-play"></i>시작</a>
@@ -68,8 +68,8 @@
                 <a type="button" onclick="control('6');" class="btn btn-default btn-xs">전체 정지</a>
                 <span class="button-split"> | </span>
                 <a type="button" onclick="torrentUpload(1);" class="btn btn-default btn-xs"><i class="fas fa-cloud-upload-alt"></i>UPLOAD</a>
-                <span class="button-split"> | </span>
-                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA 새로고침</a>
+                <!-- <span class="button-split"> | </span>
+                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA 새로고침</a> -->
             </div>
             <!-- 트랜스미션 작업 리스트 -->
             <div class="col-lg-12" id="transmission_contents">
@@ -112,8 +112,8 @@
                         <li role="presentation"><a type="button" onclick="isOk(15)" class="btn btn-default btn-xs"><i class="fas fa-file-video"></i>동영상정리</a></li>
                     </ul>
                 </div>
-                <span class="button-split"> | </span>
-                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA</a>
+                <!-- <span class="button-split"> | </span>
+                <a type="button" onclick="control('10');" class="btn btn-default btn-xs"><i class="fas fa-sync"></i>DLNA</a> -->
             </div>
             <div class="col-lg-12" id="explorerContents">
 

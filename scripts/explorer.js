@@ -13,6 +13,7 @@ const isFavorite = new IsFavorite();
 //pwd의 내용으로 새로고침한다.
 var explorer = function explorer(openDir) {
     targetList.empty();
+    
     //....이 입력으로 들어온 경우는 상위 폴더로 이동한다. 
     if (openDir == '....') {
         dir.pwdPop();
@@ -72,22 +73,38 @@ var explorer = function explorer(openDir) {
                 }
                 //디렉토리 목록, 파일 목록을 만든다.
                 for (var i in dirList) {
-                    list += '<tr>';
-                    list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + dirList[i] + '"></td>'
-                    list += '<td><a onclick="explorer(\'' + dirList[i].replace(/'/gi, '\\\'') + '\')"><i class="far fa-folder"></i>&nbsp;' + dirList[i].substr(0, 100).replace('/', '') + '</a>';
-                    list += '<a style="float:right;color:gray;" title="이름바꾸기" onclick="rename(2, \'' + dirList[i] + '\')"><i class="far fa-edit"></i></a></td>';
-                    list += '</td></tr>'
+                    list += `
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="${dirList[i]}">
+                        </td>
+                        <td>
+                            <a onclick="explorer('${dirList[i].replace(/'/gi, '\\\'')}')">
+                                <i class="far fa-folder"></i>&nbsp;${dirList[i].substr(0, 100).replace('/', '')}
+                            </a>
+                            <a style="float:right;color:gray;" title="이름바꾸기" onclick="rename(2, '${dirList[i]}')">
+                                <i class="far fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>`;
                 }
                 for (var i in fileList) {
-                    list += '<tr>';
-                    list += '<td class="text-center"><input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="' + fileList[i] + '"></td>'
-                    list += '<td style="cursor:default"><i class="far fa-file"></i>&nbsp;' + fileList[i].substr(0, 100);
-                    list += '<a style="float:right;color:gray;" title="이름바꾸기" onclick="rename(2, \'' + fileList[i] + '\')"><i class="far fa-edit"></i></a>'
-                    //압축파일이라면 압축풀기 버튼 추가
-                    if (fileList[i].split('.')[fileList[i].split('.').length - 1] == 'zip') {
-                        list += '<a style="float:right;color:gray;margin-left:1px;margin-right:1px" title="압축풀기" onclick="unzip(\'' + fileList[i] + '\')"><i class="far fa-file-archive">&nbsp;</i></a>';
-                    }
-                    list += '</td></td></tr>'
+                    list += `
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="custom-control custom-checkbox" name="expListCheck" value="${fileList[i]}">
+                        </td>
+                        <td style="cursor:default">
+                            <i class="far fa-file"></i>&nbsp;${fileList[i].substr(0, 100)}
+                            <a style="float:right;color:gray;" title="이름바꾸기" onclick="rename(2, '${fileList[i]}')">
+                                <i class="far fa-edit"></i>
+                            </a>
+                            ${fileList[i].split('.')[fileList[i].split('.').length - 1] === 'zip' ? `
+                                <a style="float:right;color:gray;margin-left:1px;margin-right:1px" title="압축풀기" onclick="unzip('${fileList[i]}')">
+                                    <i class="far fa-file-archive">&nbsp;</i>
+                                </a>` : ''}
+                        </td>
+                    </tr>`;
                 }
                 list += '</table>';
             }
@@ -179,12 +196,14 @@ var rename = function rename(select, oldFileName) {
             $("#modal-title").html("파일 이름 변경");
 
             //모달 바디
-            bodyHtml += '<div class="input-group">';
-            bodyHtml += '<input type="hidden" id="oldFileName" value="' + oldFileName + '">';
-            bodyHtml += '<input type="text" class="form-control" value="' + oldFileName + '" placeholder="' + oldFileName + '" name="newFileName" id="newFileName">';
-            bodyHtml += '<span class="input-group-btn">';
-            bodyHtml += '<button class="btn btn-warning" onclick="rename(2);" type="button" data-dismiss="modal">수정</button>';
-            bodyHtml += '</span></div>'
+            bodyHtml = `
+            <div class="input-group">
+                <input type="hidden" id="oldFileName" value="${oldFileName}">
+                <input type="text" class="form-control" value="${oldFileName}" placeholder="${oldFileName}" name="newFileName" id="newFileName">
+                <span class="input-group-btn">
+                    <button class="btn btn-warning" onclick="rename(2);" type="button" data-dismiss="modal">수정</button>
+                </span>
+            </div>`;
 
             $("#modal-body").html(bodyHtml);
             $("#myModal").modal("show");
@@ -236,11 +255,13 @@ var newDirMaking = function newDirMaking(select) {
         $("#modal-title").html("새로운 폴더 생성");
 
         //모달 바디
-        bodyHtml += '<div class="input-group">';
-        bodyHtml += '<input type="text" class="form-control" value="새폴더" placeholder="새폴더" name="newDirName" id="newDirName">';
-        bodyHtml += '<span class="input-group-btn">';
-        bodyHtml += '<button class="btn btn-primary" onclick="newDirMaking(2);" type="button" data-dismiss="modal">생성</button>';
-        bodyHtml += '</span></div>'
+        bodyHtml += `
+        <div class="input-group">
+            <input type="text" class="form-control" value="새폴더" placeholder="새폴더" name="newDirName" id="newDirName">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" onclick="newDirMaking(2);" type="button" data-dismiss="modal">생성</button>
+            </span>
+        </div>`;
 
         $("#modal-body").html(bodyHtml);
         $("#myModal").modal("show");
@@ -315,11 +336,13 @@ var favoriteCustom = function favoriteCustom(isAdd) {
         $("#modal-title").html("즐겨찾기 추가");
 
         //모달 바디
-        modalBody += '<div class="input-group">';
-        modalBody += '<input type="text" class="form-control" placeholder="즐겨찾기 이름을 입력해주세요." name="favoriteName" id="favoriteName">';
-        modalBody += '<span class="input-group-btn">';
-        modalBody += '<button class="btn btn-warning" onclick="favoriteCustom(\'add\');" type="button" data-dismiss="modal">추가</button>';
-        modalBody += '</span></div>'
+        modalBody += `
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="즐겨찾기 이름을 입력해주세요." name="favoriteName" id="favoriteName">
+            <span class="input-group-btn">
+                <button class="btn btn-warning" onclick="favoriteCustom('add');" type="button" data-dismiss="modal">추가</button>
+            </span>
+        </div>`;
 
         $("#modal-body").html(modalBody);
         $("#myModal").modal("show");

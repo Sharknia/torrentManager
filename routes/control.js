@@ -4,6 +4,64 @@ var sqlite3 = require('sqlite3').verbose();
 //쉘에 명령어 줄때 필요
 var exec = require('child_process').exec;
 
+/*************  GET  *************/
+//마그넷 주소를 변수로 받아 토렌트 추가
+router.get('/magnetUpload', function (req, res) {
+    if (!req.query.magnet) {
+        return res.json({
+            "result": "err",
+            "data": "Magnet link not provided."
+        });
+    }
+    
+    var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READWRITE);
+    db.serialize(() => {
+        db.get("SELECT trId, trPw, trPort FROM defaultSetting", [], (err, row) => {
+            var trId = row.trId;
+            var trPw = row.trPw;
+            var trPort = row.trPort;
+            var cmd = '';
+            
+            cmd = "transmission-remote " + trPort + " -n " + trId + ":" + trPw + " -a magnet:?xt=urn:btih:" + req.query.magnet;
+
+            exec(cmd, function (err, stdout, stderr) {
+                var returnData;
+                if (err) {
+                    returnData = {
+                        "result": "err",
+                        "data": err.message
+                    }
+                }
+                else if (stderr) {
+                    returnData = {
+                        "result": "stderr",
+                        "data": stderr.toString()
+                    }
+                }
+                else if (stdout) {
+                    returnData = {
+                        "result": "true",
+                        "data": stdout
+                    }
+                    res.redirect('/login');
+                    return;
+                }
+                else { //출력 결과가 없는 경우
+                    returnData = {
+                        "result": "none",
+                        "data": "none"
+                    }
+                }
+                console.log("cmd : " + cmd);
+                console.log(returnData.data);
+                res.json(returnData);
+            });
+        });
+        db.close();
+    });
+});
+
+
 /*************  POST  *************/
 //쉘 제어. 트랜스미션 명령인 경우 select = tr, 쉘 제어인 경우 select = sh. select와 cmd를 보낸다.
 router.post('/', function (req, res) {
@@ -51,5 +109,6 @@ router.post('/', function (req, res) {
         db.close();
     });
 });
+
 
 module.exports = router;
