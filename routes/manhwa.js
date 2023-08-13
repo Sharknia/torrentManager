@@ -33,14 +33,14 @@ router.post('/getUrl', function (req, res) {
         let url = `https://manatoki${currentNum}.net/`;
 
         const attemptConnection = () => {
-            request(url, { timeout: 1000, headers: { 'User-Agent': userAgent } }, (err, response, body) => {
+            request(url, { timeout: 2000, headers: { 'User-Agent': userAgent } }, (err, response, body) => {
                 if (err || response.statusCode !== 200) {
                     count++;
 
                     if (count < 5) {
                         url = `https://manatoki${currentNum}.net/`;
                         console.log(`Trying next url: ${url}`);
-                        setTimeout(attemptConnection, 1000);
+                        setTimeout(attemptConnection, 2000);
                         currentNum++;
                     } else {
                         console.log('All attempts failed.');
@@ -155,61 +155,29 @@ async function SaveManhwa(masteridx, idx) {
             const url = `https://manatoki${row.codename}.net/comic/${idx}`;
             console.log(url);
             // 한 번에 너무 많이 접근하면 밴 됨
-            await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 1000) + 1000)); // 실행 시간 랜덤하게 대기
-            client.fetch(url, { headers: { 'User-Agent': userAgent }, encoding: 'utf-8' }, async (err, $, response) => {
-                if (err) {
-                    console.error(err.message);
-                    return;
-                }
-                //URL 로드 직후에는 이미지가 없는 것 같다.. 진짜 없는것인지 확인해야함..
-                const imgs = $('img');
-                if (imgs.length === 0) {
-                    console.log('No images found.');
-                } else {
-                    imgs.each((_, img) => {
-                        const src = $(img).attr('src');
-                        if (src.includes(idx)) {
-                            console.log(src);
-                        }
-                    });
-                }
-            });
+            // await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 1000) + 1000)); // 실행 시간 랜덤하게 대기
+            // client.fetch(url, { headers: { 'User-Agent': userAgent }, encoding: 'utf-8' }, async (err, $, response) => {
+            //     if (err) {
+            //         console.error(err.message);
+            //         return;
+            //     }
+            //     //URL 로드 직후에는 이미지가 없는 것 같다.. 진짜 없는것인지 확인해야함..
+            //     const imgs = $('img');
+            //     if (imgs.length === 0) {
+            //         console.log('No images found.');
+            //     } else {
+            //         imgs.each((_, img) => {
+            //             const src = $(img).attr('src');
+            //             if (src.includes(idx)) {
+            //                 console.log(src);
+            //             }
+            //         });
+            //     }
+            // });
         });
     } catch (error) {
         console.error(`Error accessing : ${error.message}`);
     }
 }
-
-// function SaveManhwa(masteridx, idx) {
-//     var db = new sqlite3.Database('Setting.db', sqlite3.OPEN_READONLY);
-
-//     db.get("SELECT * FROM tcode WHERE code='manhwa'", [], (err, row) => {
-//         if (err) {
-//             console.error(err.message);
-//             res.status(500).json({ error: err.message });
-//             return;
-//         }
-
-//         const url = `https://manatoki${row.codename}.net/comic/${idx}`;
-//         console.log(url)
-//         //한 번에 너무 많이 접근하면 밴 됨
-//         // client.fetch(url, { headers: { 'User-Agent': userAgent } }, (err, $, response) => {
-//         //     if (err) {
-//         //         console.error(err.message);
-//         //         return;
-//         //     }
-//         //     const imgs = $('#html_encoder_div img');
-//         //     if (imgs.length === 0) {
-//         //         console.log('No images found.');
-//         //     } else {
-//         //         imgs.each((idx, img) => {
-//         //             const src = $(img).attr('src');
-//         //             console.log(src);
-//         //         });
-//         //     }
-//         // });
-//     });
-// }
-
 
 module.exports = router;

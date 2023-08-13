@@ -217,9 +217,11 @@ var control = function control(cmd) {
         }
         //파일 삭제
         else if (cmd == 14) sendCmd = "sudo rm -rf " + targetList.refresh(select);
+        //동영상 정리
+        else if (cmd == 15) sendCmd = "sudo /HDD/ShellScripts/mediaCleanup.sh";
     }
 
-    if (cmd != 10 && targetList.val().length == 0 && cutFile.val() == '') {
+    if (cmd != 15 && cmd != 10 && targetList.val().length == 0 && cutFile.val() == '') {
         alert("선택된 항목이 없습니다.")
         return;
     }

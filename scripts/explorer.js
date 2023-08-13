@@ -153,13 +153,13 @@ var rename = function rename(select, oldFileName) {
             return;
         }
 
-        if (names[0].split('.')[names[0].split('.').length - 1] == 'smi' || names[0].split('.')[names[0].split('.').length - 1] == 'ass') {
+        if (names[0].split('.')[names[0].split('.').length - 1] == 'smi' || names[0].split('.')[names[0].split('.').length - 1] == 'ass' || names[0].split('.')[names[0].split('.').length - 1] == 'srt') {
             //두번째 이름names[0]이 자막이라면
             ext = names[0].split('.')[names[0].split('.').length - 1];
             oldFileName = makingOFN(names[0]);
             newFileName = makingNFN(names[1]);
         }
-        else if (names[1].split('.')[names[1].split('.').length - 1] == 'smi' || names[1].split('.')[names[1].split('.').length - 1] == 'ass') {
+        else if (names[1].split('.')[names[1].split('.').length - 1] == 'smi' || names[1].split('.')[names[1].split('.').length - 1] == 'ass' || names[1].split('.')[names[1].split('.').length - 1] == 'srt') {
             //두번째 이름names[1]이 자막이라면
             ext = names[1].split('.')[names[1].split('.').length - 1];
             oldFileName = makingOFN(names[1]);

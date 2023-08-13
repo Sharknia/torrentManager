@@ -93,13 +93,13 @@ var manhwaControl = function manhwaControl(cmd, page) {
     }
 }
 
-function init() {
-    manhwaControl('List');
-    manhwaControl('getUrl');
-}
+// function init() {
+//     manhwaControl('List');
+//     manhwaControl('getUrl');
+// }
 
 function visitTokki(){
     window.open(manaUrl.val(), '_blank');
 }
 
-init();
+// init();
